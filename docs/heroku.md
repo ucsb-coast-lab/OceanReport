@@ -66,7 +66,7 @@
     | Key                        | Value                                             | Example                                                     |
     | -------------------------- | ------------------------------------------------- | ----------------------------------------------------------- |
     | `REDIRECT_URI`             | Your production URL with `/api/callback` appended | `https://cs48-s20-cgaucho-lab00.herokuapp.com/api/callback` |
-    | `POST_LOGOUT_REDIRECT_URI` | Your production URL                               | `https://cs48-s20-cgaucho-lab00.herokuapp.com/api/callback` |
+    | `POST_LOGOUT_REDIRECT_URI` | Your production URL                               | `https://cs48-s20-cgaucho-lab00.herokuapp.com` |
 
 Once you've defined these, redeploy your app, and it should work on
 Heroku. Be sure that you don't only test loading the home page, but
