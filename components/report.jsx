@@ -258,18 +258,19 @@ export default function Report() {
         )}
         <h2>{lo}</h2>
       </div>
-      <div className={styles.row}>
-        <a
-          className={styles.links}
-          href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9411340"
-        >
-          Tide Data Gathered From Here
-        </a>
-        <br></br>
-        <button className={styles.buttons} onClick={update}>
+      <a
+        className={styles.links}
+        href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9411340"
+      >
+        Tide Data Gathered From Here
+      </a>
+      <br></br>
+      <div className={styles.rbuttonBox}>
+        <button className={styles.refreshButton} onClick={update}>
           Refreash Report
         </button>
       </div>
+      <div className={styles.sidebarBottom}></div>
     </div>
   );
 }
