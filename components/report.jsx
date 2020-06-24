@@ -231,7 +231,10 @@ export default function Report() {
         <FontAwesomeIcon className={styles.icons} icon={faWind} />
         <h2>{wind}</h2>
       </div>
-      <a className={styles.links} href="coastlab.sofar.com">
+      <a
+        className={styles.links}
+        href="https://coastlab.sofarocean.com/historical/SPOT-0186"
+      >
         More Wave and Wind History Here
       </a>
       <div className={styles.row}>
