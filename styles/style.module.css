@@ -4,31 +4,85 @@
   color: cornflowerblue;
 }
 
-.buttons {
+.navbarTitle {
+  width: 20%;
+  height: auto;
   margin: 15px;
   padding: 5px;
-  background-color: grey;
-  color: black;
-  border: solid 1px black;
-  border-radius: 5px;
-  font-size: 20px;
+  color: white;
+  font-size: 27px;
   text-decoration: none;
 }
 
-.links {
-  margin: 15px;
+.navbarLinks {
+  margin: 10px;
+  padding: 0px;
+  width: 75%;
+  height: auto;
+  position: absolute;
+  right: 0px;
+  display: inline-block;
+}
+
+.buttons {
+  width: auto;
+  height: auto;
+  margin: 10px;
+  padding: 0px;
+  color: white;
+  font-size: 15px;
+  text-decoration: none;
+  float: right;
+}
+
+.refreshButton {
+  margin: 0px;
   padding: 5px;
-  background-color: dodgerblue;
+  background-color: grey;
   color: black;
-  border: solid 1px black;
-  border-radius: 5px;
-  max-width: 45%;
+  font-size: 20px;
   text-align: center;
   text-decoration: none;
 }
 
+.rbuttonBox {
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+}
+
+.links {
+  width: auto;
+  height: auto;
+  margin: 15px;
+  padding: 5px;
+  color: dodgerblue;
+  text-align: left;
+  text-decoration: none;
+}
+
 .navbar {
+  position: fixed;
+  z-index: 3;
   display: inline-flex;
+  margin: 0px;
+  padding: 0px;
+  width: 100vw;
+  height: auto;
+}
+
+.navbarBox {
+  margin: 0px;
+  left: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 120px;
+  background-color: #161616;
+  opacity: 0.5;
+  position: fixed;
+  z-index: 2;
+  top: 0px;
 }
 
 .homeButton {
@@ -40,22 +94,85 @@
 }
 
 .column {
+  position: absolute;
+  right: 0px;
+  width: 30%;
+  height: 100%;
+  margin: 0px;
+  padding: 100px;
+  padding-top: 120px;
   display: inline-flex;
   flex-direction: column;
+  text-align: left;
+  overflow-y: scroll;
 }
 
 .page {
-  background-color: lightgrey;
+  width: 100vw;
+  height: 100vh;
+  margin: 0px;
+  padding: 0px;
   display: inline-flex;
-  flex-direction: column;
-  box-shadow: 10px 7px;
-  margin: 10px;
-  padding: 20px;
+  flex-direction: row;
   font-family: "Verdana", sans-serif;
 }
 
+.sidebar {
+  position: absolute;
+  right: 0px;
+  width: 30%;
+  height: 100%;
+  margin: 0px;
+  padding: 100px;
+  background-color: white;
+  text-align: center;
+}
+
+.sidebarBottom {
+  position: absolute;
+  margin: 0px;
+  bottom: 0px;
+  right: 0px;
+  width: 100%;
+  height: 250px;
+  background-color: #292c2f;
+}
+
+.titleBox {
+  width: 55%;
+  height: 8vh;
+  margin: 0px;
+  padding: 100px;
+  padding-top: 50px;
+  padding-left: 0px;
+  background-color: #161616;
+  opacity: 0.5;
+  position: fixed;
+  bottom: 0px;
+  text-align: center;
+  z-index: 1;
+}
+
 .title {
-  margin: 5px;
-  padding: 5px;
+  width: 40%;
+  height: 8vh;
+  padding-left: 100px;
+  padding-bottom: 75px;
+  position: fixed;
+  bottom: 0px;
+  color: white;
   font-size: 45px;
+  font-weight: 300;
+  z-index: 2;
+}
+
+.leftbar {
+  position: fixed;
+  left: 0px;
+  height: 100vh;
+  width: 70%;
+  background-image: url("UCSB_beach.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-color: #cccccc;
 }
