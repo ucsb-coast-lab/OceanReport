@@ -49,7 +49,7 @@ export default function Report() {
       "https://api.sofarocean.com/api/latest-data?spotterId=SPOT-0186&limit=0&includeWindData=true";
     const response = await fetch(url, {
       method: "GET",
-      headers: { token: "58d76bba4b8c64258a3b19bcafa6ff" },
+      headers: { token: process.env.SPOT_TOKEN },
     });
     const data = await response.json();
 
