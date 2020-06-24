@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from "react";
 import fetch from "isomorphic-unfetch";
-
-const linkDivStyle = {
-  display: "inline-flex",
-};
+import styles from "../styles/style.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendarDay } from "@fortawesome/free-solid-svg-icons";
+import { faWater } from "@fortawesome/free-solid-svg-icons";
+import { faWind } from "@fortawesome/free-solid-svg-icons";
+import { faAngleUp } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDown } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDoubleUp } from "@fortawesome/free-solid-svg-icons";
+import { faAngleDoubleDown } from "@fortawesome/free-solid-svg-icons";
 
 export default function Report() {
-  //const [{ date, wave, wind, tide, hi, lo }, setData] = useState(setup());
   const [date, setDate] = useState("");
   const [wave, setWave] = useState("");
   const [wind, setWind] = useState("");
@@ -18,6 +22,27 @@ export default function Report() {
     setWindWave();
     setTideData();
   };
+
+  function round(number, precision) {
+    var shift = function (number, exponent) {
+      var numArray = ("" + number).split("e");
+      return +(
+        numArray[0] +
+        "e" +
+        (numArray[1] ? +numArray[1] + exponent : exponent)
+      );
+    };
+    return shift(Math.round(shift(number, +precision)), -precision);
+  }
+
+  function timeConv(time) {
+    if (time.substring(0, 2) === "00") {
+      time = "12" + time.substring(2, 5);
+    } else {
+      time = (parseInt(time.substring(0, 2)) % 12) + time.substring(2, 5);
+    }
+    return time;
+  }
 
   const setWindWave = async () => {
     var url =
@@ -67,17 +92,15 @@ export default function Report() {
       " " +
       (d + 1) +
       " at " +
-      time12.toString().substring(15, 21);
+      timeConv(time12.toString().substring(16, 21));
     setDate(currDate);
 
     let wave =
-      parseFloat(
-        (data.data.waves[1].significantWaveHeight / 0.3048).toFixed(1)
-      ) +
+      round(data.data.waves[1].significantWaveHeight / 0.3048, 1) +
       " ft @ " +
       parseInt(data.data.waves[1].peakPeriod) +
       " secs from " +
-      parseInt(data.data.waves[1].peakDirection.toFixed(0)) +
+      round(data.data.waves[1].peakDirection, 0) +
       "º";
     setWave(wave);
 
@@ -87,11 +110,11 @@ export default function Report() {
     } else {
       let dir = "north";
       let theta = data.data.wind[1].direction;
-      if (theat >= 45 && theta < 135) {
+      if (theta >= 45 && theta < 135) {
         dir = "east";
       } else if (theta >= 135 && theta < 225) {
         dir = "south";
-      } else if (theta >= 225 && theat < 315) {
+      } else if (theta >= 225 && theta < 315) {
         dir = "west";
       }
       wind =
@@ -156,16 +179,12 @@ export default function Report() {
       first = "LO: ";
       second = "HI: ";
     }
-    first =
-      first +
-      t_pred[0].v.substring(0, t_pred[0].v.indexOf(".") + 2) +
-      " ft @ " +
-      t_pred[0].t.substring(11, 16);
-    second =
-      second +
-      t_pred[1].v.substring(0, t_pred[1].v.indexOf(".") + 2) +
-      " ft @ " +
-      t_pred[1].t.substring(11, 16);
+    let height = round(parseFloat(t_pred[0].v), 1);
+    let height2 = round(parseFloat(t_pred[1].v), 1);
+    let t1 = timeConv(t_pred[0].t.substring(11, 16));
+    let t2 = timeConv(t_pred[1].t.substring(11, 16));
+    first += height + " ft @ " + t1;
+    second += height2 + " ft @ " + t2;
     setHi(first);
     setLo(second);
 
@@ -181,7 +200,6 @@ export default function Report() {
       "&date=latest";
     const response2 = await fetch(url, { method: "GET" });
     const data2 = await response2.json();
-    //console.log(data2.data[0]);
 
     let currTide =
       "Tide: " +
@@ -200,19 +218,58 @@ export default function Report() {
   }
 
   return (
-    <div>
-      <h3>{date}</h3>
-      <h2>{wave}</h2>
-      <h2>{wind}</h2>
-      <a href="coastlab.sofar.com">More Wave and Wind History Here</a>
-      <h2>{tide}</h2>
-      <h2>{hi}</h2>
-      <h2>{lo}</h2>
-      <a href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9411340">
-        Tide Data Gathered From Here
+    <div className={styles.column}>
+      <div className={styles.row}>
+        <FontAwesomeIcon className={styles.icons} icon={faCalendarDay} />
+        <h4>{date}</h4>
+      </div>
+      <div className={styles.row}>
+        <FontAwesomeIcon className={styles.icons} icon={faWater} />
+        <h2>{wave}</h2>
+      </div>
+      <div className={styles.row}>
+        <FontAwesomeIcon className={styles.icons} icon={faWind} />
+        <h2>{wind}</h2>
+      </div>
+      <a className={styles.links} href="coastlab.sofar.com">
+        More Wave and Wind History Here
       </a>
-      <br></br>
-      <button onClick={update}>Refreash Report</button>
+      <div className={styles.row}>
+        {tide.substring(17, 18) === "r" ? (
+          <FontAwesomeIcon className={styles.icons} icon={faAngleDoubleUp} />
+        ) : (
+          <FontAwesomeIcon className={styles.icons} icon={faAngleDoubleDown} />
+        )}
+        <h2>{tide}</h2>
+      </div>
+      <div className={styles.row}>
+        {hi.substring(0, 2) === "HI" ? (
+          <FontAwesomeIcon className={styles.icons} icon={faAngleUp} />
+        ) : (
+          <FontAwesomeIcon className={styles.icons} icon={faAngleDown} />
+        )}
+        <h2>{hi}</h2>
+      </div>
+      <div className={styles.row}>
+        {lo.substring(0, 2) === "HI" ? (
+          <FontAwesomeIcon className={styles.icons} icon={faAngleUp} />
+        ) : (
+          <FontAwesomeIcon className={styles.icons} icon={faAngleDown} />
+        )}
+        <h2>{lo}</h2>
+      </div>
+      <div className={styles.row}>
+        <a
+          className={styles.links}
+          href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9411340"
+        >
+          Tide Data Gathered From Here
+        </a>
+        <br></br>
+        <button className={styles.buttons} onClick={update}>
+          Refreash Report
+        </button>
+      </div>
     </div>
   );
 }
