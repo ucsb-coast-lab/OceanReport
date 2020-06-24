@@ -1,0 +1,61 @@
+.icons {
+  margin: 15px;
+  font-size: 50px;
+  color: cornflowerblue;
+}
+
+.buttons {
+  margin: 15px;
+  padding: 5px;
+  background-color: grey;
+  color: black;
+  border: solid 1px black;
+  border-radius: 5px;
+  font-size: 20px;
+  text-decoration: none;
+}
+
+.links {
+  margin: 15px;
+  padding: 5px;
+  background-color: dodgerblue;
+  color: black;
+  border: solid 1px black;
+  border-radius: 5px;
+  max-width: 45%;
+  text-align: center;
+  text-decoration: none;
+}
+
+.navbar {
+  display: inline-flex;
+}
+
+.homeButton {
+  margin: 30px;
+}
+
+.row {
+  display: inline-flex;
+}
+
+.column {
+  display: inline-flex;
+  flex-direction: column;
+}
+
+.page {
+  background-color: lightgrey;
+  display: inline-flex;
+  flex-direction: column;
+  box-shadow: 10px 7px;
+  margin: 10px;
+  padding: 20px;
+  font-family: "Verdana", sans-serif;
+}
+
+.title {
+  margin: 5px;
+  padding: 5px;
+  font-size: 45px;
+}
