@@ -100,7 +100,7 @@
 .sidebar {
   position: fixed;
   right: 0px;
-  width: 40%;
+  width: 50%;
   height: 100%;
   margin: 0px;
   padding: 0px;
@@ -110,7 +110,7 @@
 .sidebarBox {
   position: fixed;
   right: 0px;
-  width: 40%;
+  width: 50%;
   height: 100%;
   margin: 0px;
   padding: 0px;
