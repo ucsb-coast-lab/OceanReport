@@ -159,11 +159,14 @@ export default function Report() {
     let n_pred = 0;
     let curr_time = current.getHours() * 60 + current.getMinutes();
     data.predictions.map((prediction) => {
+      let time = new Date(prediction.t + " UTC");
       let p_time =
-        parseInt(prediction.t.substring(11, 13), 10) * 60 +
-        parseInt(prediction.t.substring(14, 16));
+        parseInt(time.toString().substring(16, 18), 10) * 60 +
+        parseInt(time.toString().substring(19, 21));
+
       if (
-        (p_time > curr_time || prediction.t.substr(8, 2) > day) &&
+        p_time > curr_time &&
+        time.toString().substring(8, 11) >= day &&
         n_pred < 2
       ) {
         t_pred[n_pred] = prediction;
@@ -181,8 +184,10 @@ export default function Report() {
     }
     let height = round(parseFloat(t_pred[0].v), 1);
     let height2 = round(parseFloat(t_pred[1].v), 1);
-    let t1 = timeConv(t_pred[0].t.substring(11, 16));
-    let t2 = timeConv(t_pred[1].t.substring(11, 16));
+    let time1 = new Date(t_pred[0].t + " UTC");
+    let time2 = new Date(t_pred[1].t + " UTC");
+    let t1 = timeConv(time1.toString().substring(16, 21));
+    let t2 = timeConv(time2.toString().substring(16, 21));
     first += height + " ft @ " + t1;
     second += height2 + " ft @ " + t2;
     setHi(first);
@@ -202,14 +207,13 @@ export default function Report() {
     const data2 = await response2.json();
 
     let currTide =
-      "Tide: " +
-      data2.data[0].v.substring(0, data2.data[0].v.indexOf(".") + 2) +
-      " ft and ";
+      "Tide: " + round(parseFloat(data2.data[0].v), 1) + " ft and ";
     if (data2.data[0].v < t_pred[0].v) {
       currTide += "rising";
     } else {
       currTide += "falling";
     }
+
     setTide(currTide);
   };
 
@@ -218,60 +222,65 @@ export default function Report() {
   }
 
   return (
-    <div className={styles.column}>
-      <div className={styles.row}>
-        <FontAwesomeIcon className={styles.icons} icon={faCalendarDay} />
-        <h4>{date}</h4>
-      </div>
-      <div className={styles.row}>
-        <FontAwesomeIcon className={styles.icons} icon={faWater} />
-        <h2>{wave}</h2>
-      </div>
-      <div className={styles.row}>
-        <FontAwesomeIcon className={styles.icons} icon={faWind} />
-        <h2>{wind}</h2>
-      </div>
-      <a
-        className={styles.links}
-        href="https://coastlab.sofarocean.com/historical/SPOT-0186"
-      >
-        More Wave and Wind History Here
-      </a>
-      <div className={styles.row}>
-        {tide.substring(17, 18) === "r" ? (
-          <FontAwesomeIcon className={styles.icons} icon={faAngleDoubleUp} />
-        ) : (
-          <FontAwesomeIcon className={styles.icons} icon={faAngleDoubleDown} />
-        )}
-        <h2>{tide}</h2>
-      </div>
-      <div className={styles.row}>
-        {hi.substring(0, 2) === "HI" ? (
-          <FontAwesomeIcon className={styles.icons} icon={faAngleUp} />
-        ) : (
-          <FontAwesomeIcon className={styles.icons} icon={faAngleDown} />
-        )}
-        <h2>{hi}</h2>
-      </div>
-      <div className={styles.row}>
-        {lo.substring(0, 2) === "HI" ? (
-          <FontAwesomeIcon className={styles.icons} icon={faAngleUp} />
-        ) : (
-          <FontAwesomeIcon className={styles.icons} icon={faAngleDown} />
-        )}
-        <h2>{lo}</h2>
-      </div>
-      <a
-        className={styles.links}
-        href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9411340"
-      >
-        Tide Data Gathered From Here
-      </a>
-      <br></br>
-      <div className={styles.rbuttonBox}>
-        <button className={styles.refreshButton} onClick={update}>
-          Refreash Report
-        </button>
+    <div className={styles.sidebarBox}>
+      <div className={styles.column}>
+        <div className={styles.row}>
+          <FontAwesomeIcon className={styles.icons} icon={faCalendarDay} />
+          <h4>{date}</h4>
+        </div>
+        <div className={styles.row}>
+          <FontAwesomeIcon className={styles.icons} icon={faWater} />
+          <h2>{wave}</h2>
+        </div>
+        <div className={styles.row}>
+          <FontAwesomeIcon className={styles.icons} icon={faWind} />
+          <h2>{wind}</h2>
+        </div>
+        <a
+          className={styles.links}
+          href="https://coastlab.sofarocean.com/historical/SPOT-0186"
+        >
+          More Wave and Wind History Here
+        </a>
+        <div className={styles.row}>
+          {tide.substring(17, 18) === "r" || tide.substring(18, 19) === "r" ? (
+            <FontAwesomeIcon className={styles.icons} icon={faAngleDoubleUp} />
+          ) : (
+            <FontAwesomeIcon
+              className={styles.icons}
+              icon={faAngleDoubleDown}
+            />
+          )}
+          <h2>{tide}</h2>
+        </div>
+        <div className={styles.row}>
+          {hi.substring(0, 2) === "HI" ? (
+            <FontAwesomeIcon className={styles.icons} icon={faAngleUp} />
+          ) : (
+            <FontAwesomeIcon className={styles.icons} icon={faAngleDown} />
+          )}
+          <h2>{hi}</h2>
+        </div>
+        <div className={styles.row}>
+          {lo.substring(0, 2) === "HI" ? (
+            <FontAwesomeIcon className={styles.icons} icon={faAngleUp} />
+          ) : (
+            <FontAwesomeIcon className={styles.icons} icon={faAngleDown} />
+          )}
+          <h2>{lo}</h2>
+        </div>
+        <a
+          className={styles.links}
+          href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9411340"
+        >
+          Tide Data Gathered From Here
+        </a>
+        <br></br>
+        <div className={styles.rbuttonBox}>
+          <button className={styles.refreshButton} onClick={update}>
+            Refreash Report
+          </button>
+        </div>
       </div>
       <div className={styles.sidebarBottom}></div>
     </div>
