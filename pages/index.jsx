@@ -10,26 +10,14 @@ export default function HomePage() {
           UCSB COAST Lab
         </a>
         <div className={styles.navbarLinks}>
-          <a
-            className={styles.buttons}
-            href="https://ucsb-ocean-report.herokuapp.com/"
-          >
-            UCSB OCEAN REPORT
+          <a className={styles.buttons} href="https://ucsbcoastlab.org/people/">
+            PEOPLE
           </a>
           <a
             className={styles.buttons}
-            href="https://ucsbcoastlab.org/diversity-equity-inclusion/"
+            href="https://ucsbcoastlab.org/callinectes/"
           >
-            DIVERSITY, EQUITY & INCLUSION
-          </a>
-          <a className={styles.buttons} href="https://ucsbcoastlab.org/buoy/">
-            UCSB_BUOY@CAMPUS POINT
-          </a>
-          <a
-            className={styles.buttons}
-            href="https://ucsbcoastlab.org/join-the-lab/"
-          >
-            OPPORTUNITIES
+            CALLINECTES
           </a>
           <a
             className={styles.buttons}
@@ -39,12 +27,25 @@ export default function HomePage() {
           </a>
           <a
             className={styles.buttons}
-            href="https://ucsbcoastlab.org/callinectes/"
+            href="https://ucsbcoastlab.org/join-the-lab/"
           >
-            CALLINECTES
+            OPPORTUNITIES
           </a>
-          <a className={styles.buttons} href="https://ucsbcoastlab.org/people/">
-            PEOPLE
+          <a className={styles.buttons} href="https://ucsbcoastlab.org/buoy/">
+            UCSB_BUOY@CAMPUS POINT
+          </a>
+          <a
+            className={styles.buttons}
+            href="https://ucsbcoastlab.org/diversity-equity-inclusion/"
+          >
+            DIVERSITY, EQUITY & INCLUSION
+          </a>
+          <a
+            className={styles.buttons}
+            href="https://ucsb-ocean-report.herokuapp.com/"
+          >
+            {" "}
+            UCSB OCEAN REPORT{" "}
           </a>
         </div>
       </div>

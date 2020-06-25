@@ -1,65 +1,11 @@
-.icons {
-  margin: 15px;
-  font-size: 50px;
-  color: cornflowerblue;
-}
-
-.navbarTitle {
-  width: 20%;
-  height: auto;
-  margin: 15px;
-  padding: 5px;
-  color: white;
-  font-size: 27px;
-  text-decoration: none;
-}
-
-.navbarLinks {
-  margin: 10px;
-  padding: 0px;
-  width: 75%;
-  height: auto;
-  position: absolute;
-  right: 0px;
-  display: inline-block;
-}
-
-.buttons {
-  width: auto;
-  height: auto;
-  margin: 10px;
-  padding: 0px;
-  color: white;
-  font-size: 15px;
-  text-decoration: none;
-  float: right;
-}
-
-.refreshButton {
-  margin: 0px;
-  padding: 5px;
-  background-color: grey;
-  color: black;
-  font-size: 20px;
-  text-align: center;
-  text-decoration: none;
-}
-
-.rbuttonBox {
-  width: 100%;
+.page {
+  width: 100vw;
+  height: 100vh;
   margin: 0px;
   padding: 0px;
-  text-align: center;
-}
-
-.links {
-  width: auto;
-  height: auto;
-  margin: 15px;
-  padding: 5px;
-  color: dodgerblue;
-  text-align: left;
-  text-decoration: none;
+  display: inline-flex;
+  flex-direction: row;
+  font-family: "Verdana", sans-serif;
 }
 
 .navbar {
@@ -71,7 +17,36 @@
   width: 100vw;
   height: auto;
 }
-
+.navbarTitle {
+  width: 300px;
+  height: auto;
+  margin: 30px;
+  padding: 5px;
+  color: white;
+  font-size: 27px;
+  text-decoration: none;
+}
+.navbarLinks {
+  margin: 10px;
+  padding: 10px;
+  width: 70%;
+  height: auto;
+  position: absolute;
+  right: 0px;
+  float: right;
+  text-align: right;
+  display: inline-block;
+}
+.buttons {
+  width: auto;
+  height: auto;
+  margin: 5px;
+  padding: 5px;
+  color: white;
+  font-size: 15px;
+  font-weight: 50;
+  text-decoration: none;
+}
 .navbarBox {
   margin: 0px;
   left: 0px;
@@ -85,59 +60,28 @@
   top: 0px;
 }
 
-.homeButton {
-  margin: 30px;
-}
-
-.row {
-  display: inline-flex;
-}
-
-.column {
-  position: absolute;
-  right: 0px;
-  width: 30%;
-  height: 100%;
-  margin: 0px;
-  padding: 100px;
-  padding-top: 120px;
-  display: inline-flex;
-  flex-direction: column;
-  text-align: left;
-  overflow-y: scroll;
-}
-
-.page {
-  width: 100vw;
+.leftbar {
+  position: fixed;
+  left: 0px;
   height: 100vh;
-  margin: 0px;
-  padding: 0px;
-  display: inline-flex;
-  flex-direction: row;
-  font-family: "Verdana", sans-serif;
+  width: 70%;
+  background-image: url("UCSB_beach.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-color: #cccccc;
 }
-
-.sidebar {
-  position: absolute;
-  right: 0px;
-  width: 30%;
-  height: 100%;
-  margin: 0px;
-  padding: 100px;
-  background-color: white;
-  text-align: center;
-}
-
-.sidebarBottom {
-  position: absolute;
-  margin: 0px;
+.title {
+  width: 40%;
+  height: 8vh;
+  padding-left: 100px;
+  padding-bottom: 75px;
+  position: fixed;
   bottom: 0px;
-  right: 0px;
-  width: 100%;
-  height: 250px;
-  background-color: #292c2f;
+  color: white;
+  font-size: 45px;
+  font-weight: 300;
+  z-index: 2;
 }
-
 .titleBox {
   width: 55%;
   height: 8vh;
@@ -153,26 +97,72 @@
   z-index: 1;
 }
 
-.title {
+.sidebar {
+  position: fixed;
+  right: 0px;
   width: 40%;
-  height: 8vh;
-  padding-left: 100px;
-  padding-bottom: 75px;
-  position: fixed;
-  bottom: 0px;
-  color: white;
-  font-size: 45px;
-  font-weight: 300;
-  z-index: 2;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  background-color: white;
+  text-align: center;
 }
-
-.leftbar {
+.sidebarBox {
   position: fixed;
-  left: 0px;
-  height: 100vh;
+  right: 0px;
+  width: 40%;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+  text-align: left;
+  overflow-y: scroll;
+}
+.column {
   width: 70%;
-  background-image: url("UCSB_beach.jpg");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  background-color: #cccccc;
+  height: 90%;
+  margin: 0px;
+  padding: 10%;
+  padding-top: 120px;
+  display: inline-flex;
+  flex-direction: column;
+  text-align: left;
+}
+.sidebarBottom {
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  height: 400px;
+  background-color: #292c2f;
+}
+.row {
+  display: inline-flex;
+}
+.icons {
+  margin: 15px;
+  font-size: 50px;
+  color: cornflowerblue;
+}
+.links {
+  width: auto;
+  height: auto;
+  margin: 15px;
+  padding: 5px;
+  color: dodgerblue;
+  text-align: right;
+  text-decoration: none;
+}
+.rbuttonBox {
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  text-align: center;
+}
+.refreshButton {
+  margin: 0px;
+  padding: 5px;
+  background-color: grey;
+  color: black;
+  font-size: 20px;
+  text-align: center;
+  text-decoration: none;
 }
