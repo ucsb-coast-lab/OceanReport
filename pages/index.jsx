@@ -50,12 +50,14 @@ export default function HomePage() {
         </div>
       </div>
       <div className={styles.navbarBox}></div>
-      <div className={styles.leftbar}>
+      <div className={styles.content}>
+        <div className={styles.leftbar}>
+          <div className={styles.titleBox}></div>
+        </div>
         <h1 className={styles.title}>UCSB Ocean Report</h1>
-        <div className={styles.titleBox}></div>
+        <div className={styles.sidebar}></div>
+        <Report />
       </div>
-      <div className={styles.sidebar}></div>
-      <Report />
     </div>
   );
 }
