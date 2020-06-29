@@ -165,8 +165,9 @@ export default function Report() {
         parseInt(time.toString().substring(19, 21));
 
       if (
-        p_time > curr_time &&
-        time.toString().substring(8, 11) >= day &&
+        ((parseInt(time.toString().substring(8, 11)) === day &&
+          p_time > curr_time) ||
+          time.toString().substring(8, 11) > day) &&
         n_pred < 2
       ) {
         t_pred[n_pred] = prediction;
