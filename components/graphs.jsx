@@ -24,8 +24,8 @@ export default function Graphs() {
   };
 
   var options = {
-    width: "500px",
-    height: "300px",
+    width: "200px",
+    height: "100px",
   };
 
   let type = "Line";
