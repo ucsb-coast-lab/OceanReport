@@ -244,7 +244,7 @@ export default function HomePage() {
     <div className={styles.page}>
       <div className={styles.navbar}>
         <div className={styles.dateTitleBox}>
-          <a className={styles.title} href="https://ucsbcoastlab.org/">
+          <a className={styles.title} href="https://coastlab.eri.ucsb.edu/">
             UCSB COAST Lab Ocean Report
           </a>
           <div className={styles.date}>
