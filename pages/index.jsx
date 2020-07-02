@@ -34,7 +34,7 @@ export default function HomePage() {
   }
 
   function timeConv(time) {
-    if (time.substring(0, 2) === "00") {
+    if (time.substring(0, 2) === "00" || time.substring(0, 2) === "12") {
       time = "12" + time.substring(2, 5);
     } else {
       time = (parseInt(time.substring(0, 2)) % 12) + time.substring(2, 5);
