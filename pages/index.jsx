@@ -123,7 +123,6 @@ export default function HomePage() {
 
   const setTempData = async () => {
     var url =
-      "https://cors-anywhere.herokuapp.com/" +
       "https://erddap.sccoos.org/erddap/tabledap/autoss.json" +
       "?time%2Ctemperature&station=%22stearns_wharf" +
       "%22&time%3E=2020-07-01T07%3A00%3A00Z&time%3C2020-07-03T06%3A59%3A59Z&orderByMax(%22time%22)";
