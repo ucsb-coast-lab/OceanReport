@@ -133,9 +133,13 @@
     display: inline-flex;
     flex-direction: column;
   }
+  .title {
+    margin: 0 auto;
+  }
   .date {
-    margin: 10px;
-    margin-left: 25%;
+    margin: 0 auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
   }
   .report {
     margin: 10px;
