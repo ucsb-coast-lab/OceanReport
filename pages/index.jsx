@@ -135,12 +135,13 @@ export default function HomePage() {
     const data2 = await response2.json();
     let waveTime;
     let chartData = [];
-    let point;
     let i = 0;
     data2.data.waves.map((wave) => {
       waveTime = new Date(wave.timestamp);
-      point = { x: waveTime.getTime(), y: wave.significantWaveHeight / 0.3048 };
-      chartData[i] = point;
+      chartData[i] = {
+        x: waveTime.getTime(),
+        y: round(wave.significantWaveHeight / 0.3048, 1),
+      };
       i++;
     });
     setWaveChart(chartData);
@@ -148,31 +149,65 @@ export default function HomePage() {
     i = 0;
     data2.data.wind.map((wind) => {
       waveTime = new Date(wind.timestamp);
-      point = { x: waveTime.getTime(), y: wind.speed };
-      chartData[i] = point;
+      chartData[i] = { x: waveTime.getTime(), y: round(wind.speed, 1) };
       i++;
     });
     setWindChart(chartData);
   };
 
   const setTempData = async () => {
+    const current = new Date();
+    let year = current.getFullYear();
+    let month = current.getMonth() + 1;
+    let m = "00" + month;
+    m = m.substr(m.length - 2);
+    let day = current.getDate();
+    let d = "00" + day;
+    d = d.substr(d.length - 2);
+    const prev = new Date(current);
+    prev.setDate(prev.getDate() - 2);
+    let year3 = prev.getFullYear();
+    let month3 = prev.getMonth() + 1;
+    let m3 = "00" + month3;
+    m3 = m3.substr(m3.length - 2);
+    let day3 = prev.getDate();
+    let d3 = "00" + day3;
+    d3 = d3.substr(d3.length - 2);
+
+    let today = year.toString() + "-" + m + "-" + d;
+    let daysAgo = year3.toString() + "-" + m3 + "-" + d3;
+
     var url =
       "https://erddap.sccoos.org/erddap/tabledap/autoss.json" +
       "?time%2Ctemperature&station=%22stearns_wharf" +
-      "%22&time%3E=2020-07-01T07%3A00%3A00Z&time%3C2020-07-03T06%3A59%3A59Z&orderByMax(%22time%22)";
+      "%22&time%3E=" +
+      daysAgo +
+      "T00%3A00%3A00Z&time%3C" +
+      today +
+      "T23%3A59%3A59Z&orderBy(%22time%22)";
     const response = await fetch(url, { method: "GET" });
     const data = await response.json();
-    let far = data.table.rows[0][1] * (9.0 / 5.0) + 32;
+    let recent = data.table.rows.length - 1;
+    let far = data.table.rows[recent][1] * (9.0 / 5.0) + 32;
     let temp = "Water Temp: " + round(far, 1) + " ºF";
     setTemp(temp);
 
-    url =
-      "https://erddap.sccoos.org/erddap/tabledap/autoss.json" +
-      "?time%2Ctemperature&station=%22stearns_wharf" +
-      "%22&time%3E=2020-07-01T07%3A00%3A00Z&time%3C2020-07-03T06%3A59%3A59Z&orderByMax(%22time%22)";
-    const response2 = await fetch(url, { method: "GET" });
-    const data2 = await response2.json();
-    //console.log(data2);
+    let tempData = [];
+    let i = 0;
+    data.table.rows.map((sample) => {
+      let time = new Date(sample[0]);
+      if (
+        time.getTime() < current.getTime() &&
+        time.getTime() > current.getTime() - 172800000
+      ) {
+        tempData[i] = {
+          x: time.getTime(),
+          y: round(sample[1] * (9.0 / 5.0) + 32, 1),
+        };
+        i++;
+      }
+    });
+    setTempChart(tempData);
   };
 
   const setTideData = async () => {
@@ -206,7 +241,6 @@ export default function HomePage() {
     let today = year.toString() + m + d;
     let tomorrow = year2.toString() + m2 + d2;
     let daysAgo = year3.toString() + m3 + d3;
-    console.log(daysAgo);
 
     var url =
       "https://tidesandcurrents.noaa.gov/api/datagetter?" +
@@ -303,7 +337,6 @@ export default function HomePage() {
       tomorrow;
     const response3 = await fetch(url, { method: "GET" });
     const data3 = await response3.json();
-    console.log(data3);
     let tideData = [];
     let i = 0;
     data3.predictions.map((prediction) => {
@@ -312,12 +345,10 @@ export default function HomePage() {
         time.getTime() < current.getTime() &&
         time.getTime() > current.getTime() - 172800000
       ) {
-        let point = { x: time.getTime(), y: prediction.v };
-        tideData[i] = point;
+        tideData[i] = { x: time.getTime(), y: prediction.v };
         i++;
       }
     });
-    console.log(tideData);
     setTideChart(tideData);
   };
 
@@ -361,6 +392,7 @@ export default function HomePage() {
             <Graphs
               waveData={waveChart}
               windData={windChart}
+              tempData={tempChart}
               tideData={tideChart}
             />
           </div>
