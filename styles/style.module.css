@@ -15,7 +15,7 @@
     padding: 0px;
     width: 100vw;
     max-height: 120px;
-    background-color: none;
+    background-color: rgba(0, 0, 0, 0);
   }
   .dateTitleBox {
     width: 450px;
@@ -32,7 +32,7 @@
     margin: 20px;
     padding: 5px;
     color: white;
-    font-size: 18px;
+    font-size: 27px;
     text-decoration: none;
   }
   .date {
@@ -128,12 +128,18 @@
 }
 
 .page {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
   width: 100vw;
   height: 100vh;
   margin: 0px;
   padding: 0px;
   font-family: "Verdana", sans-serif;
   text-align: center;
+  overflow-y: scroll;
 }
 .navbar {
   margin: 0px;
@@ -147,7 +153,6 @@
   margin: 20px;
   padding: 5px;
   color: white;
-  font-size: 27px;
   text-decoration: none;
 }
 .date {
