@@ -5,6 +5,7 @@ import Graphs from "../components/graphs.jsx";
 import styles from "../styles/style.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarDay } from "@fortawesome/free-solid-svg-icons";
+import { controllers } from "chart.js";
 
 export default function HomePage() {
   const [date, setDate] = useState("");
@@ -14,6 +15,11 @@ export default function HomePage() {
   const [tide, setTide] = useState("");
   const [hi, setHi] = useState("");
   const [lo, setLo] = useState("");
+
+  const [waveChart, setWaveChart] = useState([]);
+  const [windChart, setWindChart] = useState([]);
+  const [tempChart, setTempChart] = useState([]);
+  const [tideChart, setTideChart] = useState([]);
 
   const update = () => {
     setWindWave();
@@ -119,6 +125,34 @@ export default function HomePage() {
         "From the " + dir + " at " + parseInt(data.data.wind[1].speed) + " kts";
     }
     setWind(wind);
+
+    url =
+      "https://api.sofarocean.com/api/wave-data?spotterId=SPOT-0186&limit=96&includeWindData=true";
+    const response2 = await fetch(url, {
+      method: "GET",
+      headers: { token: process.env.SPOT_TOKEN },
+    });
+    const data2 = await response2.json();
+    let waveTime;
+    let chartData = [];
+    let point;
+    let i = 0;
+    data2.data.waves.map((wave) => {
+      waveTime = new Date(wave.timestamp);
+      point = { x: waveTime.getTime(), y: wave.significantWaveHeight / 0.3048 };
+      chartData[i] = point;
+      i++;
+    });
+    setWaveChart(chartData);
+    chartData = [];
+    i = 0;
+    data2.data.wind.map((wind) => {
+      waveTime = new Date(wind.timestamp);
+      point = { x: waveTime.getTime(), y: wind.speed };
+      chartData[i] = point;
+      i++;
+    });
+    setWindChart(chartData);
   };
 
   const setTempData = async () => {
@@ -131,6 +165,14 @@ export default function HomePage() {
     let far = data.table.rows[0][1] * (9.0 / 5.0) + 32;
     let temp = "Water Temp: " + round(far, 1) + " ºF";
     setTemp(temp);
+
+    url =
+      "https://erddap.sccoos.org/erddap/tabledap/autoss.json" +
+      "?time%2Ctemperature&station=%22stearns_wharf" +
+      "%22&time%3E=2020-07-01T07%3A00%3A00Z&time%3C2020-07-03T06%3A59%3A59Z&orderByMax(%22time%22)";
+    const response2 = await fetch(url, { method: "GET" });
+    const data2 = await response2.json();
+    //console.log(data2);
   };
 
   const setTideData = async () => {
@@ -151,9 +193,20 @@ export default function HomePage() {
     let day2 = next.getDate();
     let d2 = "00" + day2;
     d2 = d2.substr(d2.length - 2);
+    const prev = new Date(current);
+    prev.setDate(prev.getDate() - 2);
+    let year3 = prev.getFullYear();
+    let month3 = prev.getMonth() + 1;
+    let m3 = "00" + month3;
+    m3 = m3.substr(m3.length - 2);
+    let day3 = prev.getDate();
+    let d3 = "00" + day3;
+    d3 = d3.substr(d3.length - 2);
 
     let today = year.toString() + m + d;
     let tomorrow = year2.toString() + m2 + d2;
+    let daysAgo = year3.toString() + m3 + d3;
+    console.log(daysAgo);
 
     var url =
       "https://tidesandcurrents.noaa.gov/api/datagetter?" +
@@ -233,6 +286,39 @@ export default function HomePage() {
     }
 
     setTide(currTide);
+
+    url =
+      "https://tidesandcurrents.noaa.gov/api/datagetter?" +
+      "station=9411340" +
+      "&product=predictions" +
+      "&datum=mllw" +
+      "&units=english" +
+      "&time_zone=gmt" +
+      "&application=UCSB" +
+      "&format=json" +
+      "&interval=hilo" +
+      "&begin_date=" +
+      daysAgo +
+      "&end_date=" +
+      tomorrow;
+    const response3 = await fetch(url, { method: "GET" });
+    const data3 = await response3.json();
+    console.log(data3);
+    let tideData = [];
+    let i = 0;
+    data3.predictions.map((prediction) => {
+      let time = new Date(prediction.t + " UTC");
+      if (
+        time.getTime() < current.getTime() &&
+        time.getTime() > current.getTime() - 172800000
+      ) {
+        let point = { x: time.getTime(), y: prediction.v };
+        tideData[i] = point;
+        i++;
+      }
+    });
+    console.log(tideData);
+    setTideChart(tideData);
   };
 
   if (date === "") {
@@ -257,7 +343,6 @@ export default function HomePage() {
         </div>
         <div className={styles.report}>
           <Report
-            date={date}
             wave={wave}
             wind={wind}
             temp={temp}
@@ -273,7 +358,11 @@ export default function HomePage() {
         <div className={styles.left}></div>
         <div className={styles.right}>
           <div className={styles.graphs}>
-            <Graphs />
+            <Graphs
+              waveData={waveChart}
+              windData={windChart}
+              tideData={tideChart}
+            />
           </div>
         </div>
       </div>
