@@ -283,7 +283,6 @@ export default function HomePage() {
 
     let t_pred = {};
     let n_pred = 0;
-    console.log(current.getTime());
     data.predictions.map((prediction) => {
       let time = new Date(
         prediction.t.substring(0, 10) +
@@ -292,12 +291,10 @@ export default function HomePage() {
           ":00Z"
       );
       if (time.getTime() > current.getTime() && n_pred < 2) {
-        console.log(prediction);
         t_pred[n_pred] = prediction;
         n_pred++;
       }
     });
-    console.log(t_pred);
 
     let first, second;
     if (t_pred[0].type === "H") {
