@@ -26,14 +26,8 @@
     margin-right: 140px;
   }
   .title {
-    text-align: center;
     width: 450px;
-    height: auto;
-    margin: 20px;
-    padding: 5px;
-    color: white;
     font-size: 27px;
-    text-decoration: none;
   }
   .date {
     display: inline-flex;
