@@ -371,7 +371,12 @@ export default function HomePage() {
     let tideDate = [];
     let i = 0;
     data3.predictions.map((prediction) => {
-      let time = new Date(prediction.t + " UTC");
+      let time = new Date(
+        prediction.t.substring(0, 10) +
+          "T" +
+          prediction.t.substring(11, 16) +
+          ":00Z"
+      );
       if (
         time.getTime() < current.getTime() &&
         time.getTime() > current.getTime() - 172800000
