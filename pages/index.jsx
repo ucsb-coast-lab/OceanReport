@@ -21,6 +21,11 @@ export default function HomePage() {
   const [tempChart, setTempChart] = useState([]);
   const [tideChart, setTideChart] = useState([]);
 
+  const [waveDates, setWaveDates] = useState([]);
+  const [windDates, setWindDates] = useState([]);
+  const [tempDates, setTempDates] = useState([]);
+  const [tideDates, setTideDates] = useState([]);
+
   const update = () => {
     setWindWave();
     setTempData();
@@ -135,6 +140,7 @@ export default function HomePage() {
     const data2 = await response2.json();
     let waveTime;
     let chartData = [];
+    let dates = [];
     let i = 0;
     data2.data.waves.map((wave) => {
       waveTime = new Date(wave.timestamp);
@@ -142,16 +148,27 @@ export default function HomePage() {
         x: waveTime.getTime(),
         y: round(wave.significantWaveHeight / 0.3048, 1),
       };
+      dates[i] =
+        waveTime.toString().substring(4, 15) +
+        " " +
+        timeConv(waveTime.toString().substring(16, 21));
       i++;
     });
+    setWaveDates(dates);
     setWaveChart(chartData);
     chartData = [];
+    dates = [];
     i = 0;
     data2.data.wind.map((wind) => {
       waveTime = new Date(wind.timestamp);
       chartData[i] = { x: waveTime.getTime(), y: round(wind.speed, 1) };
+      dates[i] =
+        waveTime.toString().substring(4, 15) +
+        " " +
+        timeConv(waveTime.toString().substring(16, 21));
       i++;
     });
+    setWindDates(dates);
     setWindChart(chartData);
   };
 
@@ -193,6 +210,7 @@ export default function HomePage() {
     setTemp(temp);
 
     let tempData = [];
+    let tempDate = [];
     let i = 0;
     data.table.rows.map((sample) => {
       let time = new Date(sample[0]);
@@ -204,9 +222,14 @@ export default function HomePage() {
           x: time.getTime(),
           y: round(sample[1] * (9.0 / 5.0) + 32, 1),
         };
+        tempDate[i] =
+          time.toString().substring(4, 15) +
+          " " +
+          timeConv(time.toString().substring(16, 21));
         i++;
       }
     });
+    setTempDates(tempDate);
     setTempChart(tempData);
   };
 
@@ -338,6 +361,7 @@ export default function HomePage() {
     const response3 = await fetch(url, { method: "GET" });
     const data3 = await response3.json();
     let tideData = [];
+    let tideDate = [];
     let i = 0;
     data3.predictions.map((prediction) => {
       let time = new Date(prediction.t + " UTC");
@@ -346,9 +370,14 @@ export default function HomePage() {
         time.getTime() > current.getTime() - 172800000
       ) {
         tideData[i] = { x: time.getTime(), y: prediction.v };
+        tideDate[i] =
+          time.toString().substring(4, 15) +
+          " " +
+          timeConv(time.toString().substring(16, 21));
         i++;
       }
     });
+    setTideDates(tideDate);
     setTideChart(tideData);
   };
 
@@ -394,6 +423,10 @@ export default function HomePage() {
               windData={windChart}
               tempData={tempChart}
               tideData={tideChart}
+              waveLabels={waveDates}
+              windLabels={windDates}
+              tempLabels={tempDates}
+              tideLabels={tideDates}
             />
           </div>
         </div>
