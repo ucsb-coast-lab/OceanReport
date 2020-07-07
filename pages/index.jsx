@@ -5,7 +5,6 @@ import Graphs from "../components/graphs.jsx";
 import styles from "../styles/style.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCalendarDay } from "@fortawesome/free-solid-svg-icons";
-import { controllers } from "chart.js";
 
 export default function HomePage() {
   const [date, setDate] = useState("");
@@ -284,23 +283,21 @@ export default function HomePage() {
 
     let t_pred = {};
     let n_pred = 0;
-    let curr_time = current.getHours() * 60 + current.getMinutes();
+    console.log(current.getTime());
     data.predictions.map((prediction) => {
-      let time = new Date(prediction.t + " UTC");
-      let p_time =
-        parseInt(time.toString().substring(16, 18), 10) * 60 +
-        parseInt(time.toString().substring(19, 21));
-
-      if (
-        ((parseInt(time.toString().substring(8, 11)) === day &&
-          p_time > curr_time) ||
-          parseInt(time.toString().substring(8, 11)) === day2) &&
-        n_pred < 2
-      ) {
+      let time = new Date(
+        prediction.t.substring(0, 10) +
+          "T" +
+          prediction.t.substring(11, 16) +
+          ":00Z"
+      );
+      if (time.getTime() > current.getTime() && n_pred < 2) {
+        console.log(prediction);
         t_pred[n_pred] = prediction;
         n_pred++;
       }
     });
+    console.log(t_pred);
 
     let first, second;
     if (t_pred[0].type === "H") {
@@ -312,8 +309,18 @@ export default function HomePage() {
     }
     let height = round(parseFloat(t_pred[0].v), 1);
     let height2 = round(parseFloat(t_pred[1].v), 1);
-    let time1 = new Date(t_pred[0].t + " UTC");
-    let time2 = new Date(t_pred[1].t + " UTC");
+    let time1 = new Date(
+      t_pred[0].t.substring(0, 10) +
+        "T" +
+        t_pred[0].t.substring(11, 16) +
+        ":00Z"
+    );
+    let time2 = new Date(
+      t_pred[1].t.substring(0, 10) +
+        "T" +
+        t_pred[1].t.substring(11, 16) +
+        ":00Z"
+    );
     let t1 = timeConv(time1.toString().substring(16, 21));
     let t2 = timeConv(time2.toString().substring(16, 21));
     first += height + " ft @ " + t1;
