@@ -1,168 +1,193 @@
+@media screen and (min-width: 1150px) {
+  .page {
+    width: 100vw;
+    height: 100vh;
+    margin: 0px;
+    padding: 0px;
+    font-family: "Verdana", sans-serif;
+  }
+
+  .navbar {
+    position: fixed;
+    z-index: 3;
+    display: inline-flex;
+    margin: 0px;
+    padding: 0px;
+    width: 100vw;
+    max-height: 120px;
+    background-color: rgba(0, 0, 0, 0);
+  }
+  .dateTitleBox {
+    width: 450px;
+    height: 120px;
+    margin: 0px;
+    padding: 0px;
+    text-align: center;
+    margin-right: 140px;
+  }
+  .title {
+    width: 450px;
+    font-size: 27px;
+  }
+  .date {
+    display: inline-flex;
+    color: white;
+  }
+  .report {
+    position: relative;
+    float: right;
+    width: 100%;
+    height: 120px;
+    margin: 0px;
+    padding: 0px;
+    display: inline-flex;
+    flex-direction: row;
+  }
+  .row {
+    display: inline-flex;
+  }
+  .iconsBlue {
+    margin: 10px;
+    font-size: 25px;
+    color: dodgerblue;
+  }
+  .iconsWhite {
+    margin: 10px;
+    font-size: 25px;
+    color: white;
+  }
+  .iconsRed {
+    margin: 10px;
+    font-size: 25px;
+    color: red;
+  }
+  .iconsGreen {
+    margin: 10px;
+    font-size: 25px;
+    color: lightseagreen;
+  }
+  .links {
+    max-width: 180px;
+    width: auto;
+    height: auto;
+    margin: 5px;
+    padding: 5px;
+    color: white;
+    text-align: left;
+    text-decoration: none;
+  }
+  .navbarBox {
+    margin: 0px;
+    padding: 0px;
+    width: 100%;
+    height: 120px;
+    background-color: #292c2f;
+    opacity: 1;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    z-index: 2;
+  }
+
+  .content {
+    height: 100vh;
+    width: 100vw;
+    display: inline-flex;
+    flex-direction: row;
+  }
+  .left {
+    height: 100%;
+    width: 50%;
+    background-image: url("UCSB_beach.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-color: #cccccc;
+  }
+  .right {
+    width: 50%;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+    background-color: white;
+    text-align: center;
+    overflow-y: scroll;
+  }
+  .graphs {
+    width: 90%;
+    height: 100%;
+    padding: 0px;
+    padding-top: 110px;
+    margin: 20px;
+  }
+}
+
 .page {
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
   width: 100vw;
   height: 100vh;
   margin: 0px;
   padding: 0px;
-  display: inline-flex;
-  flex-direction: row;
   font-family: "Verdana", sans-serif;
+  text-align: center;
+  overflow-y: scroll;
 }
-
 .navbar {
-  position: fixed;
-  z-index: 3;
-  display: inline-flex;
   margin: 0px;
-  padding: 0px;
+  padding: 5px;
   width: 100vw;
   height: auto;
+  background-color: #292c2f;
 }
-.navbarTitle {
-  width: 300px;
+.title {
   height: auto;
-  margin: 30px;
+  margin: 20px;
   padding: 5px;
   color: white;
-  font-size: 27px;
   text-decoration: none;
 }
-.navbarLinks {
-  margin: 10px;
-  padding: 10px;
-  width: 70%;
-  height: auto;
-  position: absolute;
-  right: 0px;
-  float: right;
-  text-align: right;
-  display: inline-block;
+.date {
+  display: inline-flex;
+  color: white;
 }
-.buttons {
+.report {
+  margin: 20px;
+  padding: 0px;
+  text-align: left;
+}
+.iconsBlue {
+  margin: 10px;
+  font-size: 25px;
+  color: dodgerblue;
+}
+.iconsWhite {
+  margin: 10px;
+  font-size: 25px;
+  color: white;
+}
+.iconsRed {
+  margin: 10px;
+  font-size: 25px;
+  color: red;
+}
+.iconsGreen {
+  margin: 10px;
+  font-size: 25px;
+  color: lightseagreen;
+}
+.links {
+  max-width: 180px;
   width: auto;
   height: auto;
   margin: 5px;
   padding: 5px;
   color: white;
-  font-size: 15px;
-  font-weight: 50;
-  text-decoration: none;
-}
-.navbarBox {
-  margin: 0px;
-  left: 0px;
-  padding: 0px;
-  width: 100%;
-  height: 120px;
-  background-color: #161616;
-  opacity: 0.5;
-  position: fixed;
-  z-index: 2;
-  top: 0px;
-}
-
-.leftbar {
-  position: fixed;
-  left: 0px;
-  height: 100vh;
-  width: 70%;
-  background-image: url("UCSB_beach.jpg");
-  background-repeat: no-repeat;
-  background-size: 100% 100%;
-  background-color: #cccccc;
-}
-.title {
-  width: 40%;
-  height: 8vh;
-  padding-left: 100px;
-  padding-bottom: 75px;
-  position: fixed;
-  bottom: 0px;
-  color: white;
-  font-size: 45px;
-  font-weight: 300;
-  z-index: 2;
-}
-.titleBox {
-  width: 55%;
-  height: 8vh;
-  margin: 0px;
-  padding: 100px;
-  padding-top: 50px;
-  padding-left: 0px;
-  background-color: #161616;
-  opacity: 0.5;
-  position: fixed;
-  bottom: 0px;
-  text-align: center;
-  z-index: 1;
-}
-
-.sidebar {
-  position: fixed;
-  right: 0px;
-  width: 50%;
-  height: 100%;
-  margin: 0px;
-  padding: 0px;
-  background-color: white;
-  text-align: center;
-}
-.sidebarBox {
-  position: fixed;
-  right: 0px;
-  width: 50%;
-  height: 100%;
-  margin: 0px;
-  padding: 0px;
   text-align: left;
-  overflow-y: scroll;
-}
-.column {
-  width: 70%;
-  height: 90%;
-  margin: 0px;
-  padding: 10%;
-  padding-top: 120px;
-  display: inline-flex;
-  flex-direction: column;
-  text-align: left;
-}
-.sidebarBottom {
-  margin: 0px;
-  padding: 0px;
-  width: 100%;
-  height: 400px;
-  background-color: #292c2f;
-}
-.row {
-  display: inline-flex;
-}
-.icons {
-  margin: 15px;
-  font-size: 50px;
-  color: cornflowerblue;
-}
-.links {
-  width: auto;
-  height: auto;
-  margin: 15px;
-  padding: 5px;
-  color: dodgerblue;
-  text-align: right;
   text-decoration: none;
 }
-.rbuttonBox {
-  width: 100%;
-  margin: 0px;
-  padding: 0px;
-  text-align: center;
-}
-.refreshButton {
-  margin: 0px;
-  padding: 5px;
-  background-color: grey;
-  color: black;
-  font-size: 20px;
-  text-align: center;
-  text-decoration: none;
+.graphs {
+  padding-bottom: 200px;
 }
