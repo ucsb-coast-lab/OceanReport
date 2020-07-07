@@ -85,11 +85,11 @@ export default function Graphs(props) {
         }}
       />
       <Line
-        data={wind}
+        data={temp}
         options={{
           title: {
             display: true,
-            text: "2-Day Wind Speed (mph)",
+            text: "2-Day Water Temp (ºF)",
             fontSize: 20,
           },
           legend: {
@@ -99,11 +99,11 @@ export default function Graphs(props) {
         }}
       />
       <Line
-        data={temp}
+        data={wind}
         options={{
           title: {
             display: true,
-            text: "2-Day Water Temp (ºF)",
+            text: "2-Day Wind Speed (mph)",
             fontSize: 20,
           },
           legend: {
