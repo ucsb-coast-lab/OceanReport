@@ -75,12 +75,15 @@ export default function Graphs(props) {
             display: false,
             position: "right",
           },
-          xAxes: {
-            type: "time",
-            ticks: {
-              autoSkip: true,
-              maxTicksLimit: 3,
-            },
+          scales: {
+            yAxes: [
+              {
+                ticks: {
+                  autoSkip: true,
+                  maxTicksLimit: 4,
+                },
+              },
+            ],
           },
         }}
       />
@@ -105,6 +108,14 @@ export default function Graphs(props) {
                 },
               },
             ],
+            yAxes: [
+              {
+                ticks: {
+                  autoSkip: true,
+                  maxTicksLimit: 4,
+                },
+              },
+            ],
           },
         }}
       />
@@ -120,6 +131,16 @@ export default function Graphs(props) {
             display: false,
             position: "right",
           },
+          scales: {
+            yAxes: [
+              {
+                ticks: {
+                  autoSkip: true,
+                  maxTicksLimit: 4,
+                },
+              },
+            ],
+          },
         }}
       />
       <Line
@@ -133,6 +154,16 @@ export default function Graphs(props) {
           legend: {
             display: false,
             position: "right",
+          },
+          scales: {
+            yAxes: [
+              {
+                ticks: {
+                  autoSkip: true,
+                  maxTicksLimit: 6,
+                },
+              },
+            ],
           },
         }}
       />
