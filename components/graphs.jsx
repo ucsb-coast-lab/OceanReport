@@ -96,6 +96,16 @@ export default function Graphs(props) {
             display: false,
             position: "right",
           },
+          scales: {
+            xAxes: [
+              {
+                ticks: {
+                  autoSkip: true,
+                  maxTicksLimit: 8,
+                },
+              },
+            ],
+          },
         }}
       />
       <Line

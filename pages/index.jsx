@@ -44,6 +44,11 @@ export default function HomePage() {
   }
 
   function timeConv(time) {
+    if (parseInt(time.substring(0, 2)) < 12) {
+      time = time + " AM";
+    } else {
+      time = time + " PM";
+    }
     if (time.substring(0, 2) === "00" || time.substring(0, 2) === "12") {
       time = "12" + time.substring(2, 5);
     } else {
@@ -147,10 +152,14 @@ export default function HomePage() {
         x: waveTime.getTime(),
         y: round(wave.significantWaveHeight / 0.3048, 1),
       };
-      dates[i] =
-        waveTime.toString().substring(4, 15) +
-        " " +
-        timeConv(waveTime.toString().substring(16, 21));
+      if (i % 12 === 0) {
+        dates[i] =
+          waveTime.toLocaleString().substring(0, 8) +
+          " " +
+          timeConv(waveTime.toString().substring(16, 21));
+      } else {
+        dates[i] = "";
+      }
       i++;
     });
     setWaveDates(dates);
@@ -161,10 +170,14 @@ export default function HomePage() {
     data2.data.wind.map((wind) => {
       waveTime = new Date(wind.timestamp);
       chartData[i] = { x: waveTime.getTime(), y: round(wind.speed, 1) };
-      dates[i] =
-        waveTime.toString().substring(4, 15) +
-        " " +
-        timeConv(waveTime.toString().substring(16, 21));
+      if (i % 12 === 0) {
+        dates[i] =
+          waveTime.toLocaleString().substring(0, 8) +
+          " " +
+          timeConv(waveTime.toString().substring(16, 21));
+      } else {
+        dates[i] = "";
+      }
       i++;
     });
     setWindDates(dates);
