@@ -50,9 +50,9 @@ export default function HomePage() {
       time = time + " PM";
     }
     if (time.substring(0, 2) === "00" || time.substring(0, 2) === "12") {
-      time = "12" + time.substring(2, 5);
+      time = "12" + time.substring(2, 8);
     } else {
-      time = (parseInt(time.substring(0, 2)) % 12) + time.substring(2, 5);
+      time = (parseInt(time.substring(0, 2)) % 12) + time.substring(2, 8);
     }
     return time;
   }
