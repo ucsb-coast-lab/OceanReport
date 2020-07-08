@@ -154,8 +154,8 @@ export default function HomePage() {
       };
       if (i % 12 === 0) {
         dates[i] =
-          waveTime.toLocaleString().substring(0, 8) +
-          " " +
+          waveTime.toString().substring(4, 10) +
+          ", " +
           timeConv(waveTime.toString().substring(16, 21));
       } else {
         dates[i] = "";
@@ -172,8 +172,8 @@ export default function HomePage() {
       chartData[i] = { x: waveTime.getTime(), y: round(wind.speed, 1) };
       if (i % 12 === 0) {
         dates[i] =
-          waveTime.toLocaleString().substring(0, 8) +
-          " " +
+          waveTime.toString().substring(4, 10) +
+          ", " +
           timeConv(waveTime.toString().substring(16, 21));
       } else {
         dates[i] = "";
@@ -235,8 +235,8 @@ export default function HomePage() {
           y: round(sample[1] * (9.0 / 5.0) + 32, 1),
         };
         tempDate[i] =
-          time.toString().substring(4, 15) +
-          " " +
+          time.toString().substring(4, 10) +
+          ", " +
           timeConv(time.toString().substring(16, 21));
         i++;
       }
@@ -393,8 +393,8 @@ export default function HomePage() {
       ) {
         tideData[i] = { x: time.getTime(), y: prediction.v };
         tideDate[i] =
-          time.toString().substring(4, 15) +
-          " " +
+          time.toString().substring(4, 10) +
+          ", " +
           timeConv(time.toString().substring(16, 21));
         i++;
       }
