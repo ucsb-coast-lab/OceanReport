@@ -152,14 +152,15 @@ export default function HomePage() {
         x: waveTime.getTime(),
         y: round(wave.significantWaveHeight / 0.3048, 1),
       };
-      if (i % 12 === 0) {
-        dates[i] =
-          waveTime.toString().substring(4, 10) +
-          ", " +
-          timeConv(waveTime.toString().substring(16, 21));
-      } else {
-        dates[i] = "";
-      }
+      dates[i] =
+        waveTime.toString().substring(4, 10) +
+        ", " +
+        timeConv(waveTime.toString().substring(16, 21));
+      // if (i % 12 === 0) {
+
+      // } else {
+      //   dates[i] = "";
+      // }
       i++;
     });
     setWaveDates(dates);
@@ -170,14 +171,14 @@ export default function HomePage() {
     data2.data.wind.map((wind) => {
       waveTime = new Date(wind.timestamp);
       chartData[i] = { x: waveTime.getTime(), y: round(wind.speed, 1) };
-      if (i % 12 === 0) {
-        dates[i] =
-          waveTime.toString().substring(4, 10) +
-          ", " +
-          timeConv(waveTime.toString().substring(16, 21));
-      } else {
-        dates[i] = "";
-      }
+      dates[i] =
+        waveTime.toString().substring(4, 10) +
+        ", " +
+        timeConv(waveTime.toString().substring(16, 21));
+      // if (i % 12 === 0) {
+      // } else {
+      //   dates[i] = "";
+      // }
       i++;
     });
     setWindDates(dates);

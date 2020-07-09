@@ -76,6 +76,14 @@ export default function Graphs(props) {
             position: "right",
           },
           scales: {
+            xAxes: [
+              {
+                ticks: {
+                  autoSkip: true,
+                  maxTicksLimit: 8,
+                },
+              },
+            ],
             yAxes: [
               {
                 ticks: {
@@ -132,6 +140,14 @@ export default function Graphs(props) {
             position: "right",
           },
           scales: {
+            xAxes: [
+              {
+                ticks: {
+                  autoSkip: true,
+                  maxTicksLimit: 8,
+                },
+              },
+            ],
             yAxes: [
               {
                 ticks: {
