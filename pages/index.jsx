@@ -25,6 +25,33 @@ export default function HomePage() {
   const [tempDates, setTempDates] = useState([]);
   const [tideDates, setTideDates] = useState([]);
 
+  const current = new Date();
+  let year = current.getFullYear();
+  let month = current.getMonth() + 1;
+  let m = "00" + month;
+  m = m.substr(m.length - 2);
+  let day = current.getDate();
+  let d = "00" + day;
+  d = d.substr(d.length - 2);
+  const next = new Date(current);
+  next.setDate(next.getDate() + 1);
+  let year2 = next.getFullYear();
+  let month2 = next.getMonth() + 1;
+  let m2 = "00" + month2;
+  m2 = m2.substr(m2.length - 2);
+  let day2 = next.getDate();
+  let d2 = "00" + day2;
+  d2 = d2.substr(d2.length - 2);
+  const prev = new Date(current);
+  prev.setDate(prev.getDate() - 2);
+  let year3 = prev.getFullYear();
+  let month3 = prev.getMonth() + 1;
+  let m3 = "00" + month3;
+  m3 = m3.substr(m3.length - 2);
+  let day3 = prev.getDate();
+  let d3 = "00" + day3;
+  d3 = d3.substr(d3.length - 2);
+
   const update = () => {
     setWindWave();
     setTempData();
@@ -59,7 +86,7 @@ export default function HomePage() {
 
   const setWindWave = async () => {
     var url =
-      "https://api.sofarocean.com/api/latest-data?spotterId=SPOT-0186&limit=0&includeWindData=true";
+      "https://api.sofarocean.com/api/wave-data?spotterId=SPOT-0186&limit=96&includeWindData=true";
     const response = await fetch(url, {
       method: "GET",
       headers: { token: process.env.SPOT_TOKEN },
@@ -96,8 +123,12 @@ export default function HomePage() {
           "November",
           "December",
         ][m];
-    const d = new Date(data.data.waves[1].timestamp.substring(0, 10)).getDate();
-    let time12 = new Date(data.data.waves[1].timestamp);
+    const d = new Date(
+      data.data.waves[data.data.waves.length - 1].timestamp.substring(0, 10)
+    ).getDate();
+    let time12 = new Date(
+      data.data.waves[data.data.waves.length - 1].timestamp
+    );
     currDate +=
       weekday +
       ", " +
@@ -109,20 +140,24 @@ export default function HomePage() {
     setDate(currDate);
 
     let wave =
-      round(data.data.waves[1].significantWaveHeight / 0.3048, 1) +
+      round(
+        data.data.waves[data.data.waves.length - 1].significantWaveHeight /
+          0.3048,
+        1
+      ) +
       " ft @ " +
-      parseInt(data.data.waves[1].peakPeriod) +
+      parseInt(data.data.waves[data.data.waves.length - 1].peakPeriod) +
       " secs from " +
-      round(data.data.waves[1].peakDirection, 0) +
+      round(data.data.waves[data.data.waves.length - 1].peakDirection, 0) +
       "º";
     setWave(wave);
 
     let wind;
-    if (data.data.wind[1].speed < 2) {
+    if (data.data.wind[data.data.wind.length - 1].speed < 2) {
       wind = "Calm";
     } else {
       let dir = "north";
-      let theta = data.data.wind[1].direction;
+      let theta = data.data.wind[data.data.wind.length - 1].direction;
       if (theta >= 45 && theta < 135) {
         dir = "east";
       } else if (theta >= 135 && theta < 225) {
@@ -131,22 +166,19 @@ export default function HomePage() {
         dir = "west";
       }
       wind =
-        "From the " + dir + " at " + parseInt(data.data.wind[1].speed) + " kts";
+        "From the " +
+        dir +
+        " at " +
+        parseInt(data.data.wind[data.data.wind.length - 1].speed) +
+        " kts";
     }
     setWind(wind);
 
-    url =
-      "https://api.sofarocean.com/api/wave-data?spotterId=SPOT-0186&limit=96&includeWindData=true";
-    const response2 = await fetch(url, {
-      method: "GET",
-      headers: { token: process.env.SPOT_TOKEN },
-    });
-    const data2 = await response2.json();
     let waveTime;
     let chartData = [];
     let dates = [];
     let i = 0;
-    data2.data.waves.map((wave) => {
+    data.data.waves.map((wave) => {
       waveTime = new Date(wave.timestamp);
       chartData[i] = {
         x: waveTime.getTime(),
@@ -156,11 +188,6 @@ export default function HomePage() {
         waveTime.toString().substring(4, 10) +
         ", " +
         timeConv(waveTime.toString().substring(16, 21));
-      // if (i % 12 === 0) {
-
-      // } else {
-      //   dates[i] = "";
-      // }
       i++;
     });
     setWaveDates(dates);
@@ -168,17 +195,13 @@ export default function HomePage() {
     chartData = [];
     dates = [];
     i = 0;
-    data2.data.wind.map((wind) => {
+    data.data.wind.map((wind) => {
       waveTime = new Date(wind.timestamp);
       chartData[i] = { x: waveTime.getTime(), y: round(wind.speed, 1) };
       dates[i] =
         waveTime.toString().substring(4, 10) +
         ", " +
         timeConv(waveTime.toString().substring(16, 21));
-      // if (i % 12 === 0) {
-      // } else {
-      //   dates[i] = "";
-      // }
       i++;
     });
     setWindDates(dates);
@@ -186,24 +209,6 @@ export default function HomePage() {
   };
 
   const setTempData = async () => {
-    const current = new Date();
-    let year = current.getFullYear();
-    let month = current.getMonth() + 1;
-    let m = "00" + month;
-    m = m.substr(m.length - 2);
-    let day = current.getDate();
-    let d = "00" + day;
-    d = d.substr(d.length - 2);
-    const prev = new Date(current);
-    prev.setDate(prev.getDate() - 2);
-    let year3 = prev.getFullYear();
-    let month3 = prev.getMonth() + 1;
-    let m3 = "00" + month3;
-    m3 = m3.substr(m3.length - 2);
-    let day3 = prev.getDate();
-    let d3 = "00" + day3;
-    d3 = d3.substr(d3.length - 2);
-
     let today = year.toString() + "-" + m + "-" + d;
     let daysAgo = year3.toString() + "-" + m3 + "-" + d3;
 
@@ -247,34 +252,6 @@ export default function HomePage() {
   };
 
   const setTideData = async () => {
-    const current = new Date();
-    let year = current.getFullYear();
-    let month = current.getMonth() + 1;
-    let m = "00" + month;
-    m = m.substr(m.length - 2);
-    let day = current.getDate();
-    let d = "00" + day;
-    d = d.substr(d.length - 2);
-    const next = new Date(current);
-    next.setDate(next.getDate() + 1);
-    let year2 = next.getFullYear();
-    let month2 = next.getMonth() + 1;
-    let m2 = "00" + month2;
-    m2 = m2.substr(m2.length - 2);
-    let day2 = next.getDate();
-    let d2 = "00" + day2;
-    d2 = d2.substr(d2.length - 2);
-    const prev = new Date(current);
-    prev.setDate(prev.getDate() - 2);
-    let year3 = prev.getFullYear();
-    let month3 = prev.getMonth() + 1;
-    let m3 = "00" + month3;
-    m3 = m3.substr(m3.length - 2);
-    let day3 = prev.getDate();
-    let d3 = "00" + day3;
-    d3 = d3.substr(d3.length - 2);
-
-    let today = year.toString() + m + d;
     let tomorrow = year2.toString() + m2 + d2;
     let daysAgo = year3.toString() + m3 + d3;
 
@@ -289,7 +266,7 @@ export default function HomePage() {
       "&format=json" +
       "&interval=hilo" +
       "&begin_date=" +
-      today +
+      daysAgo +
       "&end_date=" +
       tomorrow;
     const response = await fetch(url, { method: "GET" });
@@ -362,26 +339,10 @@ export default function HomePage() {
 
     setTide(currTide);
 
-    url =
-      "https://tidesandcurrents.noaa.gov/api/datagetter?" +
-      "station=9411340" +
-      "&product=predictions" +
-      "&datum=mllw" +
-      "&units=english" +
-      "&time_zone=gmt" +
-      "&application=UCSB" +
-      "&format=json" +
-      "&interval=hilo" +
-      "&begin_date=" +
-      daysAgo +
-      "&end_date=" +
-      tomorrow;
-    const response3 = await fetch(url, { method: "GET" });
-    const data3 = await response3.json();
     let tideData = [];
     let tideDate = [];
     let i = 0;
-    data3.predictions.map((prediction) => {
+    data.predictions.map((prediction) => {
       let time = new Date(
         prediction.t.substring(0, 10) +
           "T" +
