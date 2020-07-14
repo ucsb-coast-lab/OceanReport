@@ -1,126 +1,3 @@
-@media screen and (min-width: 1150px) {
-  .page {
-    width: 100vw;
-    height: 100vh;
-    margin: 0px;
-    padding: 0px;
-    font-family: "Verdana", sans-serif;
-  }
-
-  .navbar {
-    position: fixed;
-    z-index: 3;
-    display: inline-flex;
-    margin: 0px;
-    padding: 0px;
-    width: 100vw;
-    max-height: 120px;
-    background-color: rgba(0, 0, 0, 0);
-  }
-  .dateTitleBox {
-    width: 450px;
-    height: 120px;
-    margin: 0px;
-    padding: 0px;
-    text-align: center;
-    margin-right: 140px;
-  }
-  .title {
-    width: 450px;
-    font-size: 27px;
-  }
-  .date {
-    display: inline-flex;
-    color: white;
-  }
-  .report {
-    position: relative;
-    float: right;
-    width: 100%;
-    height: 120px;
-    margin: 0px;
-    padding: 0px;
-    display: inline-flex;
-    flex-direction: row;
-  }
-  .row {
-    display: inline-flex;
-  }
-  .iconsBlue {
-    margin: 10px;
-    font-size: 25px;
-    color: dodgerblue;
-  }
-  .iconsWhite {
-    margin: 10px;
-    font-size: 25px;
-    color: white;
-  }
-  .iconsRed {
-    margin: 10px;
-    font-size: 25px;
-    color: red;
-  }
-  .iconsGreen {
-    margin: 10px;
-    font-size: 25px;
-    color: lightseagreen;
-  }
-  .links {
-    max-width: 180px;
-    width: auto;
-    height: auto;
-    margin: 5px;
-    padding: 5px;
-    color: white;
-    text-align: left;
-    text-decoration: none;
-  }
-  .navbarBox {
-    margin: 0px;
-    padding: 0px;
-    width: 100%;
-    height: 120px;
-    background-color: #292c2f;
-    opacity: 1;
-    position: fixed;
-    left: 0px;
-    top: 0px;
-    z-index: 2;
-  }
-
-  .content {
-    height: 100vh;
-    width: 100vw;
-    display: inline-flex;
-    flex-direction: row;
-  }
-  .left {
-    height: 100%;
-    width: 50%;
-    background-image: url("UCSB_beach.jpg");
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    background-color: #cccccc;
-  }
-  .right {
-    width: 50%;
-    height: 100%;
-    margin: 0px;
-    padding: 0px;
-    background-color: white;
-    text-align: center;
-    overflow-y: scroll;
-  }
-  .graphs {
-    width: 90%;
-    height: 100%;
-    padding: 0px;
-    padding-top: 110px;
-    margin: 20px;
-  }
-}
-
 .page {
   position: fixed;
   top: 0px;
@@ -132,45 +9,26 @@
   margin: 0px;
   padding: 0px;
   font-family: "Verdana", sans-serif;
-  text-align: center;
   overflow-y: scroll;
-}
-.navbar {
-  margin: 0px;
-  padding: 5px;
-  width: 100vw;
-  height: auto;
-  background-color: #292c2f;
-}
-.title {
-  height: auto;
-  margin: 20px;
-  padding: 5px;
-  color: white;
-  text-decoration: none;
-}
-.date {
-  display: inline-flex;
-  color: white;
-}
-.report {
-  margin: 20px;
-  padding: 0px;
-  text-align: left;
 }
 .iconsBlue {
   margin: 10px;
   font-size: 25px;
   color: dodgerblue;
 }
-.iconsWhite {
+.iconsBlack {
   margin: 10px;
   font-size: 25px;
-  color: white;
+  color: black;
+}
+.iconsGrey {
+  margin: 10px;
+  font-size: 25px;
+  color: lightgrey;
 }
 .iconsRed {
   margin: 10px;
-  font-size: 25px;
+  font-size: 30px;
   color: red;
 }
 .iconsGreen {
@@ -179,15 +37,12 @@
   color: lightseagreen;
 }
 .links {
-  max-width: 180px;
-  width: auto;
-  height: auto;
-  margin: 5px;
-  padding: 5px;
-  color: white;
+  font-size: 22px;
+  color: black;
   text-align: left;
   text-decoration: none;
 }
-.graphs {
-  padding-bottom: 200px;
+.graph {
+  height: 35vh;
+  min-height: 250px;
 }

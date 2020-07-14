@@ -1,5 +1,6 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
+import styles from "../styles/style.module.css";
 
 export default function Graphs(props) {
   const wave = {
@@ -63,126 +64,142 @@ export default function Graphs(props) {
 
   return (
     <div>
-      <Line
-        data={wave}
-        options={{
-          title: {
-            display: true,
-            text: "2-Day Wave Height (ft)",
-            fontSize: 20,
-          },
-          legend: {
-            display: false,
-            position: "right",
-          },
-          scales: {
-            xAxes: [
-              {
-                ticks: {
-                  autoSkip: true,
-                  maxTicksLimit: 8,
+      <div className={styles.graph}>
+        <Line
+          data={wave}
+          options={{
+            responsive: true,
+            maintainAspectRatio: false,
+            title: {
+              display: true,
+              text: "2-Day Wave Height (ft)",
+              fontSize: 20,
+            },
+            legend: {
+              display: false,
+              position: "right",
+            },
+            scales: {
+              xAxes: [
+                {
+                  ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 8,
+                  },
                 },
-              },
-            ],
-            yAxes: [
-              {
-                ticks: {
-                  autoSkip: true,
-                  maxTicksLimit: 4,
+              ],
+              yAxes: [
+                {
+                  ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 4,
+                  },
                 },
-              },
-            ],
-          },
-        }}
-      />
-      <Line
-        data={temp}
-        options={{
-          title: {
-            display: true,
-            text: "2-Day Water Temp (ºF)",
-            fontSize: 20,
-          },
-          legend: {
-            display: false,
-            position: "right",
-          },
-          scales: {
-            xAxes: [
-              {
-                ticks: {
-                  autoSkip: true,
-                  maxTicksLimit: 8,
+              ],
+            },
+          }}
+        />
+      </div>
+      <div className={styles.graph}>
+        <Line
+          data={temp}
+          options={{
+            responsive: true,
+            maintainAspectRatio: false,
+            title: {
+              display: true,
+              text: "2-Day Water Temp (ºF)",
+              fontSize: 20,
+            },
+            legend: {
+              display: false,
+              position: "right",
+            },
+            scales: {
+              xAxes: [
+                {
+                  ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 8,
+                  },
                 },
-              },
-            ],
-            yAxes: [
-              {
-                ticks: {
-                  autoSkip: true,
-                  maxTicksLimit: 4,
+              ],
+              yAxes: [
+                {
+                  ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 4,
+                  },
                 },
-              },
-            ],
-          },
-        }}
-      />
-      <Line
-        data={wind}
-        options={{
-          title: {
-            display: true,
-            text: "2-Day Wind Speed (mph)",
-            fontSize: 20,
-          },
-          legend: {
-            display: false,
-            position: "right",
-          },
-          scales: {
-            xAxes: [
-              {
-                ticks: {
-                  autoSkip: true,
-                  maxTicksLimit: 8,
+              ],
+            },
+          }}
+        />
+      </div>
+      <div className={styles.graph}>
+        <Line
+          data={wind}
+          options={{
+            responsive: true,
+            maintainAspectRatio: false,
+            title: {
+              display: true,
+              text: "2-Day Wind Speed (mph)",
+              fontSize: 20,
+            },
+            legend: {
+              display: false,
+              position: "right",
+            },
+            scales: {
+              xAxes: [
+                {
+                  ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 8,
+                  },
                 },
-              },
-            ],
-            yAxes: [
-              {
-                ticks: {
-                  autoSkip: true,
-                  maxTicksLimit: 4,
+              ],
+              yAxes: [
+                {
+                  ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 4,
+                  },
                 },
-              },
-            ],
-          },
-        }}
-      />
-      <Line
-        data={tide}
-        options={{
-          title: {
-            display: true,
-            text: "2-Day Tide Chart",
-            fontSize: 20,
-          },
-          legend: {
-            display: false,
-            position: "right",
-          },
-          scales: {
-            yAxes: [
-              {
-                ticks: {
-                  autoSkip: true,
-                  maxTicksLimit: 6,
+              ],
+            },
+          }}
+        />
+      </div>
+      <div className={styles.graph}>
+        <Line
+          data={tide}
+          options={{
+            responsive: true,
+            maintainAspectRatio: false,
+            title: {
+              display: true,
+              text: "2-Day Tide Chart",
+              fontSize: 20,
+            },
+            legend: {
+              display: false,
+              position: "right",
+            },
+            scales: {
+              yAxes: [
+                {
+                  ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 6,
+                  },
                 },
-              },
-            ],
-          },
-        }}
-      />
+              ],
+            },
+          }}
+        />
+      </div>
     </div>
   );
 }
