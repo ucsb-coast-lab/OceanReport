@@ -43,6 +43,5 @@
   text-decoration: none;
 }
 .graph {
-  height: 35vh;
-  min-height: 250px;
+  height: 300px;
 }
