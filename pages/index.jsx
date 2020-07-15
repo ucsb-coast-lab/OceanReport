@@ -144,7 +144,7 @@ export default function HomePage() {
         1
       ) +
       " ft @ " +
-      parseInt(data.data.waves[data.data.waves.length - 1].peakPeriod) +
+      round(data.data.waves[data.data.waves.length - 1].peakPeriod, 0) +
       " secs from " +
       round(data.data.waves[data.data.waves.length - 1].peakDirection, 0) +
       "º";
@@ -167,7 +167,7 @@ export default function HomePage() {
         "From the " +
         dir +
         " at " +
-        parseInt(data.data.wind[data.data.wind.length - 1].speed) +
+        round(data.data.wind[data.data.wind.length - 1].speed, 0) +
         " kts";
     }
     setWind(wind);
