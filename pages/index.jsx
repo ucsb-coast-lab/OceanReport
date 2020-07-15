@@ -3,8 +3,6 @@ import fetch from "isomorphic-unfetch";
 import Report from "../components/report.jsx";
 import Graphs from "../components/graphs.jsx";
 import styles from "../styles/style.module.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCalendarDay } from "@fortawesome/free-solid-svg-icons";
 
 export default function HomePage() {
   const [date, setDate] = useState("");
@@ -146,7 +144,7 @@ export default function HomePage() {
         1
       ) +
       " ft @ " +
-      parseInt(data.data.waves[data.data.waves.length - 1].peakPeriod) +
+      round(data.data.waves[data.data.waves.length - 1].peakPeriod, 0) +
       " secs from " +
       round(data.data.waves[data.data.waves.length - 1].peakDirection, 0) +
       "º";
@@ -169,7 +167,7 @@ export default function HomePage() {
         "From the " +
         dir +
         " at " +
-        parseInt(data.data.wind[data.data.wind.length - 1].speed) +
+        round(data.data.wind[data.data.wind.length - 1].speed, 0) +
         " kts";
     }
     setWind(wind);
@@ -372,49 +370,25 @@ export default function HomePage() {
 
   return (
     <div className={styles.page}>
-      <div className={styles.navbar}>
-        <div className={styles.dateTitleBox}>
-          <a className={styles.title} href="https://coastlab.eri.ucsb.edu/">
-            UCSB COAST Lab Ocean Report
-          </a>
-          <div className={styles.date}>
-            <FontAwesomeIcon
-              className={styles.iconsWhite}
-              icon={faCalendarDay}
-            />
-            <p>{date}</p>
-          </div>
-        </div>
-        <div className={styles.report}>
-          <Report
-            wave={wave}
-            wind={wind}
-            temp={temp}
-            tide={tide}
-            hi={hi}
-            lo={lo}
-          />
-        </div>
-      </div>
-      <div className={styles.navbarBox}></div>
-
-      <div className={styles.content}>
-        <div className={styles.left}></div>
-        <div className={styles.right}>
-          <div className={styles.graphs}>
-            <Graphs
-              waveData={waveChart}
-              windData={windChart}
-              tempData={tempChart}
-              tideData={tideChart}
-              waveLabels={waveDates}
-              windLabels={windDates}
-              tempLabels={tempDates}
-              tideLabels={tideDates}
-            />
-          </div>
-        </div>
-      </div>
+      <Report
+        date={date}
+        wave={wave}
+        wind={wind}
+        temp={temp}
+        tide={tide}
+        hi={hi}
+        lo={lo}
+      />
+      <Graphs
+        waveData={waveChart}
+        windData={windChart}
+        tempData={tempChart}
+        tideData={tideChart}
+        waveLabels={waveDates}
+        windLabels={windDates}
+        tempLabels={tempDates}
+        tideLabels={tideDates}
+      />
     </div>
   );
 }
