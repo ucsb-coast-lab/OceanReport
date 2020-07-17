@@ -121,9 +121,10 @@ export default function HomePage() {
           "November",
           "December",
         ][m];
-    const d = new Date(
-      data.data.waves[data.data.waves.length - 1].timestamp.substring(0, 10)
-    ).getDate();
+    // const d = new Date(
+    //   data.data.waves[data.data.waves.length - 1].timestamp.substring(0, 10)
+    // ).getDate();
+    // console.log(day);
     let time12 = new Date(
       data.data.waves[data.data.waves.length - 1].timestamp
     );
@@ -132,7 +133,7 @@ export default function HomePage() {
       ", " +
       month +
       " " +
-      (d + 1) +
+      day +
       " at " +
       timeConv(time12.toString().substring(16, 21));
     setDate(currDate);
