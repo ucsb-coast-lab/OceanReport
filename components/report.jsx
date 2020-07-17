@@ -28,6 +28,7 @@ export default function Report(props) {
         <td>
           <a
             className={styles.links}
+            target="_blank"
             href="https://coastlab.sofarocean.com/historical/SPOT-0186"
           >
             {props.wave}
@@ -44,6 +45,7 @@ export default function Report(props) {
         <td>
           <a
             className={styles.links}
+            target="_blank"
             href="https://www.sccoos.org/data/autoss/"
           >
             {props.temp}
@@ -57,6 +59,7 @@ export default function Report(props) {
         <td>
           <a
             className={styles.links}
+            target="_blank"
             href="https://coastlab.sofarocean.com/historical/SPOT-0186"
           >
             {props.wind}
@@ -81,6 +84,7 @@ export default function Report(props) {
         <td>
           <a
             className={styles.links}
+            target="_blank"
             href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9411340"
           >
             {props.tide}
@@ -98,6 +102,7 @@ export default function Report(props) {
         <td>
           <a
             className={styles.links}
+            target="_blank"
             href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9411340"
           >
             {props.hi}
@@ -115,6 +120,7 @@ export default function Report(props) {
         <td>
           <a
             className={styles.links}
+            target="_blank"
             href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9411340"
           >
             {props.lo}

@@ -121,10 +121,6 @@ export default function HomePage() {
           "November",
           "December",
         ][m];
-    // const d = new Date(
-    //   data.data.waves[data.data.waves.length - 1].timestamp.substring(0, 10)
-    // ).getDate();
-    // console.log(day);
     let time12 = new Date(
       data.data.waves[data.data.waves.length - 1].timestamp
     );
