@@ -3,6 +3,8 @@ import fetch from "isomorphic-unfetch";
 import Report from "../components/report.jsx";
 import Graphs from "../components/graphs.jsx";
 import styles from "../styles/style.module.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSync } from "@fortawesome/free-solid-svg-icons";
 
 export default function HomePage() {
   const [date, setDate] = useState("");
@@ -367,25 +369,40 @@ export default function HomePage() {
 
   return (
     <div className={styles.page}>
-      <Report
-        date={date}
-        wave={wave}
-        wind={wind}
-        temp={temp}
-        tide={tide}
-        hi={hi}
-        lo={lo}
-      />
-      <Graphs
-        waveData={waveChart}
-        windData={windChart}
-        tempData={tempChart}
-        tideData={tideChart}
-        waveLabels={waveDates}
-        windLabels={windDates}
-        tempLabels={tempDates}
-        tideLabels={tideDates}
-      />
+      {date === "" ||
+      wave === "" ||
+      wind === "" ||
+      temp === "" ||
+      tide === "" ||
+      hi === "" ||
+      lo === "" ? (
+        <div>
+          <FontAwesomeIcon className={styles.iconsLoading} icon={faSync} />
+          <p>Loading Ocean Report</p>
+        </div>
+      ) : (
+        <div>
+          <Report
+            date={date}
+            wave={wave}
+            wind={wind}
+            temp={temp}
+            tide={tide}
+            hi={hi}
+            lo={lo}
+          />
+          <Graphs
+            waveData={waveChart}
+            windData={windChart}
+            tempData={tempChart}
+            tideData={tideChart}
+            waveLabels={waveDates}
+            windLabels={windDates}
+            tempLabels={tempDates}
+            tideLabels={tideDates}
+          />
+        </div>
+      )}
     </div>
   );
 }

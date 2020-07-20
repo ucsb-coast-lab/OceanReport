@@ -10,6 +10,12 @@
   padding: 0px;
   font-family: "Verdana", sans-serif;
   overflow-y: scroll;
+  text-align: center;
+}
+.iconsLoading {
+  font-size: 100px;
+  color: grey;
+  margin: 50px;
 }
 .iconsBlue {
   margin: 10px;
