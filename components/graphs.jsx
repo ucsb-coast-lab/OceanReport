@@ -72,7 +72,7 @@ export default function Graphs(props) {
             maintainAspectRatio: false,
             title: {
               display: true,
-              text: "2-Day Wave Height (ft)",
+              text: "3-Day Wave Height (ft)",
               fontSize: 20,
             },
             legend: {
@@ -108,7 +108,7 @@ export default function Graphs(props) {
             maintainAspectRatio: false,
             title: {
               display: true,
-              text: "2-Day Water Temp (ºF)",
+              text: "3-Day Water Temp (ºF)",
               fontSize: 20,
             },
             legend: {
@@ -144,7 +144,7 @@ export default function Graphs(props) {
             maintainAspectRatio: false,
             title: {
               display: true,
-              text: "2-Day Wind Speed (mph)",
+              text: "3-Day Wind Speed (mph)",
               fontSize: 20,
             },
             legend: {
@@ -180,7 +180,7 @@ export default function Graphs(props) {
             maintainAspectRatio: false,
             title: {
               display: true,
-              text: "2-Day Tide Chart",
+              text: "3-Day Tide Chart",
               fontSize: 20,
             },
             legend: {

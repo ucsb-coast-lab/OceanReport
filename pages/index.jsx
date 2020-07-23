@@ -187,8 +187,12 @@ export default function HomePage() {
         timeConv(waveTime.toString().substring(16, 21));
       i++;
     });
+    let extraDates = new Array(50);
+    extraDates.fill("");
+    dates = dates.concat(extraDates);
     setWaveDates(dates);
     setWaveChart(chartData);
+
     chartData = [];
     dates = [];
     i = 0;
@@ -201,6 +205,7 @@ export default function HomePage() {
         timeConv(waveTime.toString().substring(16, 21));
       i++;
     });
+    dates = dates.concat(extraDates);
     setWindDates(dates);
     setWindChart(chartData);
   };
@@ -244,6 +249,10 @@ export default function HomePage() {
         i++;
       }
     });
+    let extraDates = new Array(360);
+    extraDates.fill("");
+    tempDate = tempDate.concat(extraDates);
+    console.log(tempDate);
     setTempDates(tempDate);
     setTempChart(tempData);
   };
@@ -347,7 +356,7 @@ export default function HomePage() {
           ":00Z"
       );
       if (
-        time.getTime() < current.getTime() &&
+        time.getTime() < current.getTime() + 86400000 &&
         time.getTime() > current.getTime() - 172800000
       ) {
         tideData[i] = { x: time.getTime(), y: prediction.v };
