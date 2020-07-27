@@ -18,6 +18,21 @@ export default function Graphs(props) {
       },
     ],
   };
+  const period = {
+    labels: props.waveLabels,
+    datasets: [
+      {
+        label: "(s)",
+        fill: false,
+        lineTension: 0.5,
+        backgroundColor: "rgba(255,255,255,1)",
+        borderColor: "rgba(0,75,150,1)",
+        borderWidth: 1,
+        pointRadius: 3,
+        data: props.periodData,
+      },
+    ],
+  };
   const wind = {
     labels: props.windLabels,
     datasets: [
@@ -53,11 +68,21 @@ export default function Graphs(props) {
       {
         label: "Height",
         fill: false,
-        lineTension: 0.5,
+        lineTension: 0.4,
         backgroundColor: "rgba(255,255,255,1)",
         borderColor: "rgba(32,178,170,1)",
         borderWidth: 3,
         data: props.tideData,
+      },
+      {
+        label: "Height",
+        fill: false,
+        lineTension: 0.4,
+        backgroundColor: "rgba(255,255,255,1)",
+        borderColor: "rgba(32,178,170, .7)",
+        borderWidth: 3,
+        borderDash: [10, 5],
+        data: props.tideData2,
       },
     ],
   };
@@ -86,6 +111,10 @@ export default function Graphs(props) {
                     autoSkip: true,
                     maxTicksLimit: 8,
                   },
+                  scaleLabel: {
+                    display: true,
+                    labelString: "*Graph Data gathered from UCSB Wave Buoy",
+                  },
                 },
               ],
               yAxes: [
@@ -102,13 +131,13 @@ export default function Graphs(props) {
       </div>
       <div className={styles.graph}>
         <Line
-          data={temp}
+          data={period}
           options={{
             responsive: true,
             maintainAspectRatio: false,
             title: {
               display: true,
-              text: "3-Day Water Temp (ºF)",
+              text: "3-Day Wave Period (s)",
               fontSize: 20,
             },
             legend: {
@@ -121,6 +150,10 @@ export default function Graphs(props) {
                   ticks: {
                     autoSkip: true,
                     maxTicksLimit: 8,
+                  },
+                  scaleLabel: {
+                    display: true,
+                    labelString: "*Graph Data gathered from UCSB Wave Buoy",
                   },
                 },
               ],
@@ -158,6 +191,51 @@ export default function Graphs(props) {
                     autoSkip: true,
                     maxTicksLimit: 8,
                   },
+                  scaleLabel: {
+                    display: true,
+                    labelString: "*Graph Data gathered from UCSB Wave Buoy",
+                  },
+                },
+              ],
+              yAxes: [
+                {
+                  ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 4,
+                  },
+                },
+              ],
+            },
+          }}
+        />
+      </div>
+      <div className={styles.graph}>
+        <Line
+          data={temp}
+          options={{
+            responsive: true,
+            maintainAspectRatio: false,
+            title: {
+              display: true,
+              text: "3-Day Water Temp (ºF)",
+              fontSize: 20,
+            },
+            legend: {
+              display: false,
+              position: "right",
+            },
+            scales: {
+              xAxes: [
+                {
+                  ticks: {
+                    autoSkip: true,
+                    maxTicksLimit: 8,
+                  },
+                  scaleLabel: {
+                    display: true,
+                    labelString:
+                      "**Graph Data gathered from the SCCOOS, Stern Wharf Automated Shore Station",
+                  },
                 },
               ],
               yAxes: [
@@ -188,6 +266,15 @@ export default function Graphs(props) {
               position: "right",
             },
             scales: {
+              xAxes: [
+                {
+                  scaleLabel: {
+                    display: true,
+                    labelString:
+                      "***Graph Data gathered from NOAA Santa Barbara Station, 9411340",
+                  },
+                },
+              ],
               yAxes: [
                 {
                   ticks: {

@@ -17,8 +17,10 @@ export default function HomePage() {
 
   const [waveChart, setWaveChart] = useState([]);
   const [windChart, setWindChart] = useState([]);
+  const [periodChart, setPeriodChart] = useState([]);
   const [tempChart, setTempChart] = useState([]);
   const [tideChart, setTideChart] = useState([]);
+  const [tideChart2, setTideChart2] = useState([]);
 
   const [waveDates, setWaveDates] = useState([]);
   const [windDates, setWindDates] = useState([]);
@@ -173,6 +175,7 @@ export default function HomePage() {
 
     let waveTime;
     let chartData = [];
+    let periodData = [];
     let dates = [];
     let i = 0;
     data.data.waves.map((wave) => {
@@ -180,6 +183,10 @@ export default function HomePage() {
       chartData[i] = {
         x: waveTime.getTime(),
         y: round(wave.significantWaveHeight / 0.3048, 1),
+      };
+      periodData[i] = {
+        x: waveTime.getTime(),
+        y: wave.peakPeriod,
       };
       dates[i] =
         waveTime.toString().substring(4, 10) +
@@ -192,6 +199,7 @@ export default function HomePage() {
     dates = dates.concat(extraDates);
     setWaveDates(dates);
     setWaveChart(chartData);
+    setPeriodChart(periodData);
 
     chartData = [];
     dates = [];
@@ -252,7 +260,6 @@ export default function HomePage() {
     let extraDates = new Array(360);
     extraDates.fill("");
     tempDate = tempDate.concat(extraDates);
-    console.log(tempDate);
     setTempDates(tempDate);
     setTempChart(tempData);
   };
@@ -347,7 +354,11 @@ export default function HomePage() {
 
     let tideData = [];
     let tideDate = [];
+    // tideDate[0]="";
     let i = 0;
+
+    let tideData2 = [];
+    let j = 0;
     data.predictions.map((prediction) => {
       let time = new Date(
         prediction.t.substring(0, 10) +
@@ -356,10 +367,24 @@ export default function HomePage() {
           ":00Z"
       );
       if (
-        time.getTime() < current.getTime() + 86400000 &&
+        time.getTime() < current.getTime() &&
         time.getTime() > current.getTime() - 172800000
       ) {
         tideData[i] = { x: time.getTime(), y: prediction.v };
+        tideDate[i] =
+          time.toString().substring(4, 10) +
+          ", " +
+          timeConv(time.toString().substring(16, 21));
+        i++;
+      } else if (
+        time.getTime() < current.getTime() + 86400000 &&
+        time.getTime() > current.getTime()
+      ) {
+        if (j === 0) {
+          tideData2[i - 1] = tideData[tideData.length - 1];
+          j++;
+        }
+        tideData2[i] = { x: time.getTime(), y: prediction.v };
         tideDate[i] =
           time.toString().substring(4, 10) +
           ", " +
@@ -369,6 +394,7 @@ export default function HomePage() {
     });
     setTideDates(tideDate);
     setTideChart(tideData);
+    setTideChart2(tideData2);
   };
 
   if (date === "") {
@@ -400,16 +426,46 @@ export default function HomePage() {
             hi={hi}
             lo={lo}
           />
+          <p className={styles.disclaimer}>
+            Click on any section of the report to see where that data was
+            gathered from.
+          </p>
           <Graphs
             waveData={waveChart}
             windData={windChart}
+            periodData={periodChart}
             tempData={tempChart}
             tideData={tideChart}
+            tideData2={tideChart2}
             waveLabels={waveDates}
             windLabels={windDates}
             tempLabels={tempDates}
             tideLabels={tideDates}
           />
+          <p className={styles.disclaimer}>
+            *The UCSB SPOT Wave Buoy is located off 3/4 of a mile off of Campus
+            Point and records real time wave and wind data. To see more of its
+            records click{" "}
+            <a href="https://coastlab.sofarocean.com/historical/SPOT-0186">
+              here
+            </a>
+          </p>
+          <p className={styles.disclaimer}>
+            **The Sterns Wharf Automated Shore Station is run by SCCOOS and is
+            located about 10 miles East of UCSB Campus Point. To see more data
+            collected by the Stersn Wharf Automated Shore Station click{" "}
+            <a href="https://www.sccoos.org/data/autoss/timeline/?main=single&station=stearns_wharf">
+              here
+            </a>
+          </p>
+          <p className={styles.disclaimer}>
+            ***The NOAA Santa Barbara Station, 9411340, is located at Point
+            Castillo, about 10 miles East of UCSB Campus Point. To see more data
+            collected by the NOAA Santa Barbara Station click{" "}
+            <a href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9411340">
+              here
+            </a>
+          </p>
         </div>
       )}
     </div>
