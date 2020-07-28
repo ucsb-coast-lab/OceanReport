@@ -54,9 +54,11 @@
 .tide {
   height: 300px;
   margin-left: 50px;
+  margin-bottom: 40px;
 }
 .disclaimer {
   color: rgb(153, 157, 161);
   margin: 20px;
+  margin-top: 0px;
   font-size: 14px;
 }

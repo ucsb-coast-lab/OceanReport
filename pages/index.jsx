@@ -461,7 +461,7 @@ export default function HomePage() {
           />
           <p className={styles.disclaimer}>
             Each graph shows a 2-Day history of the data and the Tide graph also
-            shows the next 24 hours of predictions with a dashed line.
+            shows the next 24 hours of predictions.
           </p>
           <Graphs
             waveData={waveChart}
