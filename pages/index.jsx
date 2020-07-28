@@ -12,6 +12,7 @@ export default function HomePage() {
   const [wind, setWind] = useState("");
   const [temp, setTemp] = useState("");
   const [tide, setTide] = useState("");
+  const [rising, setRising] = useState(true);
   const [hi, setHi] = useState("");
   const [lo, setLo] = useState("");
 
@@ -356,8 +357,10 @@ export default function HomePage() {
       "Tide: " + round(parseFloat(data2.data[0].v), 1) + " ft and ";
     if (data2.data[0].v < t_pred[0].v) {
       currTide += "rising";
+      setRising(true);
     } else {
       currTide += "falling";
+      setRising(false);
     }
 
     setTide(currTide);
@@ -456,6 +459,7 @@ export default function HomePage() {
             wind={wind}
             temp={temp}
             tide={tide}
+            rising={rising}
             hi={hi}
             lo={lo}
           />

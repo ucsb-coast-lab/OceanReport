@@ -111,6 +111,9 @@ export default function Graphs(props) {
                   ticks: {
                     autoSkip: true,
                     maxTicksLimit: 8,
+                    maxRotation: 90,
+                    minRotation: 90,
+                    fontSize: 10,
                   },
                   scaleLabel: {
                     display: true,
@@ -151,6 +154,9 @@ export default function Graphs(props) {
                   ticks: {
                     autoSkip: true,
                     maxTicksLimit: 8,
+                    maxRotation: 90,
+                    minRotation: 90,
+                    fontSize: 10,
                   },
                   scaleLabel: {
                     display: true,
@@ -191,6 +197,9 @@ export default function Graphs(props) {
                   ticks: {
                     autoSkip: true,
                     maxTicksLimit: 8,
+                    maxRotation: 90,
+                    minRotation: 90,
+                    fontSize: 10,
                   },
                   scaleLabel: {
                     display: true,
@@ -231,6 +240,9 @@ export default function Graphs(props) {
                   ticks: {
                     autoSkip: true,
                     maxTicksLimit: 8,
+                    maxRotation: 90,
+                    minRotation: 90,
+                    fontSize: 10,
                   },
                   scaleLabel: {
                     display: true,
@@ -276,6 +288,9 @@ export default function Graphs(props) {
                         return value;
                       }
                     },
+                    maxRotation: 90,
+                    minRotation: 90,
+                    fontSize: 10,
                   },
                   gridLines: {
                     display: true,

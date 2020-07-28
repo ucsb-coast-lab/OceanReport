@@ -72,8 +72,7 @@ export default function Report(props) {
         </tr>
         <tr>
           <td>
-            {props.tide.substring(17, 18) === "r" ||
-            props.tide.substring(18, 19) === "r" ? (
+            {props.rising ? (
               <FontAwesomeIcon
                 className={styles.iconsGreen}
                 icon={faAngleDoubleUp}
