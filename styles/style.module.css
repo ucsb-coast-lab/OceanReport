@@ -51,6 +51,10 @@
 .graph {
   height: 300px;
 }
+.tide {
+  height: 300px;
+  margin-left: 50px;
+}
 .disclaimer {
   color: rgb(153, 157, 161);
   margin: 20px;

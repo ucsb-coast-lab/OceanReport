@@ -54,7 +54,7 @@ export default function Graphs(props) {
         label: "Temp (ºF)",
         fill: false,
         lineTension: 0.8,
-        backgroundColor: "rgba(255,255,255,1)",
+        backgroundColor: "rgba(255,0,0,1)",
         borderColor: "rgba(255,0,0,1)",
         borderWidth: 1,
         pointRadius: 0.2,
@@ -69,19 +69,20 @@ export default function Graphs(props) {
         label: "Height",
         fill: false,
         lineTension: 0.4,
-        backgroundColor: "rgba(255,255,255,1)",
+        backgroundColor: "rgba(32,178,170,1)",
         borderColor: "rgba(32,178,170,1)",
-        borderWidth: 3,
+        borderWidth: 2,
+        pointRadius: 1,
         data: props.tideData,
       },
       {
-        label: "Height",
+        label: "Height ",
         fill: false,
         lineTension: 0.4,
-        backgroundColor: "rgba(255,255,255,1)",
-        borderColor: "rgba(32,178,170, .7)",
-        borderWidth: 3,
-        borderDash: [10, 5],
+        backgroundColor: "rgba(32,178,170, .2)",
+        borderColor: "rgba(32,178,170, .2)",
+        borderWidth: 2,
+        pointRadius: 1,
         data: props.tideData2,
       },
     ],
@@ -113,7 +114,7 @@ export default function Graphs(props) {
                   },
                   scaleLabel: {
                     display: true,
-                    labelString: "*Graph Data gathered from UCSB Wave Buoy",
+                    labelString: "*Data from UCSB Wave Buoy",
                   },
                 },
               ],
@@ -153,7 +154,7 @@ export default function Graphs(props) {
                   },
                   scaleLabel: {
                     display: true,
-                    labelString: "*Graph Data gathered from UCSB Wave Buoy",
+                    labelString: "*Data from UCSB Wave Buoy",
                   },
                 },
               ],
@@ -193,7 +194,7 @@ export default function Graphs(props) {
                   },
                   scaleLabel: {
                     display: true,
-                    labelString: "*Graph Data gathered from UCSB Wave Buoy",
+                    labelString: "*Data from UCSB Wave Buoy",
                   },
                 },
               ],
@@ -234,7 +235,7 @@ export default function Graphs(props) {
                   scaleLabel: {
                     display: true,
                     labelString:
-                      "**Graph Data gathered from the SCCOOS, Stern Wharf Automated Shore Station",
+                      "**Data from the SCCOOS, Stern Wharf Automated Shore Station",
                   },
                 },
               ],
@@ -250,7 +251,7 @@ export default function Graphs(props) {
           }}
         />
       </div>
-      <div className={styles.graph}>
+      <div className={styles.tide}>
         <Line
           data={tide}
           options={{
@@ -268,10 +269,21 @@ export default function Graphs(props) {
             scales: {
               xAxes: [
                 {
+                  ticks: {
+                    autoSkip: false,
+                    callback: function (value, index, values) {
+                      if (value !== "") {
+                        return value;
+                      }
+                    },
+                  },
+                  gridLines: {
+                    display: true,
+                  },
                   scaleLabel: {
                     display: true,
                     labelString:
-                      "***Graph Data gathered from NOAA Santa Barbara Station, 9411340",
+                      "***Data from NOAA Santa Barbara Station, 9411340",
                   },
                 },
               ],
@@ -280,6 +292,9 @@ export default function Graphs(props) {
                   ticks: {
                     autoSkip: true,
                     maxTicksLimit: 6,
+                  },
+                  gridLines: {
+                    zeroLineWidth: 2,
                   },
                 },
               ],

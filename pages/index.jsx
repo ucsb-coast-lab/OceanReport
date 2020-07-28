@@ -287,6 +287,9 @@ export default function HomePage() {
 
     let t_pred = {};
     let n_pred = 0;
+    let hiloTimes = [];
+    let k = 0;
+
     data.predictions.map((prediction) => {
       let time = new Date(
         prediction.t.substring(0, 10) +
@@ -294,6 +297,13 @@ export default function HomePage() {
           prediction.t.substring(11, 16) +
           ":00Z"
       );
+      if (
+        time.getTime() < current.getTime() + 86400000 &&
+        time.getTime() > current.getTime() - 172800000
+      ) {
+        hiloTimes[k] = time;
+        k++;
+      }
       if (time.getTime() > current.getTime() && n_pred < 2) {
         t_pred[n_pred] = prediction;
         n_pred++;
@@ -302,8 +312,8 @@ export default function HomePage() {
 
     let first, second;
     if (t_pred[0].type === "H") {
-      first = "HI ";
-      second = "LO ";
+      first = "HI: ";
+      second = "LO: ";
     } else {
       first = "LO: ";
       second = "HI: ";
@@ -352,14 +362,29 @@ export default function HomePage() {
 
     setTide(currTide);
 
+    url =
+      "https://tidesandcurrents.noaa.gov/api/datagetter?" +
+      "station=9411340" +
+      "&product=predictions" +
+      "&datum=mllw" +
+      "&units=english" +
+      "&time_zone=gmt" +
+      "&application=UCSB" +
+      "&format=json" +
+      "&begin_date=" +
+      daysAgo +
+      "&end_date=" +
+      tomorrow;
+    const res = await fetch(url, { method: "GET" });
+    const data3 = await res.json();
+
     let tideData = [];
     let tideDate = [];
-    // tideDate[0]="";
     let i = 0;
-
     let tideData2 = [];
     let j = 0;
-    data.predictions.map((prediction) => {
+
+    data3.predictions.map((prediction) => {
       let time = new Date(
         prediction.t.substring(0, 10) +
           "T" +
@@ -367,28 +392,32 @@ export default function HomePage() {
           ":00Z"
       );
       if (
-        time.getTime() < current.getTime() &&
+        time.getTime() <= current.getTime() &&
         time.getTime() > current.getTime() - 172800000
       ) {
         tideData[i] = { x: time.getTime(), y: prediction.v };
-        tideDate[i] =
-          time.toString().substring(4, 10) +
-          ", " +
-          timeConv(time.toString().substring(16, 21));
+        tideDate[i] = "";
+        if (time.getTime() >= hiloTimes[j]) {
+          tideDate[i] =
+            hiloTimes[j].toString().substring(4, 10) +
+            ", " +
+            timeConv(hiloTimes[j].toString().substring(16, 21));
+          j++;
+        }
         i++;
       } else if (
         time.getTime() < current.getTime() + 86400000 &&
         time.getTime() > current.getTime()
       ) {
-        if (j === 0) {
-          tideData2[i - 1] = tideData[tideData.length - 1];
+        tideData2[i] = { x: time.getTime(), y: prediction.v };
+        tideDate[i] = "";
+        if (time.getTime() >= hiloTimes[j]) {
+          tideDate[i] =
+            hiloTimes[j].toString().substring(4, 10) +
+            ", " +
+            timeConv(hiloTimes[j].toString().substring(16, 21));
           j++;
         }
-        tideData2[i] = { x: time.getTime(), y: prediction.v };
-        tideDate[i] =
-          time.toString().substring(4, 10) +
-          ", " +
-          timeConv(time.toString().substring(16, 21));
         i++;
       }
     });
@@ -417,6 +446,10 @@ export default function HomePage() {
         </div>
       ) : (
         <div>
+          <p className={styles.disclaimer}>
+            Click on any section of the report to see where that data was
+            gathered from.
+          </p>
           <Report
             date={date}
             wave={wave}
@@ -427,8 +460,8 @@ export default function HomePage() {
             lo={lo}
           />
           <p className={styles.disclaimer}>
-            Click on any section of the report to see where that data was
-            gathered from.
+            Each graph shows a 2-Day history of the data and the Tide graph also
+            shows the next 24 hours of predictions with a dashed line.
           </p>
           <Graphs
             waveData={waveChart}
@@ -446,7 +479,10 @@ export default function HomePage() {
             *The UCSB SPOT Wave Buoy is located off 3/4 of a mile off of Campus
             Point and records real time wave and wind data. To see more of its
             records click{" "}
-            <a href="https://coastlab.sofarocean.com/historical/SPOT-0186">
+            <a
+              target="_blank"
+              href="https://coastlab.sofarocean.com/historical/SPOT-0186"
+            >
               here
             </a>
           </p>
@@ -454,7 +490,10 @@ export default function HomePage() {
             **The Sterns Wharf Automated Shore Station is run by SCCOOS and is
             located about 10 miles East of UCSB Campus Point. To see more data
             collected by the Stersn Wharf Automated Shore Station click{" "}
-            <a href="https://www.sccoos.org/data/autoss/timeline/?main=single&station=stearns_wharf">
+            <a
+              target="_blank"
+              href="https://www.sccoos.org/data/autoss/timeline/?main=single&station=stearns_wharf"
+            >
               here
             </a>
           </p>
@@ -462,7 +501,10 @@ export default function HomePage() {
             ***The NOAA Santa Barbara Station, 9411340, is located at Point
             Castillo, about 10 miles East of UCSB Campus Point. To see more data
             collected by the NOAA Santa Barbara Station click{" "}
-            <a href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9411340">
+            <a
+              target="_blank"
+              href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9411340"
+            >
               here
             </a>
           </p>
