@@ -17,6 +17,7 @@ export default function HomePage() {
   const [lo, setLo] = useState("");
 
   const [waveChart, setWaveChart] = useState([]);
+  const [waveChart2, setWaveChart2] = useState([]);
   const [windChart, setWindChart] = useState([]);
   const [periodChart, setPeriodChart] = useState([]);
   const [tempChart, setTempChart] = useState([]);
@@ -183,7 +184,7 @@ export default function HomePage() {
       waveTime = new Date(wave.timestamp);
       chartData[i] = {
         x: waveTime.getTime(),
-        y: round(wave.significantWaveHeight / 0.3048, 1),
+        y: round(wave.significantWaveHeight / 0.3048, 2),
       };
       periodData[i] = {
         x: waveTime.getTime(),
@@ -195,27 +196,79 @@ export default function HomePage() {
         timeConv(waveTime.toString().substring(16, 21));
       i++;
     });
-    let extraDates = new Array(50);
-    extraDates.fill("");
-    dates = dates.concat(extraDates);
-    setWaveDates(dates);
     setWaveChart(chartData);
     setPeriodChart(periodData);
+
+    // url = "https://thredds.cdip.ucsd.edu/thredds/dodsC/cdip/model/MOP_alongshore/B0391_forecast.nc.ascii?waveTime[0:1:79],waveHs[0:1:79]";
+    // const response2 = await fetch(url, {method: "GET"});
+    // const data2 = await response2.text();
+
+    // chartData = [];
+    // let predTimes = data2.substr(data2.indexOf("waveTime[80]")+ 13, 958);
+    // //console.log(predTimes);
+    // let predHeights = data2.substring(data2.indexOf("waveHs[80]")+ 11, data2.length -2);
+    // //console.log(predHeights);
+    // let currHeight;
+    // let s=0;
+    // while(predTimes.length){
+    //   if(predHeights.indexOf(",") !== -1){
+    //     currHeight = predHeights.substr(0, predHeights.indexOf(","));
+    //     predHeights = predHeights.substr(predHeights.indexOf(",")+2);
+    //   }else{
+    //     currHeight = predHeights.substr(0)
+    //     predHeights = "";
+    //   }
+    //   let currTime = predTimes.substr(0,10);
+    //   predTimes = predTimes.substr(12);
+    //   if(parseInt(currTime+"000") > current.getTime() &&
+    //      parseInt(currTime+"000") < current.getTime() + 86400000){
+    //       if(s===0){
+    //         let diff = parseInt(currTime + "000") - current.getTime();
+    //         let skips = parseInt(diff/1800000);
+    //         //console.log(skips);
+    //         for(s=1; s<=skips; s++){
+    //           dates[i+s] = "";
+    //         }
+    //         i=i+s+1;
+    //       }
+    //       let t = new Date(parseInt(currTime+"000"));
+    //       //console.log(t);
+    //       //console.log(currHeight)
+    //       chartData[i] = {
+    //         x: parseInt(currTime+"000"),
+    //         y: round(parseFloat(currHeight) / 0.3048, 2),
+    //       };
+    //       dates[i] =
+    //         t.toString().substring(4, 10) +
+    //         ", " +
+    //         timeConv(t.toString().substring(16, 21));
+    //       for(var k=1; k<=5; k++){
+    //         dates[i+k] = "";
+    //       }
+    //       i=i+6;
+    //       // i++;
+    //   }
+    // }
+    // setWaveChart2(chartData);
+    // setWaveDates(dates);
 
     chartData = [];
     dates = [];
     i = 0;
     data.data.wind.map((wind) => {
       waveTime = new Date(wind.timestamp);
-      chartData[i] = { x: waveTime.getTime(), y: round(wind.speed, 1) };
+      chartData[i] = { x: waveTime.getTime(), y: round(wind.speed, 2) };
       dates[i] =
         waveTime.toString().substring(4, 10) +
         ", " +
         timeConv(waveTime.toString().substring(16, 21));
       i++;
     });
+    let extraDates = new Array(50);
+    extraDates.fill("");
     dates = dates.concat(extraDates);
     setWindDates(dates);
+    setWaveDates(dates);
     setWindChart(chartData);
   };
 
@@ -270,6 +323,7 @@ export default function HomePage() {
     let daysAgo = year3.toString() + m3 + d3;
 
     var url =
+      "https://cors-anywhere.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
       "https://tidesandcurrents.noaa.gov/api/datagetter?" +
       "station=9411340" +
       "&product=predictions" +
@@ -341,6 +395,7 @@ export default function HomePage() {
     setLo(second);
 
     url =
+      "https://cors-anywhere.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
       "https://tidesandcurrents.noaa.gov/api/datagetter?" +
       "station=9411340" +
       "&product=water_level" +
@@ -366,6 +421,7 @@ export default function HomePage() {
     setTide(currTide);
 
     url =
+      "https://cors-anywhere.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
       "https://tidesandcurrents.noaa.gov/api/datagetter?" +
       "station=9411340" +
       "&product=predictions" +
@@ -464,11 +520,13 @@ export default function HomePage() {
             lo={lo}
           />
           <p className={styles.disclaimer}>
-            Each graph shows a 2-Day history of the data and the Tide graph also
-            shows the next 24 hours of predictions.
+            Each graph shows a 2-Day history of the data with the Wave and Tide
+            graphs also shows the next 24 hours of predictions in a lighter
+            shade.
           </p>
           <Graphs
             waveData={waveChart}
+            waveData2={waveChart2}
             windData={windChart}
             periodData={periodChart}
             tempData={tempChart}
