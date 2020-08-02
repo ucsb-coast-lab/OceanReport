@@ -204,8 +204,8 @@ export default function HomePage() {
     const response2 = await fetch(url, { method: "GET" });
     const data2 = await response2.text();
 
-    chartData = [];
-    chartData[i - 1] = waveChart[waveChart.length - 1];
+    let chartData2 = [];
+    chartData2[i - 1] = chartData[i - 1];
     let predTimes = data2.substr(data2.indexOf("waveTime[80]") + 13, 958);
     let predHeights = data2.substring(
       data2.indexOf("waveHs[80]") + 11,
@@ -230,14 +230,14 @@ export default function HomePage() {
       ) {
         let t = new Date(parseInt(currTime + "000"));
         if (s === 0) {
-          let diff = parseInt(currTime + "000") - chartData[i - 1].x;
+          let diff = parseInt(currTime + "000") - chartData2[i - 1].x;
           skips = parseInt(diff / 1800000);
           let drop =
-            (chartData[i - 1].y - round(parseFloat(currHeight) / 0.3048, 2)) /
+            (chartData2[i - 1].y - round(parseFloat(currHeight) / 0.3048, 2)) /
             skips;
           for (s = 0; s < skips - 1; s++) {
             let j = new Date(t.getTime() - 1800000 * (skips - 1 - s));
-            chartData[i + s] = {
+            chartData2[i + s] = {
               x: j.getTime(),
               y: round(chartData[i - 1].y - (s + 1) * drop, 2),
             };
@@ -248,7 +248,7 @@ export default function HomePage() {
           }
           i = i + s;
         }
-        chartData[i] = {
+        chartData2[i] = {
           x: parseInt(currTime + "000"),
           y: round(parseFloat(currHeight) / 0.3048, 2),
         };
@@ -260,7 +260,7 @@ export default function HomePage() {
           if (
             parseInt(predTimes.substr(0, 10) + "000") >
               current.getTime() + 86400000 &&
-            k > skips
+            k + skips > 6
           ) {
             break;
           }
@@ -273,7 +273,7 @@ export default function HomePage() {
               )) /
             6;
           let j = new Date(t.getTime() + 1800000 * k);
-          chartData[i + k] = {
+          chartData2[i + k] = {
             x: j.getTime(),
             y: round(round(parseFloat(currHeight) / 0.3048, 2) - k * drop, 2),
           };
@@ -283,10 +283,9 @@ export default function HomePage() {
             timeConv(j.toString().substring(16, 21));
         }
         i = i + 6;
-        // i++;
       }
     }
-    setWaveChart2(chartData);
+    setWaveChart2(chartData2);
     setWaveDates(dates);
 
     chartData = [];
