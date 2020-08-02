@@ -121,7 +121,7 @@ export default function Graphs(props) {
                 {
                   ticks: {
                     autoSkip: true,
-                    maxTicksLimit: 8,
+                    maxTicksLimit: 12,
                     maxRotation: 90,
                     minRotation: 90,
                     fontSize: 10,
@@ -258,7 +258,7 @@ export default function Graphs(props) {
                   scaleLabel: {
                     display: true,
                     labelString:
-                      "**Data from the SCCOOS, Stern Wharf Automated Shore Station",
+                      "**Data from Stern Wharf Automated Shore Station",
                   },
                 },
               ],

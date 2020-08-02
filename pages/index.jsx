@@ -199,58 +199,95 @@ export default function HomePage() {
     setWaveChart(chartData);
     setPeriodChart(periodData);
 
-    // url = "https://thredds.cdip.ucsd.edu/thredds/dodsC/cdip/model/MOP_alongshore/B0391_forecast.nc.ascii?waveTime[0:1:79],waveHs[0:1:79]";
-    // const response2 = await fetch(url, {method: "GET"});
-    // const data2 = await response2.text();
+    url =
+      "https://thredds.cdip.ucsd.edu/thredds/dodsC/cdip/model/MOP_alongshore/B0391_forecast.nc.ascii?waveTime[0:1:79],waveHs[0:1:79]";
+    const response2 = await fetch(url, { method: "GET" });
+    const data2 = await response2.text();
 
-    // chartData = [];
-    // let predTimes = data2.substr(data2.indexOf("waveTime[80]")+ 13, 958);
-    // //console.log(predTimes);
-    // let predHeights = data2.substring(data2.indexOf("waveHs[80]")+ 11, data2.length -2);
-    // //console.log(predHeights);
-    // let currHeight;
-    // let s=0;
-    // while(predTimes.length){
-    //   if(predHeights.indexOf(",") !== -1){
-    //     currHeight = predHeights.substr(0, predHeights.indexOf(","));
-    //     predHeights = predHeights.substr(predHeights.indexOf(",")+2);
-    //   }else{
-    //     currHeight = predHeights.substr(0)
-    //     predHeights = "";
-    //   }
-    //   let currTime = predTimes.substr(0,10);
-    //   predTimes = predTimes.substr(12);
-    //   if(parseInt(currTime+"000") > current.getTime() &&
-    //      parseInt(currTime+"000") < current.getTime() + 86400000){
-    //       if(s===0){
-    //         let diff = parseInt(currTime + "000") - current.getTime();
-    //         let skips = parseInt(diff/1800000);
-    //         //console.log(skips);
-    //         for(s=1; s<=skips; s++){
-    //           dates[i+s] = "";
-    //         }
-    //         i=i+s+1;
-    //       }
-    //       let t = new Date(parseInt(currTime+"000"));
-    //       //console.log(t);
-    //       //console.log(currHeight)
-    //       chartData[i] = {
-    //         x: parseInt(currTime+"000"),
-    //         y: round(parseFloat(currHeight) / 0.3048, 2),
-    //       };
-    //       dates[i] =
-    //         t.toString().substring(4, 10) +
-    //         ", " +
-    //         timeConv(t.toString().substring(16, 21));
-    //       for(var k=1; k<=5; k++){
-    //         dates[i+k] = "";
-    //       }
-    //       i=i+6;
-    //       // i++;
-    //   }
-    // }
-    // setWaveChart2(chartData);
-    // setWaveDates(dates);
+    chartData = [];
+    chartData[i - 1] = waveChart[waveChart.length - 1];
+    let predTimes = data2.substr(data2.indexOf("waveTime[80]") + 13, 958);
+    let predHeights = data2.substring(
+      data2.indexOf("waveHs[80]") + 11,
+      data2.length - 2
+    );
+    let currHeight;
+    let s = 0;
+    let skips;
+    while (predTimes.length) {
+      if (predHeights.indexOf(",") !== -1) {
+        currHeight = predHeights.substr(0, predHeights.indexOf(","));
+        predHeights = predHeights.substr(predHeights.indexOf(",") + 2);
+      } else {
+        currHeight = predHeights.substr(0);
+        predHeights = "";
+      }
+      let currTime = predTimes.substr(0, 10);
+      predTimes = predTimes.substr(12);
+      if (
+        parseInt(currTime + "000") > current.getTime() &&
+        parseInt(currTime + "000") < current.getTime() + 86400000
+      ) {
+        let t = new Date(parseInt(currTime + "000"));
+        if (s === 0) {
+          let diff = parseInt(currTime + "000") - chartData[i - 1].x;
+          skips = parseInt(diff / 1800000);
+          let drop =
+            (chartData[i - 1].y - round(parseFloat(currHeight) / 0.3048, 2)) /
+            skips;
+          for (s = 0; s < skips - 1; s++) {
+            let j = new Date(t.getTime() - 1800000 * (skips - 1 - s));
+            chartData[i + s] = {
+              x: j.getTime(),
+              y: round(chartData[i - 1].y - (s + 1) * drop, 2),
+            };
+            dates[i + s] =
+              j.toString().substring(4, 10) +
+              ", " +
+              timeConv(j.toString().substring(16, 21));
+          }
+          i = i + s;
+        }
+        chartData[i] = {
+          x: parseInt(currTime + "000"),
+          y: round(parseFloat(currHeight) / 0.3048, 2),
+        };
+        dates[i] =
+          t.toString().substring(4, 10) +
+          ", " +
+          timeConv(t.toString().substring(16, 21));
+        for (var k = 1; k <= 5; k++) {
+          if (
+            parseInt(predTimes.substr(0, 10) + "000") >
+              current.getTime() + 86400000 &&
+            k > skips
+          ) {
+            break;
+          }
+          let drop =
+            (round(parseFloat(currHeight) / 0.3048, 2) -
+              round(
+                parseFloat(predHeights.substr(0, predHeights.indexOf(","))) /
+                  0.3048,
+                2
+              )) /
+            6;
+          let j = new Date(t.getTime() + 1800000 * k);
+          chartData[i + k] = {
+            x: j.getTime(),
+            y: round(round(parseFloat(currHeight) / 0.3048, 2) - k * drop, 2),
+          };
+          dates[i + k] =
+            j.toString().substring(4, 10) +
+            ", " +
+            timeConv(j.toString().substring(16, 21));
+        }
+        i = i + 6;
+        // i++;
+      }
+    }
+    setWaveChart2(chartData);
+    setWaveDates(dates);
 
     chartData = [];
     dates = [];
@@ -268,7 +305,6 @@ export default function HomePage() {
     extraDates.fill("");
     dates = dates.concat(extraDates);
     setWindDates(dates);
-    setWaveDates(dates);
     setWindChart(chartData);
   };
 
