@@ -17,7 +17,7 @@ export default function Graphs(props) {
         data: props.waveData,
       },
       {
-        label: "Height (ft) ",
+        label: "CDIP (ft)",
         fill: false,
         lineTension: 0.5,
         backgroundColor: "rgba(120, 188, 255,1)",
@@ -25,6 +25,16 @@ export default function Graphs(props) {
         borderWidth: 1,
         pointRadius: 2,
         data: props.waveData2,
+      },
+      {
+        label: "NOAA (ft)",
+        fill: false,
+        lineTension: 0.5,
+        backgroundColor: "rgba(166, 210, 255,1)",
+        borderColor: "rgba(166, 210, 255, 1)",
+        borderWidth: 1,
+        pointRadius: 2,
+        data: props.waveData3,
       },
     ],
   };
@@ -113,8 +123,8 @@ export default function Graphs(props) {
               fontSize: 20,
             },
             legend: {
-              display: false,
-              position: "right",
+              display: true,
+              position: "bottom",
             },
             scales: {
               xAxes: [

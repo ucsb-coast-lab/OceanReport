@@ -18,6 +18,7 @@ export default function HomePage() {
 
   const [waveChart, setWaveChart] = useState([]);
   const [waveChart2, setWaveChart2] = useState([]);
+  const [waveChart3, setWaveChart3] = useState([]);
   const [windChart, setWindChart] = useState([]);
   const [periodChart, setPeriodChart] = useState([]);
   const [tempChart, setTempChart] = useState([]);
@@ -213,6 +214,7 @@ export default function HomePage() {
     );
     let currHeight;
     let s = 0;
+    let i2 = i;
     let skips;
     while (predTimes.length) {
       if (predHeights.indexOf(",") !== -1) {
@@ -283,10 +285,59 @@ export default function HomePage() {
             timeConv(j.toString().substring(16, 21));
         }
         i = i + 6;
+        t++;
       }
     }
     setWaveChart2(chartData2);
     setWaveDates(dates);
+
+    url =
+      "https://cors-anywhere.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
+      "https://marine.weather.gov/MapClick.php?lat=34.4001&lon=-119.8461&FcstType=digitalDWML";
+    const response3 = await fetch(url, { method: "GET" });
+    const str = await response3.text();
+    const data3 = await new window.DOMParser().parseFromString(str, "text/xml");
+    let waves = data3.getElementsByTagName("waves");
+    let times = data3.getElementsByTagName("start-valid-time");
+
+    let chartData3 = [];
+    chartData3[i2 - 1] = chartData[i2 - 1];
+    let a = 0;
+    for (var t = 0; t < 30; t++) {
+      let predTime = new Date(times[t].textContent);
+      if (
+        predTime.getTime() > current.getTime() &&
+        predTime.getTime() < current.getTime() + 86400000
+      ) {
+        //console.log(waves[t].firstChild.textContent);
+        //console.log(predTime);
+        if (a === 0 && predTime.getTime() - chartData3[i2 - 1].x > 1800000) {
+          let drop =
+            (chartData3[i2 - 1].y - parseInt(waves[t].firstChild.textContent)) /
+            2;
+          chartData3[i2] = {
+            x: predTime.getTime() - 1800000,
+            y: chartData3[i2 - 1].y - drop,
+          };
+          i2++;
+          a++;
+        }
+        chartData3[i2] = {
+          x: predTime.getTime(),
+          y: parseInt(waves[t].firstChild.textContent),
+        };
+        let drop =
+          (parseInt(waves[t].firstChild.textContent) -
+            parseInt(waves[t + 1].firstChild.textContent)) /
+          2;
+        chartData3[i2 + 1] = {
+          x: predTime.getTime(),
+          y: parseInt(waves[t].firstChild.textContent) - drop,
+        };
+        i2 += 2;
+      }
+    }
+    setWaveChart3(chartData3);
 
     chartData = [];
     dates = [];
@@ -358,6 +409,7 @@ export default function HomePage() {
     let daysAgo = year3.toString() + m3 + d3;
 
     var url =
+      //"https://stormy-cove-43362.herokuapp.com/" +
       "https://cors-anywhere.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
       "https://tidesandcurrents.noaa.gov/api/datagetter?" +
       "station=9411340" +
@@ -562,6 +614,7 @@ export default function HomePage() {
           <Graphs
             waveData={waveChart}
             waveData2={waveChart2}
+            waveData3={waveChart3}
             windData={windChart}
             periodData={periodChart}
             tempData={tempChart}
