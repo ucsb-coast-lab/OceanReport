@@ -292,7 +292,8 @@ export default function HomePage() {
     setWaveDates(dates);
 
     url =
-      "https://cors-anywhere.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
+      "https://stormy-cove-43362.herokuapp.com/" +
+      //"https://cors-anywhere.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
       "https://marine.weather.gov/MapClick.php?lat=34.4001&lon=-119.8461&FcstType=digitalDWML";
     const response3 = await fetch(url, { method: "GET" });
     const str = await response3.text();
@@ -302,31 +303,37 @@ export default function HomePage() {
 
     let chartData3 = [];
     chartData3[i2 - 1] = chartData[i2 - 1];
+    let r = i2;
     let a = 0;
     for (var t = 0; t < 30; t++) {
       let predTime = new Date(times[t].textContent);
+      let drop;
       if (
-        predTime.getTime() > current.getTime() &&
-        predTime.getTime() < current.getTime() + 86400000
+        predTime.getTime() > chartData3[r - 1].x &&
+        predTime.getTime() < chartData3[r - 1].x + 86400000
       ) {
         //console.log(waves[t].firstChild.textContent);
         //console.log(predTime);
-        if (a === 0 && predTime.getTime() - chartData3[i2 - 1].x > 1800000) {
-          let drop =
+        if (a === 0) {
+          let diff = predTime.getTime() - chartData3[i2 - 1].x;
+          let skips = parseInt(diff / 1800000);
+          drop =
             (chartData3[i2 - 1].y - parseInt(waves[t].firstChild.textContent)) /
-            2;
-          chartData3[i2] = {
-            x: predTime.getTime() - 1800000,
-            y: chartData3[i2 - 1].y - drop,
-          };
-          i2++;
+            skips;
+          for (var w = 0; w < skips - 1; w++) {
+            chartData3[i2 + w] = {
+              x: predTime.getTime() - 1800000 * (skips - 1 - w),
+              y: round(chartData3[i2 - 1].y - (w + 1) * drop, 2),
+            };
+          }
+          i2 += w;
           a++;
         }
         chartData3[i2] = {
           x: predTime.getTime(),
           y: parseInt(waves[t].firstChild.textContent),
         };
-        let drop =
+        drop =
           (parseInt(waves[t].firstChild.textContent) -
             parseInt(waves[t + 1].firstChild.textContent)) /
           2;
@@ -409,8 +416,8 @@ export default function HomePage() {
     let daysAgo = year3.toString() + m3 + d3;
 
     var url =
-      //"https://stormy-cove-43362.herokuapp.com/" +
-      "https://cors-anywhere.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
+      "https://stormy-cove-43362.herokuapp.com/" +
+      //"https://cors-anywhere.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
       "https://tidesandcurrents.noaa.gov/api/datagetter?" +
       "station=9411340" +
       "&product=predictions" +
@@ -482,7 +489,8 @@ export default function HomePage() {
     setLo(second);
 
     url =
-      "https://cors-anywhere.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
+      "https://stormy-cove-43362.herokuapp.com/" +
+      //"https://cors-anywhere.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
       "https://tidesandcurrents.noaa.gov/api/datagetter?" +
       "station=9411340" +
       "&product=water_level" +
@@ -508,7 +516,8 @@ export default function HomePage() {
     setTide(currTide);
 
     url =
-      "https://cors-anywhere.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
+      "https://stormy-cove-43362.herokuapp.com/" +
+      //"https://cors-anywhere.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
       "https://tidesandcurrents.noaa.gov/api/datagetter?" +
       "station=9411340" +
       "&product=predictions" +
