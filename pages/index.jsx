@@ -20,6 +20,7 @@ export default function HomePage() {
   const [waveChart2, setWaveChart2] = useState([]);
   const [waveChart3, setWaveChart3] = useState([]);
   const [windChart, setWindChart] = useState([]);
+  const [windChart2, setWindChart2] = useState([]);
   const [periodChart, setPeriodChart] = useState([]);
   const [tempChart, setTempChart] = useState([]);
   const [tideChart, setTideChart] = useState([]);
@@ -312,8 +313,6 @@ export default function HomePage() {
         predTime.getTime() > chartData3[r - 1].x &&
         predTime.getTime() < chartData3[r - 1].x + 86400000
       ) {
-        //console.log(waves[t].firstChild.textContent);
-        //console.log(predTime);
         if (a === 0) {
           let diff = predTime.getTime() - chartData3[i2 - 1].x;
           let skips = parseInt(diff / 1800000);
@@ -358,11 +357,65 @@ export default function HomePage() {
         timeConv(waveTime.toString().substring(16, 21));
       i++;
     });
-    let extraDates = new Array(50);
-    extraDates.fill("");
-    dates = dates.concat(extraDates);
-    setWindDates(dates);
     setWindChart(chartData);
+
+    let winds = data3.getElementsByTagName("wind-speed")[0];
+    let currWind = winds.firstElementChild;
+    chartData2 = [];
+    chartData2[i - 1] = chartData[i - 1];
+    r = i;
+    a = 0;
+    for (var t = 0; t < 30; t++) {
+      let predTime = new Date(times[t].textContent);
+      //console.log(predTime.toString())
+      //console.log(parseInt(currWind.textContent))
+      let drop;
+      if (
+        predTime.getTime() > chartData2[r - 1].x &&
+        predTime.getTime() < chartData2[r - 1].x + 86400000
+      ) {
+        if (a === 0) {
+          let diff = predTime.getTime() - chartData2[i - 1].x;
+          let skips = parseInt(diff / 1800000);
+          drop =
+            (chartData2[i - 1].y - parseInt(currWind.textContent) * 1.151) /
+            skips;
+          for (var w = 0; w < skips - 1; w++) {
+            chartData2[i + w] = {
+              x: predTime.getTime() - 1800000 * (skips - 1 - w),
+              y: round(chartData2[i - 1].y - (w + 1) * drop, 2),
+            };
+          }
+          i += w;
+          a++;
+        }
+        chartData2[i] = {
+          x: predTime.getTime(),
+          y: round(parseInt(currWind.textContent) * 1.151, 2),
+        };
+        dates[i] =
+          predTime.toString().substring(4, 10) +
+          ", " +
+          timeConv(predTime.toString().substring(16, 21));
+        drop =
+          (parseInt(currWind.textContent) * 1.151 -
+            parseInt(currWind.nextElementSibling.textContent) * 1.151) /
+          2;
+        chartData2[i + 1] = {
+          x: predTime.getTime(),
+          y: round(parseInt(currWind.textContent) * 1.151 - drop, 2),
+        };
+        let j = new Date(predTime.getTime() + 1800000);
+        dates[i + 1] =
+          j.toString().substring(4, 10) +
+          ", " +
+          timeConv(j.toString().substring(16, 21));
+        i += 2;
+        currWind = currWind.nextElementSibling;
+      }
+    }
+    setWindChart2(chartData2);
+    setWindDates(dates);
   };
 
   const setTempData = async () => {
@@ -616,15 +669,15 @@ export default function HomePage() {
             lo={lo}
           />
           <p className={styles.disclaimer}>
-            Each graph shows a 2-Day history of the data with the Wave and Tide
-            graphs also shows the next 24 hours of predictions in a lighter
-            shade.
+            Each graph shows a 2-Day history of the data with some graphs also
+            showing the next 24 hours of predictions in a lighter shade.
           </p>
           <Graphs
             waveData={waveChart}
             waveData2={waveChart2}
             waveData3={waveChart3}
             windData={windChart}
+            windData2={windChart2}
             periodData={periodChart}
             tempData={tempChart}
             tideData={tideChart}
