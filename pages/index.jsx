@@ -22,6 +22,7 @@ export default function HomePage() {
   const [windChart, setWindChart] = useState([]);
   const [windChart2, setWindChart2] = useState([]);
   const [periodChart, setPeriodChart] = useState([]);
+  const [periodChart2, setPeriodChart2] = useState([]);
   const [tempChart, setTempChart] = useState([]);
   const [tideChart, setTideChart] = useState([]);
   const [tideChart2, setTideChart2] = useState([]);
@@ -202,18 +203,25 @@ export default function HomePage() {
     setPeriodChart(periodData);
 
     url =
-      "https://thredds.cdip.ucsd.edu/thredds/dodsC/cdip/model/MOP_alongshore/B0391_forecast.nc.ascii?waveTime[0:1:79],waveHs[0:1:79]";
+      "https://thredds.cdip.ucsd.edu/thredds/dodsC/cdip/model/MOP_alongshore/B0391_forecast.nc.ascii?waveTime[0:1:79],waveHs[0:1:79],waveTp[0:1:79]";
     const response2 = await fetch(url, { method: "GET" });
     const data2 = await response2.text();
 
     let chartData2 = [];
     chartData2[i - 1] = chartData[i - 1];
+    let periodData2 = [];
+    periodData2[i - 1] = periodData[i - 1];
     let predTimes = data2.substr(data2.indexOf("waveTime[80]") + 13, 958);
     let predHeights = data2.substring(
       data2.indexOf("waveHs[80]") + 11,
+      data2.indexOf("waveTp[80]") - 2
+    );
+    let predPeriods = data2.substring(
+      data2.indexOf("waveTp[80]") + 11,
       data2.length - 2
     );
     let currHeight;
+    let currPeriod;
     let s = 0;
     let i2 = i;
     let skips;
@@ -221,10 +229,15 @@ export default function HomePage() {
       if (predHeights.indexOf(",") !== -1) {
         currHeight = predHeights.substr(0, predHeights.indexOf(","));
         predHeights = predHeights.substr(predHeights.indexOf(",") + 2);
+        currPeriod = predPeriods.substr(0, predPeriods.indexOf(","));
+        predPeriods = predPeriods.substr(predPeriods.indexOf(",") + 2);
       } else {
-        currHeight = predHeights.substr(0);
+        currHeight = predHeights;
         predHeights = "";
+        currPeriod = predPeriods;
+        predPeriods = "";
       }
+
       let currTime = predTimes.substr(0, 10);
       predTimes = predTimes.substr(12);
       if (
@@ -249,8 +262,22 @@ export default function HomePage() {
               ", " +
               timeConv(j.toString().substring(16, 21));
           }
+
+          let drop2 =
+            (periodData2[i - 1].y - round(parseFloat(currPeriod), 2)) / skips;
+          for (let f = 0; f < skips - 1; f++) {
+            periodData2[i + f] = {
+              x: t.getTime() - 1800000 * (skips - 1 - f),
+              y: round(periodData2[i - 1].y - (f + 1) * drop2, 2),
+            };
+          }
+
           i = i + s;
         }
+        periodData2[i] = {
+          x: parseInt(currTime + "000"),
+          y: round(parseFloat(currPeriod), 2),
+        };
         chartData2[i] = {
           x: parseInt(currTime + "000"),
           y: round(parseFloat(currHeight) / 0.3048, 2),
@@ -280,6 +307,19 @@ export default function HomePage() {
             x: j.getTime(),
             y: round(round(parseFloat(currHeight) / 0.3048, 2) - k * drop, 2),
           };
+
+          let drop2 =
+            (round(parseFloat(currPeriod), 2) -
+              round(
+                parseFloat(predPeriods.substr(0, predPeriods.indexOf(","))),
+                2
+              )) /
+            6;
+          periodData2[i + k] = {
+            x: t.getTime() + 1800000 * k,
+            y: round(round(parseFloat(currPeriod), 2) - k * drop2, 2),
+          };
+
           dates[i + k] =
             j.toString().substring(4, 10) +
             ", " +
@@ -290,6 +330,7 @@ export default function HomePage() {
       }
     }
     setWaveChart2(chartData2);
+    setPeriodChart2(periodData2);
     setWaveDates(dates);
 
     url =
@@ -679,6 +720,7 @@ export default function HomePage() {
             windData={windChart}
             windData2={windChart2}
             periodData={periodChart}
+            periodData2={periodChart2}
             tempData={tempChart}
             tideData={tideChart}
             tideData2={tideChart2}

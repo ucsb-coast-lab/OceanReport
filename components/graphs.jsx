@@ -51,6 +51,16 @@ export default function Graphs(props) {
         pointRadius: 2,
         data: props.periodData,
       },
+      {
+        label: "NOAA (s)",
+        fill: false,
+        lineTension: 0.5,
+        backgroundColor: "rgba(0,111,222,1)",
+        borderColor: "rgba(0,111,222,1)",
+        borderWidth: 1,
+        pointRadius: 2,
+        data: props.periodData2,
+      },
     ],
   };
   const wind = {
