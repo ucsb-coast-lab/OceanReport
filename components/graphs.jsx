@@ -39,7 +39,7 @@ export default function Graphs(props) {
     ],
   };
   const period = {
-    labels: props.windLabels,
+    labels: props.waveLabels,
     datasets: [
       {
         label: "(s)",

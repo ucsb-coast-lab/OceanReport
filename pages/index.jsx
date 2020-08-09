@@ -422,10 +422,15 @@ export default function HomePage() {
             (chartData2[i - 1].y - parseInt(currWind.textContent) * 1.151) /
             skips;
           for (var w = 0; w < skips - 1; w++) {
+            let j = new Date(predTime.getTime() - 1800000 * (skips - 1 - w));
             chartData2[i + w] = {
-              x: predTime.getTime() - 1800000 * (skips - 1 - w),
+              x: j.getTime(),
               y: round(chartData2[i - 1].y - (w + 1) * drop, 2),
             };
+            dates[i + w] =
+              j.toString().substring(4, 10) +
+              ", " +
+              timeConv(j.toString().substring(16, 21));
           }
           i += w;
           a++;
