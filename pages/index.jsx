@@ -783,7 +783,7 @@ export default function HomePage() {
             click{" "}
             <a
               target="_blank"
-              href="https://marine.weather.gov/MapClick.php?w3=sfcwind&w3u=0&w10=swlp&w11=swlm&w12=swlp2&w13=swlm2&w14=wwh&w15=wvh&AheadHour=0&Submit=Submit&FcstType=digital&textField1=34.4001&textField2=-119.8461&site=all&unit=0&dd=&bw=&marine=1"
+              href="http://cdip.ucsd.edu/m/forecast/?wave_model=socal&layer=waveHs"
             >
               here
             </a>
