@@ -52,7 +52,7 @@ export default function Graphs(props) {
         data: props.periodData,
       },
       {
-        label: "NOAA (s)",
+        label: "CDIP (s)",
         fill: false,
         lineTension: 0.5,
         backgroundColor: "rgba(0,111,222,1)",
