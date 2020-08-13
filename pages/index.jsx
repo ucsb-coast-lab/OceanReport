@@ -61,7 +61,7 @@ export default function HomePage() {
 
   const update = () => {
     setWindWave();
-    setTempData();
+    //setTempData();
     setTideData();
   };
 
@@ -469,6 +469,7 @@ export default function HomePage() {
     let daysAgo = year3.toString() + "-" + m3 + "-" + d3;
 
     var url =
+      "https://stormy-cove-43362.herokuapp.com/" +
       "https://erddap.sccoos.org/erddap/tabledap/autoss.json" +
       "?time%2Ctemperature&station=%22stearns_wharf" +
       "%22&time%3E=" +
@@ -690,7 +691,7 @@ export default function HomePage() {
       {date === "" ||
       wave === "" ||
       wind === "" ||
-      temp === "" ||
+      // temp === "" ||
       tide === "" ||
       hi === "" ||
       lo === "" ? (
