@@ -46,6 +46,22 @@ export default function HomePage() {
     setRising(data.rising);
     setHi(data.hi);
     setLo(data.lo);
+
+    setWaveChart(data.waveChart);
+    setWaveChart2(data.waveChart2);
+    setWaveChart3(data.waveChart3);
+    setWindChart(data.windChart);
+    setWindChart2(data.windChart2);
+    setPeriodChart(data.periodChart);
+    setPeriodChart2(data.periodChart2);
+    setTempChart(data.tempChart);
+    setTideChart(data.tideChart);
+    setTideChart2(data.tideChart2);
+
+    setWaveDates(data.waveDates);
+    setWindDates(data.windDates);
+    setTempDates(data.tempDates);
+    setTideDates(data.tideDates);
   };
 
   return (
