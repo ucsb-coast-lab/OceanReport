@@ -30,14 +30,11 @@
     "isomorphic-unfetch": "^3.0.0",
     "mongodb": "^3.6.0",
     "next": "^9.4.4",
-    "puppeteer": "^5.0.0",
     "react": "16.13.1",
     "react-bootstrap": "^1.0.0",
     "react-chartist": "^0.14.3",
     "react-chartjs-2": "^2.9.0",
-    "react-dom": "16.13.1",
-    "request": "^2.88.2",
-    "swr": "^0.1.18"
+    "react-dom": "16.13.1"
   },
   "devDependencies": {
     "@rckeller/cypress-unfetch": "^1.0.1",
