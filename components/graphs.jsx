@@ -1,5 +1,6 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
+import "chartjs-plugin-annotation";
 import styles from "../styles/style.module.css";
 
 export default function Graphs(props) {
@@ -171,6 +172,37 @@ export default function Graphs(props) {
                 },
               ],
             },
+            annotation: {
+              annotations: [
+                {
+                  type: "box",
+                  xScaleID: "x-axis-0",
+                  xMin: props.sun[0],
+                  xMax: props.sun[1],
+                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderWidth: 0,
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
+                },
+                {
+                  type: "box",
+                  xScaleID: "x-axis-0",
+                  xMin: props.sun[2],
+                  xMax: props.sun[3],
+                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderWidth: 0,
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
+                },
+                {
+                  type: "box",
+                  xScaleID: "x-axis-0",
+                  xMin: props.sun[4],
+                  xMax: props.sun[5],
+                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderWidth: 0,
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
+                },
+              ],
+            },
           }}
         />
       </div>
@@ -211,6 +243,37 @@ export default function Graphs(props) {
                     autoSkip: true,
                     maxTicksLimit: 4,
                   },
+                },
+              ],
+            },
+            annotation: {
+              annotations: [
+                {
+                  type: "box",
+                  xScaleID: "x-axis-0",
+                  xMin: props.sun[0],
+                  xMax: props.sun[1],
+                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderWidth: 0,
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
+                },
+                {
+                  type: "box",
+                  xScaleID: "x-axis-0",
+                  xMin: props.sun[2],
+                  xMax: props.sun[3],
+                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderWidth: 0,
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
+                },
+                {
+                  type: "box",
+                  xScaleID: "x-axis-0",
+                  xMin: props.sun[4],
+                  xMax: props.sun[5],
+                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderWidth: 0,
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
                 },
               ],
             },
@@ -257,6 +320,37 @@ export default function Graphs(props) {
                 },
               ],
             },
+            annotation: {
+              annotations: [
+                {
+                  type: "box",
+                  xScaleID: "x-axis-0",
+                  xMin: props.sun[0],
+                  xMax: props.sun[1],
+                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderWidth: 0,
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
+                },
+                {
+                  type: "box",
+                  xScaleID: "x-axis-0",
+                  xMin: props.sun[2],
+                  xMax: props.sun[3],
+                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderWidth: 0,
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
+                },
+                {
+                  type: "box",
+                  xScaleID: "x-axis-0",
+                  xMin: props.sun[4],
+                  xMax: props.sun[5],
+                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderWidth: 0,
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
+                },
+              ],
+            },
           }}
         />
       </div>
@@ -299,6 +393,37 @@ export default function Graphs(props) {
                     maxTicksLimit: 4,
                   },
                 },
+              ],
+            },
+            annotation: {
+              annotations: [
+                {
+                  type: "box",
+                  xScaleID: "x-axis-0",
+                  xMin: props.sun2[0],
+                  xMax: props.sun2[1],
+                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderWidth: 0,
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
+                },
+                {
+                  type: "box",
+                  xScaleID: "x-axis-0",
+                  xMin: props.sun2[2],
+                  xMax: props.sun2[3],
+                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderWidth: 0,
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
+                },
+                // {
+                //   type: 'box',
+                //   xScaleID: 'x-axis-0',
+                //   xMin: props.sun2[4],
+                //   xMax: props.sun2[5],
+                //   borderColor: 'rgba(0, 0, 0, 0.1)',
+                //   borderWidth: 0,
+                //   backgroundColor: 'rgba(0, 0, 0, 0.1)',
+                // }
               ],
             },
           }}
@@ -352,6 +477,37 @@ export default function Graphs(props) {
                   gridLines: {
                     zeroLineWidth: 2,
                   },
+                },
+              ],
+            },
+            annotation: {
+              annotations: [
+                {
+                  type: "box",
+                  xScaleID: "x-axis-0",
+                  xMin: props.sun3[0],
+                  xMax: props.sun3[1],
+                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderWidth: 0,
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
+                },
+                {
+                  type: "box",
+                  xScaleID: "x-axis-0",
+                  xMin: props.sun3[2],
+                  xMax: props.sun3[3],
+                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderWidth: 0,
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
+                },
+                {
+                  type: "box",
+                  xScaleID: "x-axis-0",
+                  xMin: props.sun3[4],
+                  xMax: props.sun3[5],
+                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderWidth: 0,
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
                 },
               ],
             },

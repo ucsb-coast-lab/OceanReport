@@ -32,6 +32,11 @@ export default function HomePage() {
   const [tempDates, setTempDates] = useState([]);
   const [tideDates, setTideDates] = useState([]);
 
+  const [sunShading, setSunShading] = useState([]);
+  const [sunPoints, setSunPoints] = useState([]);
+  const [sunPoints2, setSunPoints2] = useState([]);
+  const [sunPoints3, setSunPoints3] = useState([]);
+
   const current = new Date();
   let year = current.getFullYear();
   let month = current.getMonth() + 1;
@@ -59,9 +64,95 @@ export default function HomePage() {
   let d3 = "00" + day3;
   d3 = d3.substr(d3.length - 2);
 
+  useEffect(() => {
+    if (
+      sunShading.length !== 0 &&
+      waveChart.length !== 0 &&
+      waveChart2.length !== 0
+    ) {
+      let shadePoints = [];
+      let q = 0;
+      let d = 1;
+      if (waveChart[0].x < sunShading[0]) {
+        d = 0;
+        shadePoints[0] = 0;
+        q++;
+      }
+      for (var u = 0; u < waveChart.length; u++) {
+        if (waveChart[u].x > sunShading[d]) {
+          shadePoints[q] = u;
+          q++;
+          d++;
+        }
+      }
+      for (u = u; u < waveChart2.length; u++) {
+        if (waveChart2[u].x > sunShading[d]) {
+          shadePoints[q] = u;
+          q++;
+          d++;
+        }
+      }
+      setSunPoints(shadePoints);
+    }
+  }, [sunShading, waveChart, waveChart2]);
+
+  useEffect(() => {
+    if (sunShading.length !== 0 && tempChart.length !== 0) {
+      let shadePoints2 = [];
+      let q = 0;
+      let d = 1;
+      if (tempChart[0].x < sunShading[0]) {
+        d = 0;
+        shadePoints2[0] = 0;
+        q++;
+      }
+      for (var u = 0; u < tempChart.length; u++) {
+        if (tempChart[u].x > sunShading[d]) {
+          shadePoints2[q] = u;
+          q++;
+          d++;
+        }
+      }
+      setSunPoints2(shadePoints2);
+    }
+  }, [sunShading, tempChart]);
+
+  useEffect(() => {
+    if (
+      sunShading.length !== 0 &&
+      tideChart.length !== 0 &&
+      tideChart2.length !== 0
+    ) {
+      let shadePoints3 = [];
+      let q = 0;
+      let d = 1;
+      if (tideChart[0].x < sunShading[0]) {
+        d = 0;
+        shadePoints3[0] = 0;
+        q++;
+      }
+      for (var u = 0; u < tideChart.length; u++) {
+        if (tideChart[u].x > sunShading[d]) {
+          shadePoints3[q] = u;
+          q++;
+          d++;
+        }
+      }
+      for (u = u; u < tideChart2.length; u++) {
+        if (tideChart2[u].x > sunShading[d]) {
+          shadePoints3[q] = u;
+          q++;
+          d++;
+        }
+      }
+      setSunPoints3(shadePoints3);
+    }
+  }, [sunShading, tideChart, tideChart2]);
+
   const update = () => {
+    getRiseSet();
     setWindWave();
-    //setTempData();
+    setTempData();
     setTideData();
   };
 
@@ -90,6 +181,197 @@ export default function HomePage() {
     }
     return time;
   }
+
+  const getRiseSet = async () => {
+    var sunTimes = [];
+
+    var url =
+      "https://api.sunrise-sunset.org/json?lat=34.4001&lng=-119.8461&date=2 days ago";
+    const response = await fetch(url, { method: "GET" });
+    const data = await response.json();
+    let date = new Date();
+    date.setHours(
+      data.results.sunrise.substr(0, data.results.sunrise.indexOf(":"))
+    );
+    date.setHours(date.getHours() - 7);
+    if (
+      data.results.sunrise.substr(
+        data.results.sunrise.length - 2,
+        data.results.sunrise.length
+      ) === "PM"
+    ) {
+      date.setHours(date.getHours() + 12);
+    }
+    date.setMinutes(
+      data.results.sunrise.substr(
+        data.results.sunrise.indexOf(":") + 1,
+        data.results.sunrise.split(":", 2).join(":").length - 2
+      )
+    );
+    date.setSeconds(
+      data.results.sunrise.substr(data.results.sunrise.length - 5, 2)
+    );
+    date.setDate(date.getDate() - 2);
+    //console.log(date.toString())
+    sunTimes[0] = date.getTime();
+
+    date.setHours(
+      data.results.sunset.substr(0, data.results.sunrise.indexOf(":"))
+    );
+    date.setHours(date.getHours() - 7);
+    date.setMinutes(
+      data.results.sunset.substr(
+        data.results.sunset.indexOf(":") + 1,
+        data.results.sunset.split(":", 2).join(":").length - 2
+      )
+    );
+    date.setSeconds(
+      data.results.sunset.substr(data.results.sunset.length - 5, 2)
+    );
+    date.setDate(date.getDate() + 1);
+    //console.log(date.toString())
+    sunTimes[1] = date.getTime();
+
+    url =
+      "https://api.sunrise-sunset.org/json?lat=34.4001&lng=-119.8461&date=yesterday";
+    const response2 = await fetch(url, { method: "GET" });
+    const data2 = await response2.json();
+    date.setHours(
+      data2.results.sunrise.substr(0, data2.results.sunrise.indexOf(":"))
+    );
+    date.setHours(date.getHours() - 7);
+    if (
+      data2.results.sunrise.substr(
+        data2.results.sunrise.length - 2,
+        data2.results.sunrise.length
+      ) === "PM"
+    ) {
+      date.setHours(date.getHours() + 12);
+    }
+    date.setMinutes(
+      data2.results.sunrise.substr(
+        data2.results.sunrise.indexOf(":") + 1,
+        data2.results.sunrise.split(":", 2).join(":").length - 2
+      )
+    );
+    date.setSeconds(
+      data2.results.sunrise.substr(data2.results.sunrise.length - 5, 2)
+    );
+    date.setDate(date.getDate() + 1);
+    //console.log(date.toString())
+    sunTimes[2] = date.getTime();
+
+    date.setHours(
+      data2.results.sunset.substr(0, data2.results.sunrise.indexOf(":"))
+    );
+    date.setHours(date.getHours() - 7);
+    date.setMinutes(
+      data2.results.sunset.substr(
+        data2.results.sunset.indexOf(":") + 1,
+        data2.results.sunset.split(":", 2).join(":").length - 2
+      )
+    );
+    date.setSeconds(
+      data2.results.sunset.substr(data2.results.sunset.length - 5, 2)
+    );
+    date.setDate(date.getDate() + 1);
+    //console.log(date.toString())
+    sunTimes[3] = date.getTime();
+
+    url =
+      "https://api.sunrise-sunset.org/json?lat=34.4001&lng=-119.8461&date=today";
+    const response3 = await fetch(url, { method: "GET" });
+    const data3 = await response3.json();
+    date.setHours(
+      data3.results.sunrise.substr(0, data3.results.sunrise.indexOf(":"))
+    );
+    date.setHours(date.getHours() - 7);
+    if (
+      data3.results.sunrise.substr(
+        data3.results.sunrise.length - 2,
+        data3.results.sunrise.length
+      ) === "PM"
+    ) {
+      date.setHours(date.getHours() + 12);
+    }
+    date.setMinutes(
+      data3.results.sunrise.substr(
+        data3.results.sunrise.indexOf(":") + 1,
+        data3.results.sunrise.split(":", 2).join(":").length - 2
+      )
+    );
+    date.setSeconds(
+      data3.results.sunrise.substr(data3.results.sunrise.length - 5, 2)
+    );
+    date.setDate(date.getDate() + 1);
+    //console.log(date.toString())
+    sunTimes[4] = date.getTime();
+
+    date.setHours(
+      data3.results.sunset.substr(0, data3.results.sunrise.indexOf(":"))
+    );
+    date.setHours(date.getHours() - 7);
+    date.setMinutes(
+      data3.results.sunset.substr(
+        data3.results.sunset.indexOf(":") + 1,
+        data3.results.sunset.split(":", 2).join(":").length - 2
+      )
+    );
+    date.setSeconds(
+      data3.results.sunset.substr(data3.results.sunset.length - 5, 2)
+    );
+    date.setDate(date.getDate() + 1);
+    //console.log(date.toString())
+    sunTimes[5] = date.getTime();
+
+    url =
+      "https://api.sunrise-sunset.org/json?lat=34.4001&lng=-119.8461&date=tomorrow";
+    const response4 = await fetch(url, { method: "GET" });
+    const data4 = await response4.json();
+    date.setHours(
+      data4.results.sunrise.substr(0, data4.results.sunrise.indexOf(":"))
+    );
+    date.setHours(date.getHours() - 7);
+    if (
+      data4.results.sunrise.substr(
+        data4.results.sunrise.length - 2,
+        data4.results.sunrise.length
+      ) === "PM"
+    ) {
+      date.setHours(date.getHours() + 12);
+    }
+    date.setMinutes(
+      data4.results.sunrise.substr(
+        data4.results.sunrise.indexOf(":") + 1,
+        data4.results.sunrise.split(":", 2).join(":").length - 2
+      )
+    );
+    date.setSeconds(
+      data4.results.sunrise.substr(data4.results.sunrise.length - 5, 2)
+    );
+    date.setDate(date.getDate() + 1);
+    //console.log(date.toString());
+    sunTimes[6] = date.getTime();
+
+    date.setHours(
+      data4.results.sunset.substr(0, data4.results.sunrise.indexOf(":"))
+    );
+    date.setHours(date.getHours() - 7);
+    date.setMinutes(
+      data4.results.sunset.substr(
+        data4.results.sunset.indexOf(":") + 1,
+        data4.results.sunset.split(":", 2).join(":").length - 2
+      )
+    );
+    date.setSeconds(
+      data4.results.sunset.substr(data4.results.sunset.length - 5, 2)
+    );
+    date.setDate(date.getDate() + 1);
+    //console.log(date.toString());
+    sunTimes[7] = date.getTime();
+
+    setSunShading(sunTimes);
+  };
 
   const setWindWave = async () => {
     var url =
@@ -203,6 +485,7 @@ export default function HomePage() {
     setPeriodChart(periodData);
 
     url =
+      "https://stormy-cove-43362.herokuapp.com/" +
       "https://thredds.cdip.ucsd.edu/thredds/dodsC/cdip/model/MOP_alongshore/B0391_forecast.nc.ascii?waveTime[0:1:79],waveHs[0:1:79],waveTp[0:1:79]";
     const response2 = await fetch(url, { method: "GET" });
     const data2 = await response2.text();
@@ -334,8 +617,7 @@ export default function HomePage() {
     setWaveDates(dates);
 
     url =
-      "https://stormy-cove-43362.herokuapp.com/" +
-      //"https://cors-anywhere.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
+      "https://stormy-cove-43362.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
       "https://marine.weather.gov/MapClick.php?lat=34.4001&lon=-119.8461&FcstType=digitalDWML";
     const response3 = await fetch(url, { method: "GET" });
     const str = await response3.text();
@@ -408,8 +690,6 @@ export default function HomePage() {
     a = 0;
     for (var t = 0; t < 30; t++) {
       let predTime = new Date(times[t].textContent);
-      //console.log(predTime.toString())
-      //console.log(parseInt(currWind.textContent))
       let drop;
       if (
         predTime.getTime() > chartData2[r - 1].x &&
@@ -688,13 +968,10 @@ export default function HomePage() {
 
   return (
     <div className={styles.page}>
-      {date === "" ||
-      wave === "" ||
-      wind === "" ||
-      // temp === "" ||
-      tide === "" ||
-      hi === "" ||
-      lo === "" ? (
+      {date === "" || wave === "" || wind === "" || temp === "" ? ( //||
+        // tide === "" ||
+        //hi === "" ||
+        //lo === ""
         <div>
           <FontAwesomeIcon className={styles.iconsLoading} icon={faSync} />
           <p>Loading Ocean Report</p>
@@ -734,6 +1011,9 @@ export default function HomePage() {
             windLabels={windDates}
             tempLabels={tempDates}
             tideLabels={tideDates}
+            sun={sunPoints}
+            sun2={sunPoints2}
+            sun3={sunPoints3}
           />
           <p className={styles.disclaimer}>
             *The UCSB SPOT Wave Buoy is located off 3/4 of a mile off of Campus
