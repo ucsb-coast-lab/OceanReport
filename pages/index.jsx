@@ -245,9 +245,8 @@ export default function HomePage() {
         data2.results.sunrise.length - 2,
         data2.results.sunrise.length
       ) === "PM"
-    ) {
+    )
       date.setHours(date.getHours() + 12);
-    }
     date.setMinutes(
       data2.results.sunrise.substr(
         data2.results.sunrise.indexOf(":") + 1,
