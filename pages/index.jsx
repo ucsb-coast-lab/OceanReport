@@ -35,6 +35,7 @@ export default function HomePage() {
   useEffect(() => {
     if (date === "") getReport();
   });
+
   const getReport = async () => {
     const response = await fetch(`/api`, { method: "GET" });
     const data = await response.json();
