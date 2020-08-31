@@ -6,10 +6,6 @@ import styles from "../styles/style.module.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSync } from "@fortawesome/free-solid-svg-icons";
 
-// app.get("/", (req, res) => {
-//   return res.send("Hello");
-// });
-
 export default function HomePage() {
   const [date, setDate] = useState("");
   const [wave, setWave] = useState("");
