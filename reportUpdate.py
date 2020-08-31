@@ -1,4 +1,5 @@
 from IPython.core.interactiveshell import InteractiveShell
+from pymongo import MongoClient
 
 import requests       # For grabbing data via API
 import json           # For parsing strings in json format
@@ -28,10 +29,9 @@ def print_time_date():
 	print(f'tomorrow: {tomorrow:%Y}{tomorrow:%m}{tomorrow:%d}')
 	return
 
-# Details for the Sofar API at: https://spotter.sofarocean.com/api
 def wind_wave_data(spotID, reports): #Get recent wave and wind data from a SPOTTER.
 	# Assemble the wave report
-	with open(str(Path().absolute()) + '/olas/spot_token.json', 'r') as file: # Load credentials from json file
+	with open(str(Path().absolute()) + '/spot_token.json', 'r') as file: # Load credentials from json file
 
 	    token = json.load(file)
 	parameters = {'spotterId': spotID, 'limit': '0', 'includeWindData':'true'}
@@ -55,20 +55,16 @@ def wind_wave_data(spotID, reports): #Get recent wave and wind data from a SPOTT
 
 	# Assemble the wind report
 	if (windspd < 2):
-    		wind_str = f'\U0001F32C Calm'	
+    		wind_str = f'Calm'	
 	else: 
-    		wind_str = f'\U0001F32C From the {winddir} at {windspd} kts'
+    		wind_str = f'From the {winddir} at {windspd} kts'
 	wind_report = [wind_str]  # brackets let's us add mulitple entries (cells in matlab-speak)
 	data = [
-	'',    
-    	f'\U0000231A {spot_pst:%A}, {spot_pst:%B} {spot_pst.day} at {spot_pst:%I}:{spot_pst:%M} {spot_pst:%p}',
-    	'',    
-    	f'\U0001F30A {Hs:.1f} ft @ {Tp:.0f} secs from {theta:.0f}º',
+    	f'{spot_pst:%A}, {spot_pst:%B} {spot_pst.day} at {spot_pst:%I}:{spot_pst:%M} {spot_pst:%p}',  
+    	f'{Hs:.1f} ft @ {Tp:.0f} secs from {theta:.0f}º',
     	*wind_report]
 	reports.extend(data)
 
-# Details for NOAA tide API at: https://tidesandcurrents.noaa.gov/api/
-# This will always return at least four responses. 
 def tide_data(reports): #Get a tide prediction from NOAA
     parameters = {'station':'9411340',
 	          'begin_date':'20191107', 
@@ -96,13 +92,7 @@ def tide_data(reports): #Get a tide prediction from NOAA
             if (n_pred < 1):
                 pnext = pheight
     
-            n_pred = n_pred + 1 # Limit how many predictions we print
-            if prediction['type'] == 'L':
-	        #next_tide = 'LOW'
-                next_tide = '\U0001F1F1'
-            else: 
-	        #next_tide = 'HIGH'
-                next_tide = '\U0001F1ED'
+            n_pred = n_pred + 1 
 	        
             if (round(fromnow.seconds/3600,1) > 1):
                 plural = 's'
@@ -110,10 +100,10 @@ def tide_data(reports): #Get a tide prediction from NOAA
                 plural = ''
 		    
             pt = prediction_time.astimezone(pytz.timezone("America/Los_Angeles"))
-            tide_str = f'{next_tide} {pheight:.1f} ft @ {pt:%I}:{pt:%M} {pt:%p}'
-	    #tide_str = f'The next {next_tide} is predicted to be {pheight:.1f} feet {fromnow.seconds/3600:.0f} hour{plural} from now'
-            #print(tide_str) # Check it
-	    # Print for later
+            hilo = 'LO'
+            if(prediction['type'] == 'H'):
+                hilo = 'HI'
+            tide_str = f'{hilo}: {pheight:.1f} ft @ {pt:%I}:{pt:%M} {pt:%p}'
             tide_predictions = tide_predictions + [tide_str]
 								    
     parameters = {'station':'9411340',
@@ -131,40 +121,59 @@ def tide_data(reports): #Get a tide prediction from NOAA
     tide_height = float(noaa_latest['data'][0]['v'])
     tide_time = datetime.strptime(noaa_latest['data'][0]['t'],'%Y-%m-%d %H:%M')
     tide_time = tide_time.replace(tzinfo=timezone.utc)
-    
+
+    rising = True
     if (pnext > tide_height):
         tideis =  'and rising'   #'\U0001F4C8'
     else:
         tideis = 'and falling'  #'\U0001F4C9' 
+        rising = False
     
     tide_age = rightnow - tide_time
     
-    #credits = 'More wave data at https://ucsbcoastlab.org/buoy/'
-    #credits = 'Wave history at https://coastlab.sofarocean.com'
-    credits = 'Wave history at https://coastlab.eri.ucsb.edu/ucsb-ocean-report/'
-    
-    #spot_time = datetime.strptime(latest['waves'][-1]['timestamp'][:-1],'%Y-%m-%dT%H:%M:%S.%f') #Parse timestamp
-    #spot_time = spot_time.replace(tzinfo=timezone.utc) #localize
-    #spot_pst = spot_time.astimezone(pytz.timezone("America/Los_Angeles"))
     data2=[
-        f'\U00003030 {tide_height:.1f} ft {tideis}',
-        *tide_predictions,
-        '',
-        credits]
+        f'Tide: {tide_height:.1f} ft {tideis}',
+        *tide_predictions]
     reports.extend(data2)
 
+    return rising
 
-
-
+def temp_data(reports):
+    before = rightnow - timedelta(days=2)
+    daysAgo = before.strftime("%Y")+"-"+before.strftime("%m")+"-"+before.strftime("%d")
+    today = rightnow.strftime("%Y")+"-"+rightnow.strftime("%m")+"-"+rightnow.strftime("%d")
+    url = "https://erddap.sccoos.org/erddap/tabledap/autoss.json?time%2Ctemperature&station=%22stearns_wharf%22&time%3E=" + daysAgo + "T00%3A00%3A00Z&time%3C" + today + "T23%3A59%3A59Z&orderBy(%22time%22)"
+    response = requests.get(url).json()
+    recent = len(response['table']['rows'])-1
+    far = response['table']['rows'][recent][1] * (9.0 / 5.0) + 32
+    temp = [f'Water Temp: {far:.1f} ºF']
+    reports.extend(temp)
+    
+    
 #MAIN
 InteractiveShell.ast_node_interactivity = "all" #Set the shell to show all output, instead of last result
 
 spotID = 'SPOT-0186' 
 rightnow = datetime.now(timezone.utc) # We need the current time for placing some observations in context. 
 tomorrow = rightnow + timedelta(days=1) # Also, we'll use 'tomorrow' to get the tide predictions
-print_time_date()
 
 reports=[]
 wind_wave_data(spotID, reports)
-tide_data(reports)
+rising = tide_data(reports)
+temp_data(reports)
 print(reports)
+
+mongo_client = MongoClient('mongodb+srv://admin:A5PfXpnUwdPAsSet@cluster0-q6lfj.mongodb.net/test?retryWrites=true&w=majority')
+db = mongo_client["COASTLAB"]
+col = db["Reports"]
+col.update_one(
+    {}, {"$set" : {
+        "date" : reports[0],
+        "wave" : reports[1],
+        "wind" : reports[2],
+        "tide" : reports[3],
+        "hi" : reports[4],
+        "lo" : reports[5],
+        "rising" : rising,
+        "temp" : reports[6]
+    }})
