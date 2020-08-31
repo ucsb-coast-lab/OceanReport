@@ -8,8 +8,6 @@ import pytz
 
 from pathlib import Path #Need the path for reading in the json file when this is run as a script via cron
 
-import tweepy #Twitter
-
 #FUNCTIONS
 def convertTheta_to_Cardinal(theta):
     if (theta >= 45 and theta < 135):
@@ -148,8 +146,23 @@ def temp_data(reports):
     far = response['table']['rows'][recent][1] * (9.0 / 5.0) + 32
     temp = [f'Water Temp: {far:.1f} ºF']
     reports.extend(temp)
+
+def getWaveData(waveData, waveData2, waveData3, waveDates):
     
+
+def getWindData(windData, windData2, windDates):
+
     
+def getPeriodData(periodData, periodData2, periodDates):
+
+
+def getTempData(tempData, tempDates):
+
+
+def getTideData(tideData, tideData2, tideDates):
+
+
+
 #MAIN
 InteractiveShell.ast_node_interactivity = "all" #Set the shell to show all output, instead of last result
 
@@ -163,6 +176,31 @@ rising = tide_data(reports)
 temp_data(reports)
 print(reports)
 
+waveData = []
+waveData2 = []
+waveData3 = []
+waveDates = []
+getWaveData(waveData, waveData2, waveData3, waveDates)
+
+windData = []
+windData2 = []
+windDates = []
+getWindData(windData, windData2, windDates)
+
+periodData = []
+periodData2 = []
+periodDates = []
+getPeriodData(periodData, periodData2, periodDates)
+
+tempData = []
+tempDates = []
+getTempData(tempData, tempDates)
+
+tideData = []
+tideData2 = []
+tideDates = []
+getTideData(tideData, tideData2, tideDates)
+
 mongo_client = MongoClient('mongodb+srv://admin:A5PfXpnUwdPAsSet@cluster0-q6lfj.mongodb.net/test?retryWrites=true&w=majority')
 db = mongo_client["COASTLAB"]
 col = db["Reports"]
@@ -175,5 +213,20 @@ col.update_one(
         "hi" : reports[4],
         "lo" : reports[5],
         "rising" : rising,
-        "temp" : reports[6]
-    }})
+        "temp" : reports[6],
+        # "waveChart" : waveData,
+        # "waveChart2" : waveData2,
+        # "waveChart3" : waveData3,
+        # "waveDates" : waveDates,
+        # "windChart" : windData,
+        # "windChart2" : windData2,
+        # "windDates" : windDates,
+        # "periodChart" : periodData,
+        # "perioddChart2" : periodData2,
+        # "perioddDates" : periodDates,
+        # "tempChart" : tempData,
+        # "tempDates" : tempDates,
+        # "tideChart" : tideData,
+        # "tideChart2" : tideData2,
+        # "tideDates" : tideDates
+}})
