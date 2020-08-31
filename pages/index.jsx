@@ -45,6 +45,7 @@ export default function HomePage() {
   let day = current.getDate();
   let d = "00" + day;
   d = d.substr(d.length - 2);
+
   const next = new Date(current);
   next.setDate(next.getDate() + 1);
   let year2 = next.getFullYear();
@@ -54,6 +55,17 @@ export default function HomePage() {
   let day2 = next.getDate();
   let d2 = "00" + day2;
   d2 = d2.substr(d2.length - 2);
+
+  const next2 = new Date(current);
+  next2.setDate(next2.getDate() + 2);
+  let year4 = next2.getFullYear();
+  let month4 = next2.getMonth() + 1;
+  let m4 = "00" + month4;
+  m4 = m4.substr(m4.length - 2);
+  let day4 = next2.getDate();
+  let d4 = "00" + day4;
+  d4 = d4.substr(d4.length - 2);
+
   const prev = new Date(current);
   prev.setDate(prev.getDate() - 2);
   let year3 = prev.getFullYear();
@@ -91,6 +103,9 @@ export default function HomePage() {
           q++;
           d++;
         }
+      }
+      if (shadePoints.length === 6) {
+        shadePoints[6] = 145;
       }
       setSunPoints(shadePoints);
     }
@@ -144,6 +159,9 @@ export default function HomePage() {
           q++;
           d++;
         }
+      }
+      if (shadePoints3.length === 6) {
+        shadePoints3[6] = 722;
       }
       setSunPoints3(shadePoints3);
     }
@@ -792,6 +810,7 @@ export default function HomePage() {
 
   const setTideData = async () => {
     let tomorrow = year2.toString() + m2 + d2;
+    let twoAhead = year4.toString() + m4 + d4;
     let daysAgo = year3.toString() + m3 + d3;
 
     var url =
@@ -908,7 +927,7 @@ export default function HomePage() {
       "&begin_date=" +
       daysAgo +
       "&end_date=" +
-      tomorrow;
+      twoAhead;
     const res = await fetch(url, { method: "GET" });
     const data3 = await res.json();
 
@@ -967,10 +986,13 @@ export default function HomePage() {
 
   return (
     <div className={styles.page}>
-      {date === "" || wave === "" || wind === "" || temp === "" ? ( //||
-        // tide === "" ||
-        //hi === "" ||
-        //lo === ""
+      {date === "" ||
+      wave === "" ||
+      wind === "" ||
+      temp === "" ||
+      tide === "" ||
+      hi === "" ||
+      lo === "" ? (
         <div>
           <FontAwesomeIcon className={styles.iconsLoading} icon={faSync} />
           <p>Loading Ocean Report</p>
