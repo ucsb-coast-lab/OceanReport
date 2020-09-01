@@ -171,8 +171,8 @@ export default function HomePage() {
   const update = () => {
     getRiseSet();
     setWindWave();
-    //setTempData();
-    //setTideData();
+    setTempData();
+    setTideData();
   };
 
   function round(number, precision) {
@@ -809,47 +809,47 @@ export default function HomePage() {
     setTempChart(tempData);
     i = 720;
 
-    var url =
-      "https://stormy-cove-43362.herokuapp.com/" +
-      "http://west.rssoffice.com:8080/thredds/dodsC/roms/CA3km-forecast/CA/ca_subCA_fcst_" +
-      year.toString() +
-      m +
-      d +
-      "03.nc.ascii?temp%5B0:1:21%5D%5B0:1:0%5D%5B103:1:103%5D%5B255:1:255%5D";
-    const response2 = await fetch(url, { method: "GET" });
-    const data2 = await response2.text();
-    console.log(data2);
-    let tempData2 = [];
-    tempData2[i] = tempData[i];
-    let lastTime = new Date(tempData[i].x);
-    i++;
-    let temps = data2.substring(data2.indexOf(","));
-    for (var k = 2; k < 24; k++) {
-      let newTemp = temps.substring(2, temps.indexOf("\n"));
-      console.log(newTemp);
-      temps = temps.substring(temps.indexOf("\n"));
-      temps = temps.substring(temps.indexOf(","));
-      if (lastTime.getHours() < k) {
-        let t = new Date(current);
-        t.setHours(k);
-        t.setMinutes(0);
-        t.setSeconds(0);
-        t.setMilliseconds(0);
-        tempData2[i] = {
-          x: t.getTime(),
-          y: parseInt(newTemp),
-        };
-        let drop = (parseInt(newTemp) - parseInt(nextNewTemp)) / 15;
-        for (var r = 1; r < 16; r++) {
-          t.setMinutes(t.getMinutes() + 4);
-          chartData3[i + r] = {
-            x: t.getTime(),
-            y: parseInt(newTemp) - r * drop,
-          };
-        }
-        i += 15;
-      }
-    }
+    // var url =
+    //   "https://stormy-cove-43362.herokuapp.com/" +
+    //   "http://west.rssoffice.com:8080/thredds/dodsC/roms/CA3km-forecast/CA/ca_subCA_fcst_" +
+    //   year.toString() +
+    //   m +
+    //   d +
+    //   "03.nc.ascii?temp%5B0:1:21%5D%5B0:1:0%5D%5B103:1:103%5D%5B255:1:255%5D";
+    // const response2 = await fetch(url, { method: "GET" });
+    // const data2 = await response2.text();
+    // console.log(data2);
+    // let tempData2 = [];
+    // tempData2[i] = tempData[i];
+    // let lastTime = new Date(tempData[i].x);
+    // i++;
+    // let temps = data2.substring(data2.indexOf(","));
+    // for (var k = 2; k < 24; k++) {
+    //   let newTemp = temps.substring(2, temps.indexOf("\n"));
+    //   console.log(newTemp);
+    //   temps = temps.substring(temps.indexOf("\n"));
+    //   temps = temps.substring(temps.indexOf(","));
+    //   if (lastTime.getHours() < k) {
+    //     let t = new Date(current);
+    //     t.setHours(k);
+    //     t.setMinutes(0);
+    //     t.setSeconds(0);
+    //     t.setMilliseconds(0);
+    //     tempData2[i] = {
+    //       x: t.getTime(),
+    //       y: parseInt(newTemp),
+    //     };
+    //     let drop = (parseInt(newTemp) - parseInt(nextNewTemp)) / 15;
+    //     for (var r = 1; r < 16; r++) {
+    //       t.setMinutes(t.getMinutes() + 4);
+    //       chartData3[i + r] = {
+    //         x: t.getTime(),
+    //         y: parseInt(newTemp) - r * drop,
+    //       };
+    //     }
+    //     i += 15;
+    //   }
+    // }
   };
 
   const setTideData = async () => {
@@ -1030,11 +1030,13 @@ export default function HomePage() {
 
   return (
     <div className={styles.page}>
-      {date === "" || wave === "" || wind === "" ? ( //||
-        //temp === "" ||
-        //tide === "" ||
-        //hi === "" ||
-        //lo === "" ? (
+      {date === "" ||
+      wave === "" ||
+      wind === "" ||
+      temp === "" ||
+      tide === "" ||
+      hi === "" ||
+      lo === "" ? (
         <div>
           <FontAwesomeIcon className={styles.iconsLoading} icon={faSync} />
           <p>Loading Ocean Report</p>
