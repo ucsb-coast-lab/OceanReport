@@ -172,7 +172,7 @@ export default function HomePage() {
     getRiseSet();
     setWindWave();
     //setTempData();
-    setTideData();
+    //setTideData();
   };
 
   function round(number, precision) {
@@ -1030,13 +1030,11 @@ export default function HomePage() {
 
   return (
     <div className={styles.page}>
-      {date === "" ||
-      wave === "" ||
-      wind === "" ||
-      //temp === "" ||
-      tide === "" ||
-      hi === "" ||
-      lo === "" ? (
+      {date === "" || wave === "" || wind === "" ? ( //||
+        //temp === "" ||
+        //tide === "" ||
+        //hi === "" ||
+        //lo === "" ? (
         <div>
           <FontAwesomeIcon className={styles.iconsLoading} icon={faSync} />
           <p>Loading Ocean Report</p>
