@@ -102,6 +102,16 @@ export default function Graphs(props) {
         pointRadius: 0.2,
         data: props.tempData,
       },
+      {
+        label: "ROMS (ºF)",
+        fill: false,
+        lineTension: 0.8,
+        backgroundColor: "rgba(255,0,0,1)",
+        borderColor: "rgba(255,0,0,1)",
+        borderWidth: 1,
+        pointRadius: 0.2,
+        data: props.tempData2,
+      },
     ],
   };
   const tide = {
