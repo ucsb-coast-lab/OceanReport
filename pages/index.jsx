@@ -113,7 +113,11 @@ export default function HomePage() {
   }, [sunShading, waveChart, waveChart2]);
 
   useEffect(() => {
-    if (sunShading.length !== 0 && tempChart.length !== 0) {
+    if (
+      sunShading.length !== 0 &&
+      tempChart.length !== 0 &&
+      tempChart2.length !== 0
+    ) {
       let shadePoints2 = [];
       let q = 0;
       let d = 1;
@@ -129,9 +133,19 @@ export default function HomePage() {
           d++;
         }
       }
+      for (u = u; u < tempChart2.length; u++) {
+        if (tempChart2[u].x > sunShading[d]) {
+          shadePoints2[q] = u;
+          q++;
+          d++;
+        }
+      }
+      if (shadePoints2.length === 6) {
+        shadePoints2[6] = 1081;
+      }
       setSunPoints2(shadePoints2);
     }
-  }, [sunShading, tempChart]);
+  }, [sunShading, tempChart, tempChart2]);
 
   useEffect(() => {
     if (
@@ -793,7 +807,7 @@ export default function HomePage() {
       ) {
         tempData[i] = {
           x: time.getTime(),
-          y: round(sample[1] * (9.0 / 5.0) + 32, 1),
+          y: round(sample[1] * (9.0 / 5.0) + 32, 2),
         };
         tempDate[i] =
           time.toString().substring(4, 10) +
@@ -802,54 +816,104 @@ export default function HomePage() {
         i++;
       }
     });
-    let extraDates = new Array(360);
-    extraDates.fill("");
-    tempDate = tempDate.concat(extraDates);
-    setTempDates(tempDate);
     setTempChart(tempData);
-    i = 720;
 
-    // var url =
-    //   "https://stormy-cove-43362.herokuapp.com/" +
-    //   "http://west.rssoffice.com:8080/thredds/dodsC/roms/CA3km-forecast/CA/ca_subCA_fcst_" +
-    //   year.toString() +
-    //   m +
-    //   d +
-    //   "03.nc.ascii?temp%5B0:1:21%5D%5B0:1:0%5D%5B103:1:103%5D%5B255:1:255%5D";
-    // const response2 = await fetch(url, { method: "GET" });
-    // const data2 = await response2.text();
-    // console.log(data2);
-    // let tempData2 = [];
-    // tempData2[i] = tempData[i];
-    // let lastTime = new Date(tempData[i].x);
-    // i++;
-    // let temps = data2.substring(data2.indexOf(","));
-    // for (var k = 2; k < 24; k++) {
-    //   let newTemp = temps.substring(2, temps.indexOf("\n"));
-    //   console.log(newTemp);
-    //   temps = temps.substring(temps.indexOf("\n"));
-    //   temps = temps.substring(temps.indexOf(","));
-    //   if (lastTime.getHours() < k) {
-    //     let t = new Date(current);
-    //     t.setHours(k);
-    //     t.setMinutes(0);
-    //     t.setSeconds(0);
-    //     t.setMilliseconds(0);
-    //     tempData2[i] = {
-    //       x: t.getTime(),
-    //       y: parseInt(newTemp),
-    //     };
-    //     let drop = (parseInt(newTemp) - parseInt(nextNewTemp)) / 15;
-    //     for (var r = 1; r < 16; r++) {
-    //       t.setMinutes(t.getMinutes() + 4);
-    //       chartData3[i + r] = {
-    //         x: t.getTime(),
-    //         y: parseInt(newTemp) - r * drop,
-    //       };
-    //     }
-    //     i += 15;
-    //   }
-    // }
+    var url =
+      "https://stormy-cove-43362.herokuapp.com/" +
+      "http://west.rssoffice.com:8080/thredds/dodsC/roms/CA3km-forecast/CA/ca_subCA_fcst_" +
+      year.toString() +
+      m +
+      d +
+      "03.nc.ascii?temp%5B0:1:45%5D%5B0:1:0%5D%5B103:1:103%5D%5B255:1:255%5D";
+    const response2 = await fetch(url, { method: "GET" });
+    const data2 = await response2.text();
+
+    let tempData2 = [];
+    tempData2[i - 1] = tempData[i - 1];
+    let lastTemp = (tempData2[i - 1].y - 32) * (5.0 / 9.0);
+    let lastTime = new Date(tempData2[i - 1].x);
+    let temps = data2.substring(data2.indexOf(","));
+    let count = 0;
+
+    for (var k = 3; k < 49; k++) {
+      let newTemp = temps.substring(2, temps.indexOf("\n"));
+      temps = temps.substring(temps.indexOf("\n"));
+      temps = temps.substring(temps.indexOf(","));
+      if (count < 24 && lastTime.getHours() < k) {
+        count++;
+        let t = new Date(current);
+        t.setHours(k - 1);
+        t.setMinutes(0);
+        t.setSeconds(0);
+        t.setMilliseconds(0);
+        if (count === 1) {
+          t.setMinutes(lastTime.getMinutes());
+          let divs = parseInt((60 - lastTime.getMinutes()) / 4) + 1;
+          let drop = (parseFloat(lastTemp) - parseFloat(newTemp)) / divs;
+          for (var g = 1; g < divs; g++) {
+            t.setMinutes(t.getMinutes() + 4);
+            tempData2[i] = {
+              x: t.getTime(),
+              y: round((parseFloat(lastTemp) - g * drop) * (9.0 / 5.0) + 32, 2),
+            };
+            tempDate[i] =
+              t.toString().substring(4, 10) +
+              ", " +
+              timeConv(t.toString().substring(16, 21));
+            i++;
+          }
+        } else {
+          let drop = (parseFloat(lastTemp) - parseFloat(newTemp)) / 15;
+          for (var r = 1; r < 15; r++) {
+            t.setMinutes(t.getMinutes() + 4);
+            tempData2[i] = {
+              x: t.getTime(),
+              y: round((parseFloat(lastTemp) - r * drop) * (9.0 / 5.0) + 32, 2),
+            };
+            tempDate[i] =
+              t.toString().substring(4, 10) +
+              ", " +
+              timeConv(t.toString().substring(16, 21));
+            i++;
+          }
+        }
+        t.setHours(k);
+        if (k > 24) {
+          t.setDate(t.getDate() - 1);
+        }
+        t.setMinutes(0);
+        tempData2[i] = {
+          x: t.getTime(),
+          y: round(parseFloat(newTemp) * (9.0 / 5.0) + 32, 2),
+        };
+        tempDate[i] =
+          t.toString().substring(4, 10) +
+          ", " +
+          timeConv(t.toString().substring(16, 21));
+        i++;
+        lastTemp = newTemp;
+        if (count === 24) {
+          let extras = parseInt(lastTime.getMinutes() / 4);
+          newTemp = temps.substring(2, temps.indexOf("\n"));
+          let drop = (parseFloat(lastTemp) - parseFloat(newTemp)) / 15;
+          for (var j = 1; j <= extras; j++) {
+            t.setMinutes(t.getMinutes() + 4);
+            tempData2[i] = {
+              x: t.getTime(),
+              y: round((parseFloat(lastTemp) - j * drop) * (9.0 / 5.0) + 32, 2),
+            };
+            tempDate[i] =
+              t.toString().substring(4, 10) +
+              ", " +
+              timeConv(t.toString().substring(16, 21));
+            i++;
+          }
+        }
+      }
+    }
+    setTempDates(tempDate);
+    setTempChart2(tempData2);
+    //console.log(tempData2);
   };
 
   const setTideData = async () => {
@@ -1070,7 +1134,7 @@ export default function HomePage() {
             periodData={periodChart}
             periodData2={periodChart2}
             tempData={tempChart}
-            tempData2={tempChart}
+            tempData2={tempChart2}
             tideData={tideChart}
             tideData2={tideChart2}
             waveLabels={waveDates}
