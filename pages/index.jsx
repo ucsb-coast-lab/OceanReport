@@ -1199,6 +1199,16 @@ export default function HomePage() {
               here
             </a>
           </p>
+          <p className={styles.disclaimer}>
+            Predictions for water temp come from the California ROMS forecast
+            model made by UCLA. To see more information click{" "}
+            <a
+              target="_blank"
+              href="https://catalog.data.gov/dataset/california-roms-forecast-3km"
+            >
+              here
+            </a>
+          </p>
         </div>
       )}
     </div>
