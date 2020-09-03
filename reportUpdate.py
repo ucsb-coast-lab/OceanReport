@@ -148,18 +148,26 @@ def temp_data(reports):
     reports.extend(temp)
 
 def getWaveData(waveData, waveData2, waveData3, waveDates):
+    with open(str(Path().absolute()) + '/spot_token.json', 'r') as file: 
+        token = json.load(file)
+    parameters = {'spotterId': spotID, 'limit': '96', 'includeWindData':'true'}
+    response = requests.get('https://api.sofarocean.com/api/latest-data', 
+	    headers={'token': token["SPOT_TOKEN"]},
+        params=parameters)
+    latest = response.json()
+    waves = latest['data']
+    print(waves)
+
+# def getWindData(windData, windData2, windDates):
+
     
-
-def getWindData(windData, windData2, windDates):
-
-    
-def getPeriodData(periodData, periodData2, periodDates):
+# def getPeriodData(periodData, periodData2, periodDates):
 
 
-def getTempData(tempData, tempDates):
+# def getTempData(tempData, tempDates):
 
 
-def getTideData(tideData, tideData2, tideDates):
+# def getTideData(tideData, tideData2, tideDates):
 
 
 
@@ -182,24 +190,24 @@ waveData3 = []
 waveDates = []
 getWaveData(waveData, waveData2, waveData3, waveDates)
 
-windData = []
-windData2 = []
-windDates = []
-getWindData(windData, windData2, windDates)
+# windData = []
+# windData2 = []
+# windDates = []
+# getWindData(windData, windData2, windDates)
 
-periodData = []
-periodData2 = []
-periodDates = []
-getPeriodData(periodData, periodData2, periodDates)
+# periodData = []
+# periodData2 = []
+# periodDates = []
+# getPeriodData(periodData, periodData2, periodDates)
 
-tempData = []
-tempDates = []
-getTempData(tempData, tempDates)
+# tempData = []
+# tempDates = []
+# getTempData(tempData, tempDates)
 
-tideData = []
-tideData2 = []
-tideDates = []
-getTideData(tideData, tideData2, tideDates)
+# tideData = []
+# tideData2 = []
+# tideDates = []
+# getTideData(tideData, tideData2, tideDates)
 
 mongo_client = MongoClient('mongodb+srv://admin:A5PfXpnUwdPAsSet@cluster0-q6lfj.mongodb.net/test?retryWrites=true&w=majority')
 db = mongo_client["COASTLAB"]
