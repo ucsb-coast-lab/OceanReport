@@ -8,7 +8,7 @@
   - Used to ping the heroku app every 30 minutes to wake up the dyno
   - [cron-jobs website](https://cron-job.org/en/)
   - Picture of setup (all days and months are selected, hours 5-20 are seleted and minutes 0 and 30 are selected):
-    ![cron-job form](/images/cron.png)
+    ![cron-job form](/images/Screen Shot 2020-09-05 at 10.33.45 AM.png)
 - Maybe: MongoDB Atlas
   - used in the test branch to upload the lastest data. A python script called reportUpdate.py can be run by a crontab or manually to update the mongodb data base every so often and then the test branch website will take the data from this data base which will decrease loading time, testing shows by about 1 second. 
 
