@@ -3,9 +3,11 @@
 ## Extrernal Accounts
 - Heroku
   - seperate dynos for test branch(svQuicker) and main report(master branch)
-  - Heroku free dynos must sleep an avaerage of 7 hours a day (read here https://blog.heroku.com/app_sleeping_on_heroku) so it is activetly woken up every 30 minutes from 5am-9pm. Anytime between 9pm and 5am it will take longer to load the site as it has to have a 10-20s wake up delay unless someone else has pinged the report in the last 30 minutes. 
+  - Heroku free dynos must sleep an avaerage of 7 hours a day [(read more about it here)](https://blog.heroku.com/app_sleeping_on_heroku) so it is activetly woken up every 30 minutes from 5am-9pm. Anytime between 9pm and 5am it will take longer to load the site as it has to have a 10-20s wake up delay unless someone else has pinged the report in the last 30 minutes. 
 - Cron-jobs
-  -used to ping report every 30 minutes to wake up the dyno
+  - Used to ping the heroku app every 30 minutes to wake up the dyno
+  - [cron-jobs website](https://cron-job.org/en/)
+  - 
 - Maybe: MongoDB Atlas
   - used in the test branch to upload the lastest data. A python script (reportUpdate.py) can be run by a crontab to update the mongodb data base every so often and then the test branch will take the data from this data base which will increase the load speed, testing shows by about 1 second. 
 
