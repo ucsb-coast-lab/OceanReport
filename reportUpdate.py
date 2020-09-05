@@ -151,12 +151,15 @@ def getWaveData(waveData, waveData2, waveData3, waveDates):
     with open(str(Path().absolute()) + '/spot_token.json', 'r') as file: 
         token = json.load(file)
     parameters = {'spotterId': spotID, 'limit': '96', 'includeWindData':'true'}
-    response = requests.get('https://api.sofarocean.com/api/latest-data', 
+    response = requests.get('https://api.sofarocean.com/api/wave-data', 
 	    headers={'token': token["SPOT_TOKEN"]},
         params=parameters)
     latest = response.json()
-    waves = latest['data']
+    waves = latest['data']['waves']
     print(waves)
+    for wave in waves:
+        print(wave['timestamp'])
+        # waveTime = datetime.set(wave.timestamp)
 
 # def getWindData(windData, windData2, windDates):
 
