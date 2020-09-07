@@ -8,6 +8,7 @@ This applictaion compiles ocean data from stations and bouys in the Southern Cal
     - Test application website url: https://ucsb-ocean-report-qa.herokuapp.com/
   - Heroku's free dynos must sleep an avaerage of 7 hours a day [(read more about it here)](https://blog.heroku.com/app_sleeping_on_heroku) so it is activetly woken up every 30 minutes from 5am-9pm. Anytime between 9pm and 5am it will take longer to load the site as it has to have a 10-20s wake up delay unless someone else has pinged the report in the last 30 minutes. 
   - Currently both websites are being hosted on vanbrocklin@ucsb.edu's account. This can be chnaged in the future by creating another heroku account and then creating two new apps for each webiste. Setup instructions? 
+  - A third applictaion is also run on heroku and it is used to bypass the cors fetch block on certain requests. If a requests fails because of a cors block then adding the url of this webiste before the request will allow it to bypass the cors system. To learn more about this issue or for information on how to set up your own cors proxy refer to [this page](https://medium.com/@dtkatz/3-ways-to-fix-the-cors-error-and-how-access-control-allow-origin-works-d97d55946d9). Currently the url for the cors proxy is https://stormy-cove-43362.herokuapp.com/. 
 ### Cron-jobs
   - Used to ping the heroku app every 30 minutes to wake up the dyno
   - [cron-jobs website](https://cron-job.org/en/)
