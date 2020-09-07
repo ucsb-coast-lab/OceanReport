@@ -68,12 +68,22 @@ export default function HomePage() {
   d4 = d4.substr(d4.length - 2);
 
   const prev = new Date(current);
-  prev.setDate(prev.getDate() - 2);
-  let year3 = prev.getFullYear();
-  let month3 = prev.getMonth() + 1;
+  prev.setDate(prev.getDate() - 1);
+  let year5 = prev.getFullYear();
+  let month5 = prev.getMonth() + 1;
+  let m5 = "00" + month5;
+  m5 = m5.substr(m5.length - 2);
+  let day5 = prev.getDate();
+  let d5 = "00" + day5;
+  d5 = d5.substr(d5.length - 2);
+
+  const prev2 = new Date(current);
+  prev2.setDate(prev2.getDate() - 2);
+  let year3 = prev2.getFullYear();
+  let month3 = prev2.getMonth() + 1;
   let m3 = "00" + month3;
   m3 = m3.substr(m3.length - 2);
-  let day3 = prev.getDate();
+  let day3 = prev2.getDate();
   let d3 = "00" + day3;
   d3 = d3.substr(d3.length - 2);
 
@@ -821,10 +831,10 @@ export default function HomePage() {
     var url =
       "https://stormy-cove-43362.herokuapp.com/" +
       "http://west.rssoffice.com:8080/thredds/dodsC/roms/CA3km-forecast/CA/ca_subCA_fcst_" +
-      year.toString() +
-      m +
-      d +
-      "03.nc.ascii?temp%5B0:1:45%5D%5B0:1:0%5D%5B103:1:103%5D%5B255:1:255%5D";
+      year5.toString() +
+      m5 +
+      d5 +
+      "03.nc.ascii?temp%5B0:1:69%5D%5B0:1:0%5D%5B103:1:103%5D%5B255:1:255%5D";
     const response2 = await fetch(url, { method: "GET" });
     const data2 = await response2.text();
 
@@ -832,10 +842,10 @@ export default function HomePage() {
     tempData2[i - 1] = tempData[i - 1];
     let lastTemp = (tempData2[i - 1].y - 32) * (5.0 / 9.0);
     let lastTime = new Date(tempData2[i - 1].x);
-    let temps = data2.substring(data2.indexOf(","));
+    let temps = data2.substring(data2.indexOf("[21][0][0],") + 10);
     let count = 0;
 
-    for (var k = 3; k < 49; k++) {
+    for (var k = 0; k < 49; k++) {
       let newTemp = temps.substring(2, temps.indexOf("\n"));
       temps = temps.substring(temps.indexOf("\n"));
       temps = temps.substring(temps.indexOf(","));
