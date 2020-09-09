@@ -1,20 +1,20 @@
-import React, { useState, useEffect } from "react";
-import fetch from "isomorphic-unfetch";
-import Report from "../components/report.jsx";
-import Graphs from "../components/graphs.jsx";
-import styles from "../styles/style.module.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSync } from "@fortawesome/free-solid-svg-icons";
+import React, { useState, useEffect } from "react"; //Used to set State variables
+import fetch from "isomorphic-unfetch"; //Used to request data from external sources
+import Report from "../components/report.jsx"; //Report component
+import Graphs from "../components/graphs.jsx"; //Graph component
+import styles from "../styles/style.module.css"; //style sheet for layout
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; //Used to add icons
+import { faSync } from "@fortawesome/free-solid-svg-icons"; //Used to add icons
 
 export default function HomePage() {
-  const [date, setDate] = useState("");
-  const [wave, setWave] = useState("");
-  const [wind, setWind] = useState("");
-  const [temp, setTemp] = useState("");
+  const [date, setDate] = useState(""); //Use state variables are React elements
+  const [wave, setWave] = useState(""); //that are set using their setter functions
+  const [wind, setWind] = useState(""); //and keep track of the state of the reports
+  const [temp, setTemp] = useState(""); //information that will be displayed
   const [tide, setTide] = useState("");
   const [rising, setRising] = useState(true);
   const [hi, setHi] = useState("");
-  const [lo, setLo] = useState("");
+  const [lo, setLo] = useState(""); //This first set of varibles are for the top Report
 
   const [waveChart, setWaveChart] = useState([]);
   const [waveChart2, setWaveChart2] = useState([]);
@@ -26,179 +26,227 @@ export default function HomePage() {
   const [tempChart, setTempChart] = useState([]);
   const [tempChart2, setTempChart2] = useState([]);
   const [tideChart, setTideChart] = useState([]);
-  const [tideChart2, setTideChart2] = useState([]);
+  const [tideChart2, setTideChart2] = useState([]); //This set of varibles are the data for the Graphs
 
   const [waveDates, setWaveDates] = useState([]);
   const [windDates, setWindDates] = useState([]);
   const [tempDates, setTempDates] = useState([]);
-  const [tideDates, setTideDates] = useState([]);
+  const [tideDates, setTideDates] = useState([]); //This set of varibles are the Labels for the Graphs
 
   const [sunShading, setSunShading] = useState([]);
   const [sunPoints, setSunPoints] = useState([]);
-  const [sunPoints2, setSunPoints2] = useState([]);
-  const [sunPoints3, setSunPoints3] = useState([]);
+  const [sunPoints2, setSunPoints2] = useState([]); //This set of varibles are used for setting the
+  const [sunPoints3, setSunPoints3] = useState([]); //day/night shading on the Graphs
 
-  const current = new Date();
-  let year = current.getFullYear();
+  const current = new Date(); //Datetime object set to today
+  let year = current.getFullYear(); //current year  year.toString() gives you 4 digit year
   let month = current.getMonth() + 1;
   let m = "00" + month;
-  m = m.substr(m.length - 2);
+  m = m.substr(m.length - 2); //2 digit month
   let day = current.getDate();
   let d = "00" + day;
-  d = d.substr(d.length - 2);
+  d = d.substr(d.length - 2); //2 digit date
 
-  const next = new Date(current);
-  next.setDate(next.getDate() + 1);
+  const next = new Date(current); //Datetime object set to tomorrow
+  next.setDate(next.getDate() + 1); //tomorrow's year  year2.toString() gives you 4 digit year
   let year2 = next.getFullYear();
   let month2 = next.getMonth() + 1;
   let m2 = "00" + month2;
-  m2 = m2.substr(m2.length - 2);
+  m2 = m2.substr(m2.length - 2); //2 digit month for tomorrow
   let day2 = next.getDate();
   let d2 = "00" + day2;
-  d2 = d2.substr(d2.length - 2);
+  d2 = d2.substr(d2.length - 2); //2 digit date for tomorrow
 
-  const next2 = new Date(current);
-  next2.setDate(next2.getDate() + 2);
+  const next2 = new Date(current); //Datetime object set to day after tomorrow
+  next2.setDate(next2.getDate() + 2); //day after tomorrow's year  year4.toString() gives you 4 digit year
   let year4 = next2.getFullYear();
   let month4 = next2.getMonth() + 1;
   let m4 = "00" + month4;
-  m4 = m4.substr(m4.length - 2);
+  m4 = m4.substr(m4.length - 2); //2 digit month for day after tomorrow
   let day4 = next2.getDate();
   let d4 = "00" + day4;
-  d4 = d4.substr(d4.length - 2);
+  d4 = d4.substr(d4.length - 2); //2 digit date for day after tomorrow
 
-  const prev = new Date(current);
-  prev.setDate(prev.getDate() - 1);
+  const prev = new Date(current); //Datetime object set to yesterday
+  prev.setDate(prev.getDate() - 1); //yesterday's year  year5.toString() gives you 4 digit year
   let year5 = prev.getFullYear();
   let month5 = prev.getMonth() + 1;
   let m5 = "00" + month5;
-  m5 = m5.substr(m5.length - 2);
+  m5 = m5.substr(m5.length - 2); //2 digit month for yesterday
   let day5 = prev.getDate();
   let d5 = "00" + day5;
-  d5 = d5.substr(d5.length - 2);
+  d5 = d5.substr(d5.length - 2); //2 digit date for yesterday
 
-  const prev2 = new Date(current);
-  prev2.setDate(prev2.getDate() - 2);
+  const prev2 = new Date(current); //Datetime object set to day before yesterday
+  prev2.setDate(prev2.getDate() - 2); //day before yesterday's year  year3.toString() gives you 4 digit year
   let year3 = prev2.getFullYear();
   let month3 = prev2.getMonth() + 1;
   let m3 = "00" + month3;
-  m3 = m3.substr(m3.length - 2);
+  m3 = m3.substr(m3.length - 2); //2 digit month for day before yesterday
   let day3 = prev2.getDate();
   let d3 = "00" + day3;
-  d3 = d3.substr(d3.length - 2);
+  d3 = d3.substr(d3.length - 2); //2 digit date for day before yesterday
 
-  useEffect(() => {
-    if (
-      sunShading.length !== 0 &&
-      waveChart.length !== 0 &&
-      waveChart2.length !== 0
-    ) {
-      let shadePoints = [];
-      let q = 0;
-      let d = 1;
-      if (waveChart[0].x < sunShading[0]) {
-        d = 0;
-        shadePoints[0] = 0;
-        q++;
-      }
-      for (var u = 0; u < waveChart.length; u++) {
-        if (waveChart[u].x > sunShading[d]) {
-          shadePoints[q] = u;
+  //This set of useEffect functions are called when used useState varibles listed in the array at the end are updated
+  //Each of these functions uses the data about sun rise and sun set in addition to graph data to set up where the
+  //day/night shading begins and ends
+  useEffect(
+    () => {
+      if (
+        //If all of the data sets are not empty then run
+        sunShading.length !== 0 &&
+        waveChart.length !== 0 &&
+        waveChart2.length !== 0
+      ) {
+        let shadePoints = [];
+        let q = 0; //shadePoints array position
+        let d = 1; //sunShading array position to 1 so we skip first sunrise
+        if (waveChart[0].x < sunShading[0]) {
+          //if the first sun rise is after the first data point
+          d = 0; //set sunShading array position to 0 so first sunrise can be used
+          shadePoints[0] = 0; //at night so set first shadePoint to first point
           q++;
-          d++;
         }
-      }
-      for (u = u; u < waveChart2.length; u++) {
-        if (waveChart2[u].x > sunShading[d]) {
-          shadePoints[q] = u;
-          q++;
-          d++;
+        for (var u = 0; u < waveChart.length; u++) {
+          //loop through graph data
+          if (waveChart[u].x > sunShading[d]) {
+            //if the data point time is greater than the sunrise/sunset time
+            shadePoints[q] = u; //set data point number as shadePoint
+            q++;
+            d++;
+          }
         }
+        for (u = u; u < waveChart2.length; u++) {
+          //loop through graph data2
+          if (waveChart2[u].x > sunShading[d]) {
+            //if the data point time is greater than the sunrise/sunset time
+            shadePoints[q] = u; //set data point number as shadePoint
+            q++;
+            d++;
+          }
+        }
+        if (shadePoints.length === 6) {
+          //if there are 6 shadePoint then add a 7th that is out of bounds so 4th shade box is hidden
+          shadePoints[6] = 145;
+        }
+        setSunPoints(shadePoints); //use set function to set shadePoints
       }
-      if (shadePoints.length === 6) {
-        shadePoints[6] = 145;
-      }
-      setSunPoints(shadePoints);
-    }
-  }, [sunShading, waveChart, waveChart2]);
+    },
+    [
+      sunShading,
+      waveChart,
+      waveChart2,
+    ] /*Runs when any of these varibles are updated using their set functions*/
+  );
 
-  useEffect(() => {
-    if (
-      sunShading.length !== 0 &&
-      tempChart.length !== 0 &&
-      tempChart2.length !== 0
-    ) {
-      let shadePoints2 = [];
-      let q = 0;
-      let d = 1;
-      if (tempChart[0].x < sunShading[0]) {
-        d = 0;
-        shadePoints2[0] = 0;
-        q++;
-      }
-      for (var u = 0; u < tempChart.length; u++) {
-        if (tempChart[u].x > sunShading[d]) {
-          shadePoints2[q] = u;
+  useEffect(
+    () => {
+      if (
+        //If all of the data sets are not empty then run
+        sunShading.length !== 0 &&
+        tempChart.length !== 0 &&
+        tempChart2.length !== 0
+      ) {
+        let shadePoints2 = [];
+        let q = 0; //shadePoints array position
+        let d = 1; //sunShading array position to 1 so we skip first sunrise
+        if (tempChart[0].x < sunShading[0]) {
+          //if the first sun rise is after the first data point
+          d = 0; //set sunShading array position to 0 so first sunrise can be used
+          shadePoints2[0] = 0; //at night so set first shadePoint to first point
           q++;
-          d++;
         }
-      }
-      for (u = u; u < tempChart2.length; u++) {
-        if (tempChart2[u].x > sunShading[d]) {
-          shadePoints2[q] = u;
-          q++;
-          d++;
+        for (var u = 0; u < tempChart.length; u++) {
+          //loop through graph data
+          if (tempChart[u].x > sunShading[d]) {
+            //if the data point time is greater than the sunrise/sunset time
+            shadePoints2[q] = u; //set data point number as shadePoint
+            q++;
+            d++;
+          }
         }
+        for (u = u; u < tempChart2.length; u++) {
+          //loop through graph data2
+          if (tempChart2[u].x > sunShading[d]) {
+            //if the data point time is greater than the sunrise/sunset time
+            shadePoints2[q] = u; //set data point number as shadePoint
+            q++;
+            d++;
+          }
+        }
+        if (shadePoints2.length === 6) {
+          //if there are 6 shadePoint then add a 7th that is out of bounds so 4th shade box is hidden
+          shadePoints2[6] = 1081;
+        }
+        setSunPoints2(shadePoints2); //use set function to set shadePoints2
       }
-      if (shadePoints2.length === 6) {
-        shadePoints2[6] = 1081;
-      }
-      setSunPoints2(shadePoints2);
-    }
-  }, [sunShading, tempChart, tempChart2]);
+    },
+    [
+      sunShading,
+      tempChart,
+      tempChart2,
+    ] /*Runs when any of these varibles are updated using their set functions*/
+  );
 
-  useEffect(() => {
-    if (
-      sunShading.length !== 0 &&
-      tideChart.length !== 0 &&
-      tideChart2.length !== 0
-    ) {
-      let shadePoints3 = [];
-      let q = 0;
-      let d = 1;
-      if (tideChart[0].x < sunShading[0]) {
-        d = 0;
-        shadePoints3[0] = 0;
-        q++;
-      }
-      for (var u = 0; u < tideChart.length; u++) {
-        if (tideChart[u].x > sunShading[d]) {
-          shadePoints3[q] = u;
+  useEffect(
+    () => {
+      if (
+        //If all of the data sets are not empty then run
+        sunShading.length !== 0 &&
+        tideChart.length !== 0 &&
+        tideChart2.length !== 0
+      ) {
+        let shadePoints3 = [];
+        let q = 0; //shadePoints array position
+        let d = 1; //sunShading array position to 1 so we skip first sunrise
+        if (tideChart[0].x < sunShading[0]) {
+          //if the first sun rise is after the first data point
+          d = 0; //set sunShading array position to 0 so first sunrise can be used
+          shadePoint3[0] = 0; //at night so set first shadePoint to first point
           q++;
-          d++;
         }
-      }
-      for (u = u; u < tideChart2.length; u++) {
-        if (tideChart2[u].x > sunShading[d]) {
-          shadePoints3[q] = u;
-          q++;
-          d++;
+        for (var u = 0; u < tideChart.length; u++) {
+          //loop through graph data
+          if (tideChart[u].x > sunShading[d]) {
+            //if the data point time is greater than the sunrise/sunset time
+            shadePoints3[q] = u; //set data point number as shadePoint
+            q++;
+            d++;
+          }
         }
+        for (u = u; u < tideChart2.length; u++) {
+          //loop through graph data2
+          if (tideChart2[u].x > sunShading[d]) {
+            //if the data point time is greater than the sunrise/sunset time
+            shadePoints3[q] = u; //set data point number as shadePoint
+            q++;
+            d++;
+          }
+        }
+        if (shadePoints3.length === 6) {
+          //if there are 6 shadePoint then add a 7th that is out of bounds so 4th shade box is hidden
+          shadePoints3[6] = 722;
+        }
+        setSunPoints3(shadePoints3); //use set function to set shadePoints3
       }
-      if (shadePoints3.length === 6) {
-        shadePoints3[6] = 722;
-      }
-      setSunPoints3(shadePoints3);
-    }
-  }, [sunShading, tideChart, tideChart2]);
+    },
+    [
+      sunShading,
+      tideChart,
+      tideChart2,
+    ] /*Runs when any of these varibles are updated using their set functions*/
+  );
 
   const update = () => {
+    //function that calls all other functions for setting the report data
     getRiseSet();
     setWindWave();
     setTempData();
     setTideData();
   };
 
+  //this function is given a floating point number and an integer percision and returns that floating point number
+  //rounded to however many percision points after the decimal
   function round(number, precision) {
     var shift = function (number, exponent) {
       var numArray = ("" + number).split("e");
@@ -211,6 +259,7 @@ export default function HomePage() {
     return shift(Math.round(shift(number, +precision)), -precision);
   }
 
+  //this function converts any given time from 24hr to 12hr time and removes leading zeros
   function timeConv(time) {
     if (parseInt(time.substring(0, 2)) < 12) {
       time = time + " AM";
@@ -933,7 +982,6 @@ export default function HomePage() {
 
     var url =
       "https://stormy-cove-43362.herokuapp.com/" +
-      //"https://cors-anywhere.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
       "https://tidesandcurrents.noaa.gov/api/datagetter?" +
       "station=9411340" +
       "&product=predictions" +
@@ -1005,8 +1053,7 @@ export default function HomePage() {
     setLo(second);
 
     url =
-      "https://stormy-cove-43362.herokuapp.com/" +
-      //"https://cors-anywhere.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
+      "https://stormy-cove-43362.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
       "https://tidesandcurrents.noaa.gov/api/datagetter?" +
       "station=9411340" +
       "&product=water_level" +
@@ -1032,8 +1079,7 @@ export default function HomePage() {
     setTide(currTide);
 
     url =
-      "https://stormy-cove-43362.herokuapp.com/" +
-      //"https://cors-anywhere.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
+      "https://stormy-cove-43362.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
       "https://tidesandcurrents.noaa.gov/api/datagetter?" +
       "station=9411340" +
       "&product=predictions" +
@@ -1097,6 +1143,7 @@ export default function HomePage() {
     setTideChart2(tideData2);
   };
 
+  //This is the main function to run and it calls update if the report data has not been set yet
   if (date === "") {
     setDate(" ");
     update();

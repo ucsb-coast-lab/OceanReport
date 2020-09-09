@@ -12,24 +12,24 @@ import { faCalendarDay } from "@fortawesome/free-solid-svg-icons";
 
 export default function Report(props) {
   return (
-    <table>
+    <table className={styles.table}>
       <tbody>
         <tr>
-          <td>
+          <td className={styles.tds}>
             <FontAwesomeIcon
               className={styles.iconsBlack}
               icon={faCalendarDay}
             />
           </td>
-          <td>
+          <td className={styles.tds}>
             <p className={styles.links}>{props.date}</p>
           </td>
         </tr>
         <tr>
-          <td>
+          <td className={styles.tds}>
             <FontAwesomeIcon className={styles.iconsBlue} icon={faWater} />
           </td>
-          <td>
+          <td className={styles.tds}>
             <a
               className={styles.links}
               target="_blank"
@@ -40,10 +40,10 @@ export default function Report(props) {
           </td>
         </tr>
         <tr>
-          <td>
+          <td className={styles.tds}>
             <FontAwesomeIcon className={styles.iconsGrey} icon={faWind} />
           </td>
-          <td>
+          <td className={styles.tds}>
             <a
               className={styles.links}
               target="_blank"
@@ -54,13 +54,13 @@ export default function Report(props) {
           </td>
         </tr>
         <tr>
-          <td>
+          <td className={styles.tds}>
             <FontAwesomeIcon
               className={styles.iconsRed}
               icon={faThermometerHalf}
             />
           </td>
-          <td>
+          <td className={styles.tds}>
             <a
               className={styles.links}
               target="_blank"
@@ -71,7 +71,7 @@ export default function Report(props) {
           </td>
         </tr>
         <tr>
-          <td>
+          <td className={styles.tds}>
             {props.rising ? (
               <FontAwesomeIcon
                 className={styles.iconsGreen}
@@ -84,7 +84,7 @@ export default function Report(props) {
               />
             )}
           </td>
-          <td>
+          <td className={styles.tds}>
             <a
               className={styles.links}
               target="_blank"
@@ -95,7 +95,7 @@ export default function Report(props) {
           </td>
         </tr>
         <tr>
-          <td>
+          <td className={styles.tds}>
             {props.hi.substring(0, 2) === "HI" ? (
               <FontAwesomeIcon className={styles.iconsGreen} icon={faAngleUp} />
             ) : (
@@ -105,7 +105,7 @@ export default function Report(props) {
               />
             )}
           </td>
-          <td>
+          <td className={styles.tds}>
             <a
               className={styles.links}
               target="_blank"
@@ -116,7 +116,7 @@ export default function Report(props) {
           </td>
         </tr>
         <tr>
-          <td>
+          <td className={styles.tds}>
             {props.lo.substring(0, 2) === "HI" ? (
               <FontAwesomeIcon className={styles.iconsGreen} icon={faAngleUp} />
             ) : (
@@ -126,7 +126,7 @@ export default function Report(props) {
               />
             )}
           </td>
-          <td>
+          <td className={styles.tds}>
             <a
               className={styles.links}
               target="_blank"

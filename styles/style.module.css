@@ -62,3 +62,13 @@
   margin-top: 0px;
   font-size: 14px;
 }
+.tds {
+  text-align: left;
+}
+.table {
+  padding: 0px;
+  margin-top: 0px;
+  margin-bottom: 20px;
+  margin-left: auto;
+  margin-right: auto;
+}

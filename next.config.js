@@ -1,3 +1,5 @@
+//This file is run during the building off the application
+//It configures the sercets from the .env file
 require("dotenv").config();
 
 module.exports = {
