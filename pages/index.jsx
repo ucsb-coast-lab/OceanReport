@@ -274,6 +274,7 @@ export default function HomePage() {
     return time;
   }
 
+  //this function sets the sunShading with the times of the sunrises and sunsets starting 2-days ago through tomorrow
   const getRiseSet = async () => {
     var sunTimes = [];
 
@@ -281,18 +282,18 @@ export default function HomePage() {
       "https://api.sunrise-sunset.org/json?lat=34.4001&lng=-119.8461&date=2 days ago";
     const response = await fetch(url, { method: "GET" });
     const data = await response.json();
-    let date = new Date();
+    let date = new Date(); //create new datetime object and set its hours, minutes, seconds and date for sunrise
     date.setHours(
       data.results.sunrise.substr(0, data.results.sunrise.indexOf(":"))
     );
-    date.setHours(date.getHours() - 7);
+    date.setHours(date.getHours() - 7); //adjust to pacific time
     if (
       data.results.sunrise.substr(
         data.results.sunrise.length - 2,
         data.results.sunrise.length
       ) === "PM"
     ) {
-      date.setHours(date.getHours() + 12);
+      date.setHours(date.getHours() + 12); //if PM then adjust 12 hours forward
     }
     date.setMinutes(
       data.results.sunrise.substr(
@@ -303,11 +304,11 @@ export default function HomePage() {
     date.setSeconds(
       data.results.sunrise.substr(data.results.sunrise.length - 5, 2)
     );
-    date.setDate(date.getDate() - 2);
-    //console.log(date.toString())
-    sunTimes[0] = date.getTime();
+    date.setDate(date.getDate() - 2); //adjust date from today to 2-days ago
+    sunTimes[0] = date.getTime(); //set first sunrise
 
     date.setHours(
+      //reset hours, minutes, seconds and date for sunset
       data.results.sunset.substr(0, data.results.sunrise.indexOf(":"))
     );
     date.setHours(date.getHours() - 7);
@@ -320,10 +321,10 @@ export default function HomePage() {
     date.setSeconds(
       data.results.sunset.substr(data.results.sunset.length - 5, 2)
     );
-    date.setDate(date.getDate() + 1);
-    //console.log(date.toString())
-    sunTimes[1] = date.getTime();
+    date.setDate(date.getDate() + 1); //adjust date because hours shifted it a day back
+    sunTimes[1] = date.getTime(); //set first sunset
 
+    //The same code repeats 3 more times for each consecutive day
     url =
       "https://api.sunrise-sunset.org/json?lat=34.4001&lng=-119.8461&date=yesterday";
     const response2 = await fetch(url, { method: "GET" });
@@ -349,7 +350,6 @@ export default function HomePage() {
       data2.results.sunrise.substr(data2.results.sunrise.length - 5, 2)
     );
     date.setDate(date.getDate() + 1);
-    //console.log(date.toString())
     sunTimes[2] = date.getTime();
 
     date.setHours(
@@ -366,7 +366,6 @@ export default function HomePage() {
       data2.results.sunset.substr(data2.results.sunset.length - 5, 2)
     );
     date.setDate(date.getDate() + 1);
-    //console.log(date.toString())
     sunTimes[3] = date.getTime();
 
     url =
@@ -395,7 +394,6 @@ export default function HomePage() {
       data3.results.sunrise.substr(data3.results.sunrise.length - 5, 2)
     );
     date.setDate(date.getDate() + 1);
-    //console.log(date.toString())
     sunTimes[4] = date.getTime();
 
     date.setHours(
@@ -412,7 +410,6 @@ export default function HomePage() {
       data3.results.sunset.substr(data3.results.sunset.length - 5, 2)
     );
     date.setDate(date.getDate() + 1);
-    //console.log(date.toString())
     sunTimes[5] = date.getTime();
 
     url =
@@ -441,7 +438,6 @@ export default function HomePage() {
       data4.results.sunrise.substr(data4.results.sunrise.length - 5, 2)
     );
     date.setDate(date.getDate() + 1);
-    //console.log(date.toString());
     sunTimes[6] = date.getTime();
 
     date.setHours(
@@ -458,12 +454,12 @@ export default function HomePage() {
       data4.results.sunset.substr(data4.results.sunset.length - 5, 2)
     );
     date.setDate(date.getDate() + 1);
-    //console.log(date.toString());
     sunTimes[7] = date.getTime();
 
     setSunShading(sunTimes);
   };
 
+  //this function sets the wind and wave data for the report and graphs
   const setWindWave = async () => {
     var url =
       "https://api.sofarocean.com/api/wave-data?spotterId=SPOT-0186&limit=96&includeWindData=true";
@@ -471,7 +467,7 @@ export default function HomePage() {
       method: "GET",
       headers: { token: process.env.SPOT_TOKEN },
     });
-    const data = await response.json();
+    const data = await response.json(); //data contains last 96 data records recorded by the SPOT wave buoy
 
     let currDate = "";
     const dayOfWeek = new Date().getDay();
@@ -514,7 +510,7 @@ export default function HomePage() {
       day +
       " at " +
       timeConv(time12.toString().substring(16, 21));
-    setDate(currDate);
+    setDate(currDate); //Assembled date for report as last time the buoy recorded data
 
     let wave =
       round(
@@ -527,7 +523,7 @@ export default function HomePage() {
       " secs from " +
       round(data.data.waves[data.data.waves.length - 1].peakDirection, 0) +
       "º";
-    setWave(wave);
+    setWave(wave); //set wave to the last wave height data point
 
     let wind;
     if (data.data.wind[data.data.wind.length - 1].speed < 2) {
@@ -549,58 +545,61 @@ export default function HomePage() {
         round(data.data.wind[data.data.wind.length - 1].speed, 0) +
         " kts";
     }
-    setWind(wind);
+    setWind(wind); //set wind to the last wind speed data point
 
-    let waveTime;
-    let chartData = [];
-    let periodData = [];
-    let dates = [];
-    let i = 0;
+    //Setting up the Graph Data
+    let waveTime; //time of wave currently being looked at
+    let chartData = []; //Graph Wave Height Data
+    let periodData = []; //Graph Wave Period Data
+    let dates = []; //Labels
+    let i = 0; //data position
     data.data.waves.map((wave) => {
-      waveTime = new Date(wave.timestamp);
+      waveTime = new Date(wave.timestamp); //set the waveTime to the time the wave was recorded
       chartData[i] = {
-        x: waveTime.getTime(),
-        y: round(wave.significantWaveHeight / 0.3048, 2),
+        x: waveTime.getTime(), //the x is time in milliseconds since 01/01/1970
+        y: round(wave.significantWaveHeight / 0.3048, 2), //y is height in ft rounded to 2 decimals
       };
       periodData[i] = {
         x: waveTime.getTime(),
-        y: wave.peakPeriod,
+        y: wave.peakPeriod, //y is wave period in s
       };
-      dates[i] =
+      dates[i] = //Setting Date Label
         waveTime.toString().substring(4, 10) +
         ", " +
         timeConv(waveTime.toString().substring(16, 21));
-      i++;
+      i++; //incrementing data position
     });
-    setWaveChart(chartData);
-    setPeriodChart(periodData);
+    setWaveChart(chartData); //set wave height data
+    setPeriodChart(periodData); //set wave period data
 
     url =
-      "https://stormy-cove-43362.herokuapp.com/" +
+      "https://stormy-cove-43362.herokuapp.com/" + //cors proxy server, used when cors blocks fetch
       "https://thredds.cdip.ucsd.edu/thredds/dodsC/cdip/model/MOP_alongshore/B0391_forecast.nc.ascii?waveTime[0:1:79],waveHs[0:1:79],waveTp[0:1:79]";
     const response2 = await fetch(url, { method: "GET" });
-    const data2 = await response2.text();
+    const data2 = await response2.text(); //text not a json so we have to substring it to loop through values
 
-    let chartData2 = [];
-    chartData2[i - 1] = chartData[i - 1];
-    let periodData2 = [];
-    periodData2[i - 1] = periodData[i - 1];
-    let predTimes = data2.substr(data2.indexOf("waveTime[80]") + 13, 958);
+    let chartData2 = []; //Second Wave Graph Data
+    chartData2[i - 1] = chartData[i - 1]; //Setting first point of second graph data to last point of original graph data
+    let periodData2 = []; //Second Wave Period Graph Data
+    periodData2[i - 1] = periodData[i - 1]; //Setting first point of second graph data to last point of original graph data
+    let predTimes = data2.substr(data2.indexOf("waveTime[80]") + 13, 958); //chunk of text containing the times
     let predHeights = data2.substring(
       data2.indexOf("waveHs[80]") + 11,
       data2.indexOf("waveTp[80]") - 2
-    );
+    ); //chunk of text containing the heights
     let predPeriods = data2.substring(
       data2.indexOf("waveTp[80]") + 11,
       data2.length - 2
-    );
+    ); //chunk of text containing the periods
     let currHeight;
     let currPeriod;
     let s = 0;
     let i2 = i;
     let skips;
     while (predTimes.length) {
+      //sets the height to the one currently being looked at
       if (predHeights.indexOf(",") !== -1) {
+        //if not last height on the list
         currHeight = predHeights.substr(0, predHeights.indexOf(","));
         predHeights = predHeights.substr(predHeights.indexOf(",") + 2);
         currPeriod = predPeriods.substr(0, predPeriods.indexOf(","));
@@ -611,21 +610,24 @@ export default function HomePage() {
         currPeriod = predPeriods;
         predPeriods = "";
       }
-
+      //sets the time to the one currently being looked at
       let currTime = predTimes.substr(0, 10);
       predTimes = predTimes.substr(12);
       if (
+        //if the time is greater than last recorded time on original graph and less than that time plus 24 hours
         parseInt(currTime + "000") > chartData2[i2 - 1].x &&
         parseInt(currTime + "000") < chartData2[i2 - 1].x + 86400000
       ) {
-        let t = new Date(parseInt(currTime + "000"));
+        let t = new Date(parseInt(currTime + "000")); //set new DateTime object to the time of current wave
         if (s === 0) {
-          let diff = parseInt(currTime + "000") - chartData2[i - 1].x;
-          skips = parseInt(diff / 1800000);
-          let drop =
+          //if this is the first data point
+          let diff = parseInt(currTime + "000") - chartData2[i - 1].x; //Seeing how many points 30 min apart must be added
+          skips = parseInt(diff / 1800000); //between last recorded data and this first data point
+          let drop = //height change between added points
             (chartData2[i - 1].y - round(parseFloat(currHeight) / 0.3048, 2)) /
             skips;
           for (s = 0; s < skips - 1; s++) {
+            //adds the new points to the graph data
             let j = new Date(t.getTime() - 1800000 * (skips - 1 - s));
             chartData2[i + s] = {
               x: j.getTime(),
@@ -637,6 +639,7 @@ export default function HomePage() {
               timeConv(j.toString().substring(16, 21));
           }
 
+          //same process for the wave period
           let drop2 =
             (periodData2[i - 1].y - round(parseFloat(currPeriod), 2)) / skips;
           for (let f = 0; f < skips - 1; f++) {
@@ -646,8 +649,9 @@ export default function HomePage() {
             };
           }
 
-          i = i + s;
+          i = i + s; //increment the data position by the amount of points added
         }
+        //Add current data points to their respective graphs
         periodData2[i] = {
           x: parseInt(currTime + "000"),
           y: round(parseFloat(currPeriod), 2),
@@ -660,14 +664,19 @@ export default function HomePage() {
           t.toString().substring(4, 10) +
           ", " +
           timeConv(t.toString().substring(16, 21));
+
         for (var k = 1; k <= 5; k++) {
+          //add points after current data point
           if (
+            //if the next time is greater than last recorded time plus 24hrs and added points plus skips exceeds 5
             parseInt(predTimes.substr(0, 10) + "000") >
-              current.getTime() + 86400000 &&
-            k + skips > 6
+              chartData2[i2 - 1].x + 86400000 &&
+            k + skips > 5
           ) {
-            break;
+            break; //leave the loop
           }
+
+          //Set the added points and their labels
           let drop =
             (round(parseFloat(currHeight) / 0.3048, 2) -
               round(
@@ -703,16 +712,17 @@ export default function HomePage() {
         t++;
       }
     }
-    setWaveChart2(chartData2);
-    setPeriodChart2(periodData2);
-    setWaveDates(dates);
+    setWaveChart2(chartData2); //Set second wave height data
+    setPeriodChart2(periodData2); //Set second wave period data
+    setWaveDates(dates); //Set Labels for these two graphs
 
+    //Same process as above but with XML data, creating secondary predictions for wave height
     url =
       "https://stormy-cove-43362.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
       "https://marine.weather.gov/MapClick.php?lat=34.4001&lon=-119.8461&FcstType=digitalDWML";
     const response3 = await fetch(url, { method: "GET" });
     const str = await response3.text();
-    const data3 = await new window.DOMParser().parseFromString(str, "text/xml");
+    const data3 = await new window.DOMParser().parseFromString(str, "text/xml"); //XML format
     let waves = data3.getElementsByTagName("waves");
     let times = data3.getElementsByTagName("start-valid-time");
 
@@ -759,6 +769,7 @@ export default function HomePage() {
     }
     setWaveChart3(chartData3);
 
+    //Setting up wind data
     chartData = [];
     dates = [];
     i = 0;
@@ -835,12 +846,13 @@ export default function HomePage() {
     setWindDates(dates);
   };
 
+  //this function sets the tempature data for the report and graphs
   const setTempData = async () => {
     let today = year.toString() + "-" + m + "-" + d;
     let daysAgo = year3.toString() + "-" + m3 + "-" + d3;
 
     var url =
-      "https://stormy-cove-43362.herokuapp.com/" +
+      "https://stormy-cove-43362.herokuapp.com/" + //cors proxy
       "https://erddap.sccoos.org/erddap/tabledap/autoss.json" +
       "?time%2Ctemperature&station=%22stearns_wharf" +
       "%22&time%3E=" +
@@ -853,12 +865,14 @@ export default function HomePage() {
     let recent = data.table.rows.length - 1;
     let far = data.table.rows[recent][1] * (9.0 / 5.0) + 32;
     let temp = "Water Temp: " + round(far, 1) + " ºF";
-    setTemp(temp);
+    setTemp(temp); //setting temp to last data point from request
 
-    let tempData = [];
-    let tempDate = [];
-    let i = 0;
+    let tempData = []; //graph data
+    let tempDate = []; //labels
+    let i = 0; //data position
     data.table.rows.map((sample) => {
+      //this function loops through rows and puts the current row in sample each time
+      //sample[0] conains the time stamp, sample[1] contains the temp value in C
       let time = new Date(sample[0]);
       if (
         time.getTime() < current.getTime() &&
@@ -878,34 +892,37 @@ export default function HomePage() {
     setTempChart(tempData);
 
     var url =
-      "https://stormy-cove-43362.herokuapp.com/" +
+      "https://stormy-cove-43362.herokuapp.com/" + //cors proxy
       "http://west.rssoffice.com:8080/thredds/dodsC/roms/CA3km-forecast/CA/ca_subCA_fcst_" +
       year5.toString() +
       m5 +
       d5 +
       "03.nc.ascii?temp%5B0:1:69%5D%5B0:1:0%5D%5B103:1:103%5D%5B255:1:255%5D";
     const response2 = await fetch(url, { method: "GET" });
-    const data2 = await response2.text();
+    const data2 = await response2.text(); //Data is a text and from the day before
 
     let tempData2 = [];
     tempData2[i - 1] = tempData[i - 1];
     let lastTemp = (tempData2[i - 1].y - 32) * (5.0 / 9.0);
-    let lastTime = new Date(tempData2[i - 1].x);
-    let temps = data2.substring(data2.indexOf("[21][0][0],") + 10);
+    let lastTime = new Date(tempData2[i - 1].x); //set to last recorded temp time
+    let temps = data2.substring(data2.indexOf("[21][0][0],") + 10); //skipping all the previous days data, should start on today at 00:00
     let count = 0;
 
     for (var k = 0; k < 49; k++) {
-      let newTemp = temps.substring(2, temps.indexOf("\n"));
+      //k is synced to the hours so k = 10 would be 10am, k = 34 would be 10am the next day
+      let newTemp = temps.substring(2, temps.indexOf("\n")); //gets the next temp
       temps = temps.substring(temps.indexOf("\n"));
-      temps = temps.substring(temps.indexOf(","));
+      temps = temps.substring(temps.indexOf(",")); //set up rest to be ready
       if (count < 24 && lastTime.getHours() < k) {
+        //if there hasn't been 24 temps logged and k is greater than the last temp time
         count++;
-        let t = new Date(current);
-        t.setHours(k - 1);
-        t.setMinutes(0);
+        let t = new Date(current); //setup new date time to current time
+        t.setHours(k - 1); //set hours to k-1
+        t.setMinutes(0); //set rest to 0
         t.setSeconds(0);
         t.setMilliseconds(0);
         if (count === 1) {
+          //if first then add only extra points needed
           t.setMinutes(lastTime.getMinutes());
           let divs = parseInt((60 - lastTime.getMinutes()) / 4) + 1;
           let drop = (parseFloat(lastTemp) - parseFloat(newTemp)) / divs;
@@ -922,6 +939,7 @@ export default function HomePage() {
             i++;
           }
         } else {
+          //else add 14 extra points at 4 minute increments
           let drop = (parseFloat(lastTemp) - parseFloat(newTemp)) / 15;
           for (var r = 1; r < 15; r++) {
             t.setMinutes(t.getMinutes() + 4);
@@ -936,6 +954,7 @@ export default function HomePage() {
             i++;
           }
         }
+        //Add predicted temp data
         t.setHours(k);
         if (k > 24) {
           t.setDate(t.getDate() - 1);
@@ -952,6 +971,7 @@ export default function HomePage() {
         i++;
         lastTemp = newTemp;
         if (count === 24) {
+          //add extra points after the last data point
           let extras = parseInt(lastTime.getMinutes() / 4);
           newTemp = temps.substring(2, temps.indexOf("\n"));
           let drop = (parseFloat(lastTemp) - parseFloat(newTemp)) / 15;
@@ -975,6 +995,7 @@ export default function HomePage() {
     //console.log(tempData2);
   };
 
+  //this function sets the tide data for the report and graphs
   const setTideData = async () => {
     let tomorrow = year2.toString() + m2 + d2;
     let twoAhead = year4.toString() + m4 + d4;
@@ -1143,12 +1164,16 @@ export default function HomePage() {
     setTideChart2(tideData2);
   };
 
-  //This is the main function to run and it calls update if the report data has not been set yet
+  //This is the main function to run and it calls update once if the report data has not been set yet
   if (date === "") {
     setDate(" ");
     update();
   }
 
+  //This is what gets rendered on the page
+  //It is a mix of html and javascript with {} used around js code
+  //Mainly it loads a loading screen until all the report items are filled
+  //Then it displays the report and graphs components with info disclaimers
   return (
     <div className={styles.page}>
       {date === "" ||
