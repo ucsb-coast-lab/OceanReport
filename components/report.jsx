@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "../styles/style.module.css";
+//These are all imports to display icons
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faWater } from "@fortawesome/free-solid-svg-icons";
 import { faWind } from "@fortawesome/free-solid-svg-icons";
@@ -11,6 +12,8 @@ import { faThermometerHalf } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarDay } from "@fortawesome/free-solid-svg-icons";
 
 export default function Report(props) {
+  //Report is built from a table with the first columns being icons and the second being the data
+  // All of the data displays are also links to where that data was gathered from, open in new tab
   return (
     <table className={styles.table}>
       <tbody>

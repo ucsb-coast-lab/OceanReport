@@ -1,21 +1,24 @@
 import React from "react";
+import styles from "../styles/style.module.css";
+//imports below are used to draw the graphs using chartjs
 import { Line } from "react-chartjs-2";
 import "chartjs-plugin-annotation";
-import styles from "../styles/style.module.css";
 
 export default function Graphs(props) {
+  //each graph has its own varibale containing labels and data sets to graph
   const wave = {
-    labels: props.waveLabels,
+    labels: props.waveLabels, //Labels
     datasets: [
+      //Array of data sets
       {
-        label: "Height (ft)",
-        fill: false,
-        lineTension: 0.5,
-        backgroundColor: "rgba(30,144,255,1)",
-        borderColor: "rgba(30,144,255,1)",
-        borderWidth: 1,
-        pointRadius: 2,
-        data: props.waveData,
+        label: "Height (ft)", //Label next to data points when hovering over them
+        fill: false, //fill under graph
+        lineTension: 0.5, //how string or curved the lines are
+        backgroundColor: "rgba(30,144,255,1)", //color of points
+        borderColor: "rgba(30,144,255,1)", //color around points
+        borderWidth: 1, //border size
+        pointRadius: 2, //point size
+        data: props.waveData, //passing in Data array
       },
       {
         label: "CDIP (ft)",
@@ -40,8 +43,9 @@ export default function Graphs(props) {
     ],
   };
   const period = {
-    labels: props.waveLabels,
+    labels: props.waveLabels, //Labels
     datasets: [
+      //Array of Data sets
       {
         label: "(s)",
         fill: false,
@@ -65,8 +69,9 @@ export default function Graphs(props) {
     ],
   };
   const wind = {
-    labels: props.windLabels,
+    labels: props.windLabels, //Labels
     datasets: [
+      //Array of Data sets
       {
         label: "Speed (mph)",
         fill: false,
@@ -90,8 +95,9 @@ export default function Graphs(props) {
     ],
   };
   const temp = {
-    labels: props.tempLabels,
+    labels: props.tempLabels, //Labels
     datasets: [
+      //Array of Data sets
       {
         label: "Temp (ºF)",
         fill: false,
@@ -115,8 +121,9 @@ export default function Graphs(props) {
     ],
   };
   const tide = {
-    labels: props.tideLabels,
+    labels: props.tideLabels, //Labels
     datasets: [
+      //Array of Data sets
       {
         label: "Height",
         fill: false,
@@ -140,6 +147,11 @@ export default function Graphs(props) {
     ],
   };
 
+  //Each Graph has its own Line component with options
+  //the main options chnaged were the xAxes labels and annotations
+  //xAxes are auto set with a limit expect for tide, tide uses a function to only display labels that are not undefined
+  //Annotations have 4 boxes and a line for all, only 3 boxes will be displayed unless the report is loaded after sunset
+  //Each of the boxes are used to show day/night and the line shows the latest data
   return (
     <div>
       <div className={styles.graph}>
@@ -588,6 +600,7 @@ export default function Graphs(props) {
                   ticks: {
                     autoSkip: false,
                     callback: function (value, index, values) {
+                      /*function used to only display labels with text in them*/
                       if (value !== "") {
                         return value;
                       }

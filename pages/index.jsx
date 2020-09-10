@@ -1001,8 +1001,9 @@ export default function HomePage() {
     let twoAhead = year4.toString() + m4 + d4;
     let daysAgo = year3.toString() + m3 + d3;
 
+    //Setting hi and lo for report
     var url =
-      "https://stormy-cove-43362.herokuapp.com/" +
+      "https://stormy-cove-43362.herokuapp.com/" + //cors proxy
       "https://tidesandcurrents.noaa.gov/api/datagetter?" +
       "station=9411340" +
       "&product=predictions" +
@@ -1025,6 +1026,7 @@ export default function HomePage() {
     let k = 0;
 
     data.predictions.map((prediction) => {
+      //loops through predictions and puts each as prediction
       let time = new Date(
         prediction.t.substring(0, 10) +
           "T" +
@@ -1035,15 +1037,17 @@ export default function HomePage() {
         time.getTime() < current.getTime() + 86400000 &&
         time.getTime() > current.getTime() - 172800000
       ) {
-        hiloTimes[k] = time;
+        hiloTimes[k] = time; //recording hi and low time for 2-days ago through tomorrow for use in the graph
         k++;
       }
       if (time.getTime() > current.getTime() && n_pred < 2) {
+        //gathering 2 data points that will be the next hi and low on the report
         t_pred[n_pred] = prediction;
         n_pred++;
       }
     });
 
+    //This is where it is determined if the the tide is high or low and it sets the string to be displayed
     let first, second;
     if (t_pred[0].type === "H") {
       first = "HI: ";
@@ -1070,9 +1074,10 @@ export default function HomePage() {
     let t2 = timeConv(time2.toString().substring(16, 21));
     first += height + " ft @ " + t1;
     second += height2 + " ft @ " + t2;
-    setHi(first);
+    setHi(first); //hi and lo state variables don't necessarily contain the hi or lo
     setLo(second);
 
+    //setting current tide for report
     url =
       "https://stormy-cove-43362.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
       "https://tidesandcurrents.noaa.gov/api/datagetter?" +
@@ -1091,14 +1096,14 @@ export default function HomePage() {
       "Tide: " + round(parseFloat(data2.data[0].v), 1) + " ft and ";
     if (data2.data[0].v < t_pred[0].v) {
       currTide += "rising";
-      setRising(true);
+      setRising(true); //this variable is used during rendering to choose the right tide icon
     } else {
       currTide += "falling";
       setRising(false);
     }
-
     setTide(currTide);
 
+    //setting tide graph data
     url =
       "https://stormy-cove-43362.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
       "https://tidesandcurrents.noaa.gov/api/datagetter?" +
@@ -1116,13 +1121,14 @@ export default function HomePage() {
     const res = await fetch(url, { method: "GET" });
     const data3 = await res.json();
 
-    let tideData = [];
-    let tideDate = [];
+    let tideData = []; //Graph history data
+    let tideDate = []; //Labels
     let i = 0;
-    let tideData2 = [];
+    let tideData2 = []; //Graph predicted data
     let j = 0;
 
     data3.predictions.map((prediction) => {
+      //looping through each prediction in predictions
       let time = new Date(
         prediction.t.substring(0, 10) +
           "T" +
@@ -1136,6 +1142,7 @@ export default function HomePage() {
         tideData[i] = { x: time.getTime(), y: prediction.v };
         tideDate[i] = "";
         if (time.getTime() >= hiloTimes[j]) {
+          //Labels only inlcude hilo times
           tideDate[i] =
             hiloTimes[j].toString().substring(4, 10) +
             ", " +
