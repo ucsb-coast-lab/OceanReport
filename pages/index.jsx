@@ -573,7 +573,7 @@ export default function HomePage() {
     setPeriodChart(periodData); //set wave period data
 
     url =
-      "https://stormy-cove-43362.herokuapp.com/" + //cors proxy server, used when cors blocks fetch
+      "https://cors-anywhere.herokuapp.com/" + //cors proxy server, used when cors blocks fetch
       "https://thredds.cdip.ucsd.edu/thredds/dodsC/cdip/model/MOP_alongshore/B0391_forecast.nc.ascii?waveTime[0:1:79],waveHs[0:1:79],waveTp[0:1:79]";
     const response2 = await fetch(url, { method: "GET" });
     const data2 = await response2.text(); //text not a json so we have to substring it to loop through values
@@ -718,7 +718,7 @@ export default function HomePage() {
 
     //Same process as above but with XML data, creating secondary predictions for wave height
     url =
-      "https://stormy-cove-43362.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
+      "https://cors-anywhere.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
       "https://marine.weather.gov/MapClick.php?lat=34.4001&lon=-119.8461&FcstType=digitalDWML";
     const response3 = await fetch(url, { method: "GET" });
     const str = await response3.text();
@@ -852,7 +852,7 @@ export default function HomePage() {
     let daysAgo = year3.toString() + "-" + m3 + "-" + d3;
 
     var url =
-      "https://stormy-cove-43362.herokuapp.com/" + //cors proxy
+      "https://cors-anywhere.herokuapp.com/" + //cors proxy
       "https://erddap.sccoos.org/erddap/tabledap/autoss.json" +
       "?time%2Ctemperature&station=%22stearns_wharf" +
       "%22&time%3E=" +
@@ -892,7 +892,7 @@ export default function HomePage() {
     setTempChart(tempData);
 
     var url =
-      "https://stormy-cove-43362.herokuapp.com/" + //cors proxy
+      "https://cors-anywhere.herokuapp.com/" + //cors proxy
       "http://west.rssoffice.com:8080/thredds/dodsC/roms/CA3km-forecast/CA/ca_subCA_fcst_" +
       year5.toString() +
       m5 +
@@ -992,7 +992,6 @@ export default function HomePage() {
     }
     setTempDates(tempDate);
     setTempChart2(tempData2);
-    //console.log(tempData2);
   };
 
   //this function sets the tide data for the report and graphs
@@ -1003,7 +1002,7 @@ export default function HomePage() {
 
     //Setting hi and lo for report
     var url =
-      "https://stormy-cove-43362.herokuapp.com/" + //cors proxy
+      "https://cors-anywhere.herokuapp.com/" + //cors proxy
       "https://tidesandcurrents.noaa.gov/api/datagetter?" +
       "station=9411340" +
       "&product=predictions" +
@@ -1079,7 +1078,7 @@ export default function HomePage() {
 
     //setting current tide for report
     url =
-      "https://stormy-cove-43362.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
+      "https://cors-anywhere.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
       "https://tidesandcurrents.noaa.gov/api/datagetter?" +
       "station=9411340" +
       "&product=water_level" +
@@ -1105,7 +1104,7 @@ export default function HomePage() {
 
     //setting tide graph data
     url =
-      "https://stormy-cove-43362.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
+      "https://cors-anywhere.herokuapp.com/" + //using cors proxy to stop unable to fetch from cors error
       "https://tidesandcurrents.noaa.gov/api/datagetter?" +
       "station=9411340" +
       "&product=predictions" +
