@@ -7,7 +7,7 @@ import "chartjs-plugin-annotation";
 export default function Graphs(props) {
   //each graph has its own varibale containing labels and data sets to graph
   const wave = {
-    labels: props.waveLabels, //Labels
+    labels: props.wavePeriodLabels, //Labels
     datasets: [
       //Array of data sets
       {
@@ -43,7 +43,7 @@ export default function Graphs(props) {
     ],
   };
   const period = {
-    labels: props.waveLabels, //Labels
+    labels: props.wavePeriodLabels, //Labels
     datasets: [
       //Array of Data sets
       {
@@ -162,7 +162,7 @@ export default function Graphs(props) {
             maintainAspectRatio: false,
             title: {
               display: true,
-              text: "3-Day Wave Height (ft)",
+              text: "4-Day Wave Height (ft)",
               fontSize: 20,
             },
             legend: {
@@ -199,8 +199,8 @@ export default function Graphs(props) {
                 {
                   type: "box",
                   xScaleID: "x-axis-0",
-                  xMin: props.sun[0],
-                  xMax: props.sun[1],
+                  xMin: props.sunPointsWaveWind[0],
+                  xMax: props.sunPointsWaveWind[1],
                   borderColor: "rgba(0, 0, 0, 0.1)",
                   borderWidth: 0,
                   backgroundColor: "rgba(0, 0, 0, 0.1)",
@@ -208,8 +208,8 @@ export default function Graphs(props) {
                 {
                   type: "box",
                   xScaleID: "x-axis-0",
-                  xMin: props.sun[2],
-                  xMax: props.sun[3],
+                  xMin: props.sunPointsWaveWind[2],
+                  xMax: props.sunPointsWaveWind[3],
                   borderColor: "rgba(0, 0, 0, 0.1)",
                   borderWidth: 0,
                   backgroundColor: "rgba(0, 0, 0, 0.1)",
@@ -217,8 +217,8 @@ export default function Graphs(props) {
                 {
                   type: "box",
                   xScaleID: "x-axis-0",
-                  xMin: props.sun[4],
-                  xMax: props.sun[5],
+                  xMin: props.sunPointsWaveWind[4],
+                  xMax: props.sunPointsWaveWind[5],
                   borderColor: "rgba(0, 0, 0, 0.1)",
                   borderWidth: 0,
                   backgroundColor: "rgba(0, 0, 0, 0.1)",
@@ -226,8 +226,17 @@ export default function Graphs(props) {
                 {
                   type: "box",
                   xScaleID: "x-axis-0",
-                  xMin: props.sun[6],
-                  xMax: 145,
+                  xMin: props.sunPointsWaveWind[6],
+                  xMax: props.sunPointsWaveWind[7],
+                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderWidth: 0,
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
+                },
+                {
+                  type: "box",
+                  xScaleID: "x-axis-0",
+                  xMin: props.sunPointsWaveWind[8],
+                  xMax: props.sunPointsWaveWind[9],
                   borderColor: "rgba(0, 0, 0, 0.1)",
                   borderWidth: 0,
                   backgroundColor: "rgba(0, 0, 0, 0.1)",
@@ -268,7 +277,7 @@ export default function Graphs(props) {
             maintainAspectRatio: false,
             title: {
               display: true,
-              text: "3-Day Wave Period (s)",
+              text: "4-Day Wave Period (s)",
               fontSize: 20,
             },
             legend: {
@@ -305,8 +314,8 @@ export default function Graphs(props) {
                 {
                   type: "box",
                   xScaleID: "x-axis-0",
-                  xMin: props.sun[0],
-                  xMax: props.sun[1],
+                  xMin: props.sunPointsWaveWind[0],
+                  xMax: props.sunPointsWaveWind[1],
                   borderColor: "rgba(0, 0, 0, 0.1)",
                   borderWidth: 0,
                   backgroundColor: "rgba(0, 0, 0, 0.1)",
@@ -314,8 +323,8 @@ export default function Graphs(props) {
                 {
                   type: "box",
                   xScaleID: "x-axis-0",
-                  xMin: props.sun[2],
-                  xMax: props.sun[3],
+                  xMin: props.sunPointsWaveWind[2],
+                  xMax: props.sunPointsWaveWind[3],
                   borderColor: "rgba(0, 0, 0, 0.1)",
                   borderWidth: 0,
                   backgroundColor: "rgba(0, 0, 0, 0.1)",
@@ -323,8 +332,8 @@ export default function Graphs(props) {
                 {
                   type: "box",
                   xScaleID: "x-axis-0",
-                  xMin: props.sun[4],
-                  xMax: props.sun[5],
+                  xMin: props.sunPointsWaveWind[4],
+                  xMax: props.sunPointsWaveWind[5],
                   borderColor: "rgba(0, 0, 0, 0.1)",
                   borderWidth: 0,
                   backgroundColor: "rgba(0, 0, 0, 0.1)",
@@ -332,8 +341,17 @@ export default function Graphs(props) {
                 {
                   type: "box",
                   xScaleID: "x-axis-0",
-                  xMin: props.sun[6],
-                  xMax: 145,
+                  xMin: props.sunPointsWaveWind[6],
+                  xMax: props.sunPointsWaveWind[7],
+                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderWidth: 0,
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
+                },
+                {
+                  type: "box",
+                  xScaleID: "x-axis-0",
+                  xMin: props.sunPointsWaveWind[8],
+                  xMax: props.sunPointsWaveWind[9],
                   borderColor: "rgba(0, 0, 0, 0.1)",
                   borderWidth: 0,
                   backgroundColor: "rgba(0, 0, 0, 0.1)",
@@ -374,7 +392,7 @@ export default function Graphs(props) {
             maintainAspectRatio: false,
             title: {
               display: true,
-              text: "3-Day Wind Speed (mph)",
+              text: "4-Day Wind Speed (mph)",
               fontSize: 20,
             },
             legend: {
@@ -411,8 +429,8 @@ export default function Graphs(props) {
                 {
                   type: "box",
                   xScaleID: "x-axis-0",
-                  xMin: props.sun[0],
-                  xMax: props.sun[1],
+                  xMin: props.sunPointsWaveWind[0],
+                  xMax: props.sunPointsWaveWind[1],
                   borderColor: "rgba(0, 0, 0, 0.1)",
                   borderWidth: 0,
                   backgroundColor: "rgba(0, 0, 0, 0.1)",
@@ -420,8 +438,8 @@ export default function Graphs(props) {
                 {
                   type: "box",
                   xScaleID: "x-axis-0",
-                  xMin: props.sun[2],
-                  xMax: props.sun[3],
+                  xMin: props.sunPointsWaveWind[2],
+                  xMax: props.sunPointsWaveWind[3],
                   borderColor: "rgba(0, 0, 0, 0.1)",
                   borderWidth: 0,
                   backgroundColor: "rgba(0, 0, 0, 0.1)",
@@ -429,8 +447,8 @@ export default function Graphs(props) {
                 {
                   type: "box",
                   xScaleID: "x-axis-0",
-                  xMin: props.sun[4],
-                  xMax: props.sun[5],
+                  xMin: props.sunPointsWaveWind[4],
+                  xMax: props.sunPointsWaveWind[5],
                   borderColor: "rgba(0, 0, 0, 0.1)",
                   borderWidth: 0,
                   backgroundColor: "rgba(0, 0, 0, 0.1)",
@@ -438,8 +456,17 @@ export default function Graphs(props) {
                 {
                   type: "box",
                   xScaleID: "x-axis-0",
-                  xMin: props.sun[6],
-                  xMax: 145,
+                  xMin: props.sunPointsWaveWind[6],
+                  xMax: props.sunPointsWaveWind[7],
+                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderWidth: 0,
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
+                },
+                {
+                  type: "box",
+                  xScaleID: "x-axis-0",
+                  xMin: props.sunPointsWaveWind[8],
+                  xMax: props.sunPointsWaveWind[9],
                   borderColor: "rgba(0, 0, 0, 0.1)",
                   borderWidth: 0,
                   backgroundColor: "rgba(0, 0, 0, 0.1)",
@@ -480,7 +507,7 @@ export default function Graphs(props) {
             maintainAspectRatio: false,
             title: {
               display: true,
-              text: "3-Day Water Temp (ºF)",
+              text: "4-Day Water Temp (ºF)",
               fontSize: 20,
             },
             legend: {
@@ -518,8 +545,8 @@ export default function Graphs(props) {
                 {
                   type: "box",
                   xScaleID: "x-axis-0",
-                  xMin: props.sun2[0],
-                  xMax: props.sun2[1],
+                  xMin: props.sunPointsTemp[0],
+                  xMax: props.sunPointsTemp[1],
                   borderColor: "rgba(0, 0, 0, 0.1)",
                   borderWidth: 0,
                   backgroundColor: "rgba(0, 0, 0, 0.1)",
@@ -527,8 +554,8 @@ export default function Graphs(props) {
                 {
                   type: "box",
                   xScaleID: "x-axis-0",
-                  xMin: props.sun2[2],
-                  xMax: props.sun2[3],
+                  xMin: props.sunPointsTemp[2],
+                  xMax: props.sunPointsTemp[3],
                   borderColor: "rgba(0, 0, 0, 0.1)",
                   borderWidth: 0,
                   backgroundColor: "rgba(0, 0, 0, 0.1)",
@@ -536,8 +563,8 @@ export default function Graphs(props) {
                 {
                   type: "box",
                   xScaleID: "x-axis-0",
-                  xMin: props.sun2[4],
-                  xMax: props.sun2[5],
+                  xMin: props.sunPointsTemp[4],
+                  xMax: props.sunPointsTemp[5],
                   borderColor: "rgba(0, 0, 0, 0.1)",
                   borderWidth: 0,
                   backgroundColor: "rgba(0, 0, 0, 0.1)",
@@ -545,8 +572,17 @@ export default function Graphs(props) {
                 {
                   type: "box",
                   xScaleID: "x-axis-0",
-                  xMin: props.sun2[6],
-                  xMax: 1081,
+                  xMin: props.sunPointsTemp[6],
+                  xMax: props.sunPointsTemp[7],
+                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderWidth: 0,
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
+                },
+                {
+                  type: "box",
+                  xScaleID: "x-axis-0",
+                  xMin: props.sunPointsTemp[8],
+                  xMax: props.sunPointsTemp[9],
                   borderColor: "rgba(0, 0, 0, 0.1)",
                   borderWidth: 0,
                   backgroundColor: "rgba(0, 0, 0, 0.1)",
@@ -587,7 +623,7 @@ export default function Graphs(props) {
             maintainAspectRatio: false,
             title: {
               display: true,
-              text: "3-Day Tide Chart",
+              text: "4-Day Tide Chart",
               fontSize: 20,
             },
             legend: {
@@ -636,8 +672,8 @@ export default function Graphs(props) {
                 {
                   type: "box",
                   xScaleID: "x-axis-0",
-                  xMin: props.sun3[0],
-                  xMax: props.sun3[1],
+                  xMin: props.sunPointsTide[0],
+                  xMax: props.sunPointsTide[1],
                   borderColor: "rgba(0, 0, 0, 0.1)",
                   borderWidth: 0,
                   backgroundColor: "rgba(0, 0, 0, 0.1)",
@@ -645,8 +681,8 @@ export default function Graphs(props) {
                 {
                   type: "box",
                   xScaleID: "x-axis-0",
-                  xMin: props.sun3[2],
-                  xMax: props.sun3[3],
+                  xMin: props.sunPointsTide[2],
+                  xMax: props.sunPointsTide[3],
                   borderColor: "rgba(0, 0, 0, 0.1)",
                   borderWidth: 0,
                   backgroundColor: "rgba(0, 0, 0, 0.1)",
@@ -654,8 +690,8 @@ export default function Graphs(props) {
                 {
                   type: "box",
                   xScaleID: "x-axis-0",
-                  xMin: props.sun3[4],
-                  xMax: props.sun3[5],
+                  xMin: props.sunPointsTide[4],
+                  xMax: props.sunPointsTide[5],
                   borderColor: "rgba(0, 0, 0, 0.1)",
                   borderWidth: 0,
                   backgroundColor: "rgba(0, 0, 0, 0.1)",
@@ -663,8 +699,17 @@ export default function Graphs(props) {
                 {
                   type: "box",
                   xScaleID: "x-axis-0",
-                  xMin: props.sun3[6],
-                  xMax: 722,
+                  xMin: props.sunPointsTide[6],
+                  xMax: props.sunPointsTide[7],
+                  borderColor: "rgba(0, 0, 0, 0.1)",
+                  borderWidth: 0,
+                  backgroundColor: "rgba(0, 0, 0, 0.1)",
+                },
+                {
+                  type: "box",
+                  xScaleID: "x-axis-0",
+                  xMin: props.sunPointsTide[8],
+                  xMax: props.sunPointsTide[9],
                   borderColor: "rgba(0, 0, 0, 0.1)",
                   borderWidth: 0,
                   backgroundColor: "rgba(0, 0, 0, 0.1)",
