@@ -12,21 +12,19 @@ async function getTideReport() {
     dayBeforeYesterday.year + dayBeforeYesterday.month + dayBeforeYesterday.day;
 
   //Setting hi and lo for report
-  const response = await fetch(
+  const hiloRecordResponse = await fetch(
     `/api/tide?reqNum=2&begin_date=` +
       dayBeforeYesterdayURLFormat +
       `&end_date=` +
       tomorrowURLFormat,
     { method: "GET" }
   );
-  const data = await response.json();
+  const hiloRecordData = await hiloRecordResponse.json();
 
-  let t_pred = {};
-  let n_pred = 0;
-  let hiloTimes = [];
-  let k = 0;
+  let nextHiLo = {};
+  let numPred = 0;
 
-  data.predictions.map((prediction) => {
+  hiloRecordData.predictions.map((prediction) => {
     //loops through predictions and puts each as prediction
     let time = new Date(
       prediction.t.substring(0, 10) +
@@ -34,48 +32,50 @@ async function getTideReport() {
         prediction.t.substring(11, 16) +
         ":00Z"
     );
-    if (
-      time.getTime() < current.getTime() + 86400000 &&
-      time.getTime() > current.getTime() - 259200000
-    ) {
-      hiloTimes[k] = time; //recording hi and low time for 3-days ago through tomorrow for use in the graph
-      k++;
-    }
-    if (time.getTime() > current.getTime() && n_pred < 2) {
+    if (time.getTime() > current.getTime() && numPred < 2) {
       //gathering 2 data points that will be the next hi and low on the report
-      t_pred[n_pred] = prediction;
-      n_pred++;
+      nextHiLo[numPred] = prediction;
+      numPred++;
     }
   });
 
   //This is where it is determined if the the tide is high or low and it sets the string to be displayed
   let first, second;
-  if (t_pred[0].type === "H") {
+  if (nextHiLo[0].type === "H") {
     first = "HI: ";
     second = "LO: ";
   } else {
     first = "LO: ";
     second = "HI: ";
   }
-  let height = round(parseFloat(t_pred[0].v), 1);
-  let height2 = round(parseFloat(t_pred[1].v), 1);
+  let height = round(parseFloat(nextHiLo[0].v), 1);
+  let height2 = round(parseFloat(nextHiLo[1].v), 1);
   let time1 = new Date(
-    t_pred[0].t.substring(0, 10) + "T" + t_pred[0].t.substring(11, 16) + ":00Z"
+    nextHiLo[0].t.substring(0, 10) +
+      "T" +
+      nextHiLo[0].t.substring(11, 16) +
+      ":00Z"
   );
   let time2 = new Date(
-    t_pred[1].t.substring(0, 10) + "T" + t_pred[1].t.substring(11, 16) + ":00Z"
+    nextHiLo[1].t.substring(0, 10) +
+      "T" +
+      nextHiLo[1].t.substring(11, 16) +
+      ":00Z"
   );
   let t1 = timeConv(time1.toString().substring(16, 21));
   let t2 = timeConv(time2.toString().substring(16, 21));
   first += height + " ft @ " + t1;
   second += height2 + " ft @ " + t2;
 
-  const response2 = await fetch(`/api/tide?reqNum=1`, { method: "GET" });
-  const data2 = await response2.json();
+  const tideRecordResponse = await fetch(`/api/tide?reqNum=1`, {
+    method: "GET",
+  });
+  const tideRecordData = await tideRecordResponse.json();
 
-  let currTide = "Tide: " + round(parseFloat(data2.data[0].v), 1) + " ft and ";
+  let currTide =
+    "Tide: " + round(parseFloat(tideRecordData.data[0].v), 1) + " ft and ";
   let rising;
-  if (data2.data[0].v < t_pred[0].v) {
+  if (tideRecordData.data[0].v < nextHiLo[0].v) {
     currTide += "rising";
     rising = true; //this variable is used during rendering to choose the right tide icon
   } else {
@@ -97,21 +97,19 @@ async function getTideGraph() {
     twoDaysBefore.year + twoDaysBefore.month + twoDaysBefore.day;
 
   //Setting hi and lo for report
-  const response = await fetch(
+  const hiloRecordResponse = await fetch(
     `/api/tide?reqNum=2&begin_date=` +
       dayBeforeYesterdayURLFormat +
       `&end_date=` +
       tomorrowURLFormat,
     { method: "GET" }
   );
-  const data = await response.json();
+  const hiloRecordData = await hiloRecordResponse.json();
 
-  // let t_pred = {};
-  // let n_pred = 0;
   let hiloTimes = [];
   let k = 0;
 
-  data.predictions.map((prediction) => {
+  hiloRecordData.predictions.map((prediction) => {
     // //loops through predictions and puts each as prediction
     let time = new Date(
       prediction.t.substring(0, 10) +
@@ -128,22 +126,22 @@ async function getTideGraph() {
     }
   });
 
-  const res = await fetch(
+  const tideResponse = await fetch(
     `/api/tide?reqNum=3&begin_date=` +
       twoDaysBeforeURLFormat +
       `&end_date=` +
       dayAfterTomorrowURLFormat,
     { method: "GET" }
   );
-  const data3 = await res.json();
+  const tideData = await tideResponse.json();
 
-  let tideData = []; //Graph history data
+  let tideRecord = []; //Graph history data
   let tideDate = []; //Labels
   let i = 0;
-  let tideData2 = []; //Graph predicted data
+  let tideForecast = []; //Graph predicted data
   let j = 0;
 
-  data3.predictions.map((prediction) => {
+  tideData.predictions.map((prediction) => {
     //looping through each prediction in predictions
     let time = new Date(
       prediction.t.substring(0, 10) +
@@ -155,7 +153,7 @@ async function getTideGraph() {
       time.getTime() <= current.getTime() &&
       time.getTime() > current.getTime() - 259200000
     ) {
-      tideData[i] = { x: time.getTime(), y: prediction.v };
+      tideRecord[i] = { x: time.getTime(), y: prediction.v };
       tideDate[i] = "";
       if (time.getTime() >= hiloTimes[j]) {
         //Labels only inlcude hilo times
@@ -170,7 +168,7 @@ async function getTideGraph() {
       time.getTime() < current.getTime() + 86400000 &&
       time.getTime() > current.getTime()
     ) {
-      tideData2[i] = { x: time.getTime(), y: prediction.v };
+      tideForecast[i] = { x: time.getTime(), y: prediction.v };
       tideDate[i] = "";
       if (time.getTime() >= hiloTimes[j]) {
         tideDate[i] =
@@ -184,8 +182,8 @@ async function getTideGraph() {
   });
 
   let graphData = {
-    tideRecord: tideData,
-    tideForecast: tideData2,
+    tideRecord: tideRecord,
+    tideForecast: tideForecast,
     dateLabels: tideDate,
   };
   return graphData;

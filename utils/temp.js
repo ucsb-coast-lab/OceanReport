@@ -59,7 +59,7 @@ async function getTempGraph() {
   );
   const tempRecordData = await tempRecordResponse.json();
 
-  let tempData = []; //graph data
+  let tempRecord = []; //graph data
   let tempDate = []; //labels
   let i = 0; //data position
   tempRecordData.table.rows.map((sample) => {
@@ -70,7 +70,7 @@ async function getTempGraph() {
       time.getTime() < current.getTime() &&
       time.getTime() > current.getTime() - 172800000
     ) {
-      tempData[i] = {
+      tempRecord[i] = {
         x: time.getTime(),
         y: round(sample[1] * (9.0 / 5.0) + 32, 2),
       };
@@ -92,10 +92,10 @@ async function getTempGraph() {
   // const response2 = await fetch(url, { method: "GET" });
   // const data2 = await response2.text(); //Data is a text and from the day before
 
-  let tempData2 = [];
-  // tempData2[i - 1] = tempData[i - 1];
-  // let lastTemp = (tempData2[i - 1].y - 32) * (5.0 / 9.0);
-  // let lastTime = new Date(tempData2[i - 1].x); //set to last recorded temp time
+  let tempForecast = [];
+  // tempForecast[i - 1] = tempRecord[i - 1];
+  // let lastTemp = (tempForecast[i - 1].y - 32) * (5.0 / 9.0);
+  // let lastTime = new Date(tempForecast[i - 1].x); //set to last recorded temp time
   // let temps = data2.substring(data2.indexOf("[21][0][0],") + 10); //skipping all the previous days data, should start on today at 00:00
   // let count = 0;
 
@@ -119,7 +119,7 @@ async function getTempGraph() {
   //       let drop = (parseFloat(lastTemp) - parseFloat(newTemp)) / divs;
   //       for (var g = 1; g < divs; g++) {
   //         t.setMinutes(t.getMinutes() + 4);
-  //         tempData2[i] = {
+  //         tempForecast[i] = {
   //           x: t.getTime(),
   //           y: round((parseFloat(lastTemp) - g * drop) * (9.0 / 5.0) + 32, 2),
   //         };
@@ -134,7 +134,7 @@ async function getTempGraph() {
   //       let drop = (parseFloat(lastTemp) - parseFloat(newTemp)) / 15;
   //       for (var r = 1; r < 15; r++) {
   //         t.setMinutes(t.getMinutes() + 4);
-  //         tempData2[i] = {
+  //         tempForecast[i] = {
   //           x: t.getTime(),
   //           y: round((parseFloat(lastTemp) - r * drop) * (9.0 / 5.0) + 32, 2),
   //         };
@@ -151,7 +151,7 @@ async function getTempGraph() {
   //       t.setDate(t.getDate() - 1);
   //     }
   //     t.setMinutes(0);
-  //     tempData2[i] = {
+  //     tempForecast[i] = {
   //       x: t.getTime(),
   //       y: round(parseFloat(newTemp) * (9.0 / 5.0) + 32, 2),
   //     };
@@ -168,7 +168,7 @@ async function getTempGraph() {
   //       let drop = (parseFloat(lastTemp) - parseFloat(newTemp)) / 15;
   //       for (var j = 1; j <= extras; j++) {
   //         t.setMinutes(t.getMinutes() + 4);
-  //         tempData2[i] = {
+  //         tempForecast[i] = {
   //           x: t.getTime(),
   //           y: round((parseFloat(lastTemp) - j * drop) * (9.0 / 5.0) + 32, 2),
   //         };
@@ -183,8 +183,8 @@ async function getTempGraph() {
   // }
 
   let graphData = {
-    tempRecord: tempData,
-    tempForecast: tempData2,
+    tempRecord: tempRecord,
+    tempForecast: tempForecast,
     dateLabels: tempDate,
   };
   return graphData;

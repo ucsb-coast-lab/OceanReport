@@ -35,25 +35,31 @@ async function getWindReport() {
 }
 
 async function getWindGraph() {
-  const waveRecordResponse = await fetch(`/api/spotBuoy?dataType=record`, {
+  const windRecordResponse = await fetch(`/api/spotBuoy?dataType=record`, {
     method: "GET",
   });
-  const waveRecordData = await waveRecordResponse.json(); //data contains last 96 data records recorded by the SPOT wave buoy
+  const windRecordData = await windRecordResponse.json(); //data contains last 96 data records recorded by the SPOT wave buoy
 
-  const response3 = await fetch(`/api/spotBuoy?dataType=forecastNOAA`, {
-    method: "GET",
-  });
-  const str = await response3.text();
-  const data3 = await new window.DOMParser().parseFromString(str, "text/xml"); //XML format
-  let times = data3.getElementsByTagName("start-valid-time");
+  const windForecastResponse = await fetch(
+    `/api/spotBuoy?dataType=forecastNOAA`,
+    {
+      method: "GET",
+    }
+  );
+  const windForecastText = await windForecastResponse.text();
+  const windForecastData = await new window.DOMParser().parseFromString(
+    windForecastText,
+    "text/xml"
+  ); //XML format
+  let times = windForecastData.getElementsByTagName("start-valid-time");
 
   //Setting up wind data
-  let chartData = [];
+  let windRecord = [];
   let dates = [];
   let i = 0;
-  waveRecordData.data.wind.map((wind) => {
+  windRecordData.data.wind.map((wind) => {
     let waveTime = new Date(wind.timestamp);
-    chartData[i] = { x: waveTime.getTime(), y: round(wind.speed, 2) };
+    windRecord[i] = { x: waveTime.getTime(), y: round(wind.speed, 2) };
     dates[i] =
       waveTime.toString().substring(4, 10) +
       ", " +
@@ -61,30 +67,30 @@ async function getWindGraph() {
     i++;
   });
 
-  let winds = data3.getElementsByTagName("wind-speed")[0];
+  let winds = windForecastData.getElementsByTagName("wind-speed")[0];
   let currWind = winds.firstElementChild;
-  let chartData2 = [];
-  chartData2[i - 1] = chartData[i - 1];
+  let windForecast = [];
+  windForecast[i - 1] = windRecord[i - 1];
   let r = i;
   let a = 0;
   for (var t = 0; t < 30; t++) {
     let predTime = new Date(times[t].textContent);
     let drop;
     if (
-      predTime.getTime() > chartData2[r - 1].x &&
-      predTime.getTime() < chartData2[r - 1].x + 86400000
+      predTime.getTime() > windForecast[r - 1].x &&
+      predTime.getTime() < windForecast[r - 1].x + 86400000
     ) {
       if (a === 0) {
-        let diff = predTime.getTime() - chartData2[i - 1].x;
+        let diff = predTime.getTime() - windForecast[i - 1].x;
         let skips = parseInt(diff / 1800000);
         drop =
-          (chartData2[i - 1].y - parseInt(currWind.textContent) * 1.151) /
+          (windForecast[i - 1].y - parseInt(currWind.textContent) * 1.151) /
           skips;
         for (var w = 0; w < skips - 1; w++) {
           let j = new Date(predTime.getTime() - 1800000 * (skips - 1 - w));
-          chartData2[i + w] = {
+          windForecast[i + w] = {
             x: j.getTime(),
-            y: round(chartData2[i - 1].y - (w + 1) * drop, 2),
+            y: round(windForecast[i - 1].y - (w + 1) * drop, 2),
           };
           dates[i + w] =
             j.toString().substring(4, 10) +
@@ -94,7 +100,7 @@ async function getWindGraph() {
         i += w;
         a++;
       }
-      chartData2[i] = {
+      windForecast[i] = {
         x: predTime.getTime(),
         y: round(parseInt(currWind.textContent) * 1.151, 2),
       };
@@ -106,7 +112,7 @@ async function getWindGraph() {
         (parseInt(currWind.textContent) * 1.151 -
           parseInt(currWind.nextElementSibling.textContent) * 1.151) /
         2;
-      chartData2[i + 1] = {
+      windForecast[i + 1] = {
         x: predTime.getTime(),
         y: round(parseInt(currWind.textContent) * 1.151 - drop, 2),
       };
@@ -121,8 +127,8 @@ async function getWindGraph() {
   }
 
   let graphData = {
-    windRecord: chartData,
-    windForecast: chartData2,
+    windRecord: windRecord,
+    windForecast: windForecast,
     dateLabels: dates,
   };
   return graphData;
