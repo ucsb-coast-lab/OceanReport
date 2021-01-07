@@ -32,7 +32,7 @@
     "dotenv": "^8.2.0",
     "font-awesome": "^4.7.0",
     "isomorphic-unfetch": "^3.0.0",
-    "next": "^9.4.4",
+    "next": "^10.0.5",
     "puppeteer": "^5.0.0",
     "react": "16.13.1",
     "react-bootstrap": "^1.0.0",
