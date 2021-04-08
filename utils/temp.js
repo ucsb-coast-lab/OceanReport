@@ -1,89 +1,65 @@
 import { round, formatDate, timeConv } from "../utils/format.js";
 
 const current = new Date(); //Datetime object set to today
-const today = formatDate(0);
-const tomorrow = formatDate(1);
-const dayBeforeYesterday = formatDate(-2);
 
 async function getTempReport() {
-  let todayURLFormat = today.year + "-" + today.month + "-" + today.day;
-  let dayBeforeYesterdayURLFormat =
-    dayBeforeYesterday.year +
-    "-" +
-    dayBeforeYesterday.month +
-    "-" +
-    dayBeforeYesterday.day;
-
-  const tempRecordResponse = await fetch(
-    `/api/temp?dataType=record&begin_date=` +
-      dayBeforeYesterdayURLFormat +
-      `&end_date=` +
-      todayURLFormat,
-    { method: "GET" }
-  );
+  const tempRecordResponse = await fetch(`/api/temp?dataType=record`, {
+    method: "GET",
+  });
   const tempRecordData = await tempRecordResponse.json();
-  let recent = tempRecordData.table.rows.length - 1;
-  let far = tempRecordData.table.rows[recent][1] * (9.0 / 5.0) + 32;
+
+  let recent = tempRecordData.data.smartMooringData.length - 1;
+  let far =
+    tempRecordData.data.smartMooringData[recent].sensorData[0].degrees *
+      (9.0 / 5.0) +
+    32;
   let temp = "Water Temp: " + round(far, 1) + " ºF";
   return temp;
-
-  // var url =
-  //   "https://api.sofarocean.com/api/wave-data?spotterId=SPOT-0798&includeSurfaceTempData=true";
-  // const response = await fetch(url, {
-  //   method: "GET",
-  //   headers: { token: process.env.SPOT_TOKEN },
-  // });
-  // const data = await response.json(); //data contains last 96 data records recorded by the SPOT wave buoy
-  // console.log(data)
-  // let far = data.table.rows[recent][1] * (9.0 / 5.0) + 32;
-  // let temp = "Water Temp: " + round(far, 1) + " ºF";
-  // return temp;
 }
 
 async function getTempGraph() {
-  let tomorrowURLFormat =
-    tomorrow.year + "-" + tomorrow.month + "-" + tomorrow.day;
-  let dayBeforeYesterdayURLFormat =
-    dayBeforeYesterday.year +
-    "-" +
-    dayBeforeYesterday.month +
-    "-" +
-    dayBeforeYesterday.day;
-
-  const tempRecordResponse = await fetch(
-    `/api/temp?dataType=record&begin_date=` +
-      dayBeforeYesterdayURLFormat +
-      `&end_date=` +
-      tomorrowURLFormat,
-    { method: "GET" }
-  );
+  const tempRecordResponse = await fetch(`/api/temp?dataType=record`, {
+    method: "GET",
+  });
   const tempRecordData = await tempRecordResponse.json();
 
+  let tempTime; //time of temp data currently being looked at
   let tempRecord = []; //graph data
   let tempDate = []; //labels
   let i = 0; //data position
-  tempRecordData.table.rows.map((sample) => {
+  tempRecordData.data.smartMooringData.map((sample) => {
     //this function loops through rows and puts the current row in sample each time
-    //sample[0] conains the time stamp, sample[1] contains the temp value in C
-    let time = new Date(sample[0]);
+    //sample.sensorData[0].degrees is the temp in C at the surface
+    tempTime = new Date(sample.timestamp); //set the waveTime to the time the wave was recorded
     if (
-      time.getTime() < current.getTime() &&
-      time.getTime() > current.getTime() - 172800000
+      tempTime.getTime() < current.getTime() &&
+      tempTime.getTime() > current.getTime() - 259200000
     ) {
       tempRecord[i] = {
-        x: time.getTime(),
-        y: round(sample[1] * (9.0 / 5.0) + 32, 2),
+        x: tempTime.getTime(), //the x is time in milliseconds since 01/01/1970
+        y: round(sample.sensorData[0].degrees * (9.0 / 5.0) + 32, 2),
       };
-      tempDate[i] =
-        time.toString().substring(4, 10) +
+      tempDate[i] = //Setting Date Label
+        tempTime.toString().substring(4, 10) +
         ", " +
-        timeConv(time.toString().substring(16, 21));
-      i++;
+        timeConv(tempTime.toString().substring(16, 21));
+      i++; //incrementing data position
     }
   });
 
+  // //USE formatDate instead of below
+  // const prev = new Date(current); //Datetime object set to yesterday
+  // prev.setDate(prev.getDate() - 1); //yesterday's year  year5.toString() gives you 4 digit year
+  // let year5 = prev.getFullYear();
+  // let month5 = prev.getMonth() + 1;
+  // let m5 = "00" + month5;
+  // m5 = m5.substr(m5.length - 2); //2 digit month for yesterday
+  // let day5 = prev.getDate();
+  // let d5 = "00" + day5;
+  // d5 = d5.substr(d5.length - 2); //2 digit date for yesterday
+
   // var url =
-  //   "https://cors-anywhere.herokuapp.com/" + //cors proxy
+  //   // "https://cors-anywhere.herokuapp.com/" + //cors proxy
   //   "http://west.rssoffice.com:8080/thredds/dodsC/roms/CA3km-forecast/CA/ca_subCA_fcst_" +
   //   year5.toString() +
   //   m5 +

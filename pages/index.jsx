@@ -204,28 +204,17 @@ export default function HomePage() {
           />
           <p className={styles.disclaimer}>
             *The UCSB SPOT Wave Buoy is located off 3/4 of a mile off of Campus
-            Point and records real time wave and wind data. To see more of its
-            records click{" "}
+            Point and records real time wave, wind, and tempature data. To see
+            more of its records click{" "}
             <a
               target="_blank"
-              href="https://coastlab.sofarocean.com/historical/SPOT-0186"
+              href="https://coastlab.sofarocean.com/historical/SPOT-0798"
             >
               here
             </a>
           </p>
           <p className={styles.disclaimer}>
-            **The Sterns Wharf Automated Shore Station is run by SCCOOS and is
-            located about 10 miles East of UCSB Campus Point. To see more data
-            collected by the Stersn Wharf Automated Shore Station click{" "}
-            <a
-              target="_blank"
-              href="https://www.sccoos.org/data/autoss/timeline/?main=single&station=stearns_wharf"
-            >
-              here
-            </a>
-          </p>
-          <p className={styles.disclaimer}>
-            ***The NOAA Santa Barbara Station, 9411340, is located at Point
+            **The NOAA Santa Barbara Station, 9411340, is located at Point
             Castillo, about 10 miles East of UCSB Campus Point. To see more data
             collected by the NOAA Santa Barbara Station click{" "}
             <a

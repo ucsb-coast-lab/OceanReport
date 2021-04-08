@@ -1,7 +1,7 @@
 import { round, timeConv } from "../utils/format.js";
 
 async function getWindReport() {
-  const windRecordResponse = await fetch(`/api/spotBuoy?dataType=record`, {
+  const windRecordResponse = await fetch(`/api/wind?dataType=record`, {
     method: "GET",
   });
   const windRecordData = await windRecordResponse.json(); //data contains latest records from SPOT wave buoy
@@ -35,17 +35,14 @@ async function getWindReport() {
 }
 
 async function getWindGraph() {
-  const windRecordResponse = await fetch(`/api/spotBuoy?dataType=record`, {
+  const windRecordResponse = await fetch(`/api/wind?dataType=record`, {
     method: "GET",
   });
   const windRecordData = await windRecordResponse.json(); //data contains last 96 data records recorded by the SPOT wave buoy
 
-  const windForecastResponse = await fetch(
-    `/api/spotBuoy?dataType=forecastNOAA`,
-    {
-      method: "GET",
-    }
-  );
+  const windForecastResponse = await fetch(`/api/wind?dataType=forecastNOAA`, {
+    method: "GET",
+  });
   const windForecastText = await windForecastResponse.text();
   const windForecastData = await new window.DOMParser().parseFromString(
     windForecastText,

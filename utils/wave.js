@@ -1,7 +1,7 @@
 import { round, timeConv } from "../utils/format.js";
 
 async function getWaveReport() {
-  const waveRecordResponse = await fetch(`/api/spotBuoy?dataType=record`, {
+  const waveRecordResponse = await fetch(`/api/wave?dataType=record`, {
     method: "GET",
   });
   const waveRecordData = await waveRecordResponse.json(); //data contains last 96 data records recorded by the SPOT wave buoy
@@ -30,7 +30,7 @@ async function getWaveReport() {
 }
 
 async function getWaveGraphs() {
-  const waveRecordResponse = await fetch(`/api/spotBuoy?dataType=record`, {
+  const waveRecordResponse = await fetch(`/api/wave?dataType=record`, {
     method: "GET",
   });
   const waveRecordData = await waveRecordResponse.json(); //data contains last 96 data records recorded by the SPOT wave buoy
@@ -58,7 +58,7 @@ async function getWaveGraphs() {
     i++; //incrementing data position
   });
 
-  const response2 = await fetch(`/api/spotBuoy?dataType=forecastCDIP`, {
+  const response2 = await fetch(`/api/wave?dataType=forecastCDIP`, {
     method: "GET",
   });
   const data2 = await response2.text(); //text not a json so we have to substring it to loop through values
@@ -199,7 +199,7 @@ async function getWaveGraphs() {
     }
   }
 
-  const response3 = await fetch(`/api/spotBuoy?dataType=forecastNOAA`, {
+  const response3 = await fetch(`/api/wave?dataType=forecastNOAA`, {
     method: "GET",
   });
   const str = await response3.text();

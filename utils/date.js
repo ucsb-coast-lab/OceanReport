@@ -1,7 +1,7 @@
 import { timeConv } from "../utils/format.js";
 
 export default async function getDate() {
-  let dateResponse = await fetch(`/api/spotBuoy?dataType=record`, {
+  let dateResponse = await fetch(`/api/wave?dataType=record`, {
     method: "GET",
   }); //uses wave backend because it wants the last recorded data
   const dateData = await dateResponse.json(); //data contains time of last recorded data

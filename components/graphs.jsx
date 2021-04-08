@@ -526,8 +526,7 @@ export default function Graphs(props) {
                   },
                   scaleLabel: {
                     display: true,
-                    labelString:
-                      "**Data from Stern Wharf Automated Shore Station",
+                    labelString: "*Data from UCSB Wave Buoy",
                   },
                 },
               ],
@@ -651,7 +650,7 @@ export default function Graphs(props) {
                   scaleLabel: {
                     display: true,
                     labelString:
-                      "***Data from NOAA Santa Barbara Station, 9411340",
+                      "**Data from NOAA Santa Barbara Station, 9411340",
                   },
                 },
               ],

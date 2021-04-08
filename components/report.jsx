@@ -36,7 +36,7 @@ export default function Report(props) {
             <a
               className={styles.links}
               target="_blank"
-              href="https://coastlab.sofarocean.com/historical/SPOT-0186"
+              href="https://coastlab.sofarocean.com/historical/SPOT-0798"
             >
               {props.wave}
             </a>
@@ -50,7 +50,7 @@ export default function Report(props) {
             <a
               className={styles.links}
               target="_blank"
-              href="https://coastlab.sofarocean.com/historical/SPOT-0186"
+              href="https://coastlab.sofarocean.com/historical/SPOT-0798"
             >
               {props.wind}
             </a>
@@ -67,7 +67,7 @@ export default function Report(props) {
             <a
               className={styles.links}
               target="_blank"
-              href="https://www.sccoos.org/data/autoss/timeline/?main=single&station=stearns_wharf"
+              href="https://coastlab.sofarocean.com/historical/SPOT-0798"
             >
               {props.temp}
             </a>
