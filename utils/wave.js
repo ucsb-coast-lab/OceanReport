@@ -1,5 +1,9 @@
 import { round, timeConv } from "../utils/format.js";
 
+const current = new Date(); //Datetime object set to today
+const dayBeforeYesterday = new Date();
+dayBeforeYesterday.setDate(current.getDate() - 2);
+
 async function getWaveReport() {
   const waveRecordResponse = await fetch(`/api/wave?dataType=record`, {
     method: "GET",
@@ -41,101 +45,160 @@ async function getWaveGraphs() {
   let periodRecord = []; //Graph Wave Period Data
   let dates = []; //Labels
   let i = 0; //data position
+  let firstRecord = true;
+  let previousWave;
   waveRecordData.data.waves.map((wave) => {
     waveTime = new Date(wave.timestamp); //set the waveTime to the time the wave was recorded
-    waveRecord[i] = {
-      x: waveTime.getTime(), //the x is time in milliseconds since 01/01/1970
-      y: round(wave.significantWaveHeight / 0.3048, 2), //y is height in ft rounded to 2 decimals
-    };
-    periodRecord[i] = {
-      x: waveTime.getTime(),
-      y: wave.peakPeriod, //y is wave period in s
-    };
-    dates[i] = //Setting Date Label
-      waveTime.toString().substring(4, 10) +
-      ", " +
-      timeConv(waveTime.toString().substring(16, 21));
-    i++; //incrementing data position
+    if (
+      waveTime.getTime() < current.getTime() &&
+      waveTime.getTime() > current.getTime() - 172800000
+    ) {
+      let previousWaveTime = new Date(previousWave.timestamp);
+      if (waveTime.getTime() - previousWaveTime.getTime() > 1860000) {
+        //check if data points are more than 31 minutes apart
+        let skips = 2;
+        if (firstRecord) {
+          //First record may only add a single point or none infront
+          let diff = waveTime.getTime() - dayBeforeYesterday.getTime(); //Seeing how many points 30 min apart must be added
+          skips = parseInt(diff / 1800000);
+          firstRecord = false;
+        }
+        let waveDrop =
+          (previousWave.significantWaveHeight - wave.significantWaveHeight) / 3; //wave height change between added points, gaps are always 90 minutes so divide by 3 to get correct change
+        let periodDrop = (previousWave.peakPeriod - wave.peakPeriod) / 3; //wave height change between added points, gaps are always 90 minutes so divide by 3 to get correct change
+        for (let s = 0; s < skips; s++) {
+          //adds the new points to the graph data
+          let newWaveTime = new Date(
+            waveTime.getTime() - 1800000 * (skips - s)
+          );
+          waveRecord[i + s] = {
+            x: newWaveTime.getTime(),
+            y: round(
+              (wave.significantWaveHeight + (skips - s) * waveDrop) / 0.3048,
+              2
+            ),
+          };
+          periodRecord[i + s] = {
+            x: newWaveTime.getTime(),
+            y: wave.peakPeriod + (skips - s) * periodDrop, //y is wave period in s
+          };
+          dates[i + s] =
+            newWaveTime.toString().substring(4, 10) +
+            ", " +
+            timeConv(newWaveTime.toString().substring(16, 21));
+        }
+        i += skips;
+      } else {
+        firstRecord = false;
+      }
+      waveRecord[i] = {
+        x: waveTime.getTime(), //the x is time in milliseconds since 01/01/1970
+        y: round(wave.significantWaveHeight / 0.3048, 2), //y is height in ft rounded to 2 decimals
+      };
+      periodRecord[i] = {
+        x: waveTime.getTime(),
+        y: wave.peakPeriod, //y is wave period in s
+      };
+      dates[i] = //Setting Date Label
+        waveTime.toString().substring(4, 10) +
+        ", " +
+        timeConv(waveTime.toString().substring(16, 21));
+      i++; //incrementing data position
+    }
+    previousWave = wave;
   });
 
-  const response2 = await fetch(`/api/wave?dataType=forecastCDIP`, {
-    method: "GET",
-  });
-  const data2 = await response2.text(); //text not a json so we have to substring it to loop through values
+  const waveForecastResponseCDIP = await fetch(
+    `/api/wave?dataType=forecastCDIP`,
+    {
+      method: "GET",
+    }
+  );
+  const waveForecastDataCDIP = await waveForecastResponseCDIP.text(); //text not a json so we have to substring it to loop through values
 
   let waveForecastCDIP = []; //Second Wave Graph Data
   waveForecastCDIP[i - 1] = waveRecord[i - 1]; //Setting first point of second graph data to last point of original graph data
   let periodForecast = []; //Second Wave Period Graph Data
   periodForecast[i - 1] = periodRecord[i - 1]; //Setting first point of second graph data to last point of original graph data
-  let predTimes = data2.substr(data2.indexOf("waveTime[80]") + 13, 958); //chunk of text containing the times
-  let predHeights = data2.substring(
-    data2.indexOf("waveHs[80]") + 11,
-    data2.indexOf("waveTp[80]") - 2
+  let predictionTimes = waveForecastDataCDIP.substr(
+    waveForecastDataCDIP.indexOf("waveTime[80]") + 13,
+    958
+  ); //chunk of text containing the times
+  let predictionHeights = waveForecastDataCDIP.substring(
+    waveForecastDataCDIP.indexOf("waveHs[80]") + 11,
+    waveForecastDataCDIP.indexOf("waveTp[80]") - 2
   ); //chunk of text containing the heights
-  let predPeriods = data2.substring(
-    data2.indexOf("waveTp[80]") + 11,
-    data2.length - 2
+  let predictionPeriods = waveForecastDataCDIP.substring(
+    waveForecastDataCDIP.indexOf("waveTp[80]") + 11,
+    waveForecastDataCDIP.length - 2
   ); //chunk of text containing the periods
   let currHeight;
   let currPeriod;
   let s = 0;
   let i2 = i;
   let skips;
-  while (predTimes.length) {
+  while (predictionTimes.length) {
     //sets the height to the one currently being looked at
-    if (predHeights.indexOf(",") !== -1) {
+    if (predictionHeights.indexOf(",") !== -1) {
       //if not last height on the list
-      currHeight = predHeights.substr(0, predHeights.indexOf(","));
-      predHeights = predHeights.substr(predHeights.indexOf(",") + 2);
-      currPeriod = predPeriods.substr(0, predPeriods.indexOf(","));
-      predPeriods = predPeriods.substr(predPeriods.indexOf(",") + 2);
+      currHeight = predictionHeights.substr(0, predictionHeights.indexOf(","));
+      predictionHeights = predictionHeights.substr(
+        predictionHeights.indexOf(",") + 2
+      );
+      currPeriod = predictionPeriods.substr(0, predictionPeriods.indexOf(","));
+      predictionPeriods = predictionPeriods.substr(
+        predictionPeriods.indexOf(",") + 2
+      );
     } else {
-      currHeight = predHeights;
-      predHeights = "";
-      currPeriod = predPeriods;
-      predPeriods = "";
+      currHeight = predictionHeights;
+      predictionHeights = "";
+      currPeriod = predictionPeriods;
+      predictionPeriods = "";
     }
     //sets the time to the one currently being looked at
-    let currTime = predTimes.substr(0, 10);
-    predTimes = predTimes.substr(12);
+    let currTime = predictionTimes.substr(0, 10);
+    predictionTimes = predictionTimes.substr(12);
+    let predTime = new Date(parseInt(currTime + "000"));
     if (
       //if the time is greater than last recorded time on original graph and less than that time plus 24 hours
-      parseInt(currTime + "000") > waveForecastCDIP[i2 - 1].x &&
-      parseInt(currTime + "000") < waveForecastCDIP[i2 - 1].x + 86400000
+      predTime.getTime() > waveForecastCDIP[i2 - 1].x &&
+      predTime.getTime() < current.getTime() + 86400000
     ) {
-      let t = new Date(parseInt(currTime + "000")); //set new DateTime object to the time of current wave
       if (s === 0) {
         //if this is the first data point
-        let diff = parseInt(currTime + "000") - waveForecastCDIP[i - 1].x; //Seeing how many points 30 min apart must be added
+        let diff = predTime.getTime() - waveForecastCDIP[i - 1].x; //Seeing how many points 30 min apart must be added
         skips = parseInt(diff / 1800000); //between last recorded data and this first data point
         let drop = //height change between added points
           (waveForecastCDIP[i - 1].y -
             round(parseFloat(currHeight) / 0.3048, 2)) /
-          skips;
-        for (s = 0; s < skips - 1; s++) {
+          (skips + 1);
+        for (s = 0; s < skips; s++) {
           //adds the new points to the graph data
-          let j = new Date(t.getTime() - 1800000 * (skips - 1 - s));
+          let newWaveTime = new Date(
+            predTime.getTime() - 1800000 * (skips - s)
+          );
           waveForecastCDIP[i + s] = {
-            x: j.getTime(),
+            x: newWaveTime.getTime(),
             y: round(waveRecord[i - 1].y - (s + 1) * drop, 2),
           };
           dates[i + s] =
-            j.toString().substring(4, 10) +
+            newWaveTime.toString().substring(4, 10) +
             ", " +
-            timeConv(j.toString().substring(16, 21));
+            timeConv(newWaveTime.toString().substring(16, 21));
         }
 
         //same process for the wave period
         let drop2 =
-          (periodForecast[i - 1].y - round(parseFloat(currPeriod), 2)) / skips;
-        for (let f = 0; f < skips - 1; f++) {
+          (periodForecast[i - 1].y - round(parseFloat(currPeriod), 2)) /
+          (skips + 1);
+        for (let f = 0; f < skips; f++) {
           periodForecast[i + f] = {
-            x: t.getTime() - 1800000 * (skips - 1 - f),
+            x: predTime.getTime() - 1800000 * (skips - f),
             y: round(periodForecast[i - 1].y - (f + 1) * drop2, 2),
           };
         }
 
-        i = i + s; //increment the data position by the amount of points added
+        i += skips; //increment the data position by the amount of points added
       }
       //Add current data points to their respective graphs
       periodForecast[i] = {
@@ -147,17 +210,16 @@ async function getWaveGraphs() {
         y: round(parseFloat(currHeight) / 0.3048, 2),
       };
       dates[i] =
-        t.toString().substring(4, 10) +
+        predTime.toString().substring(4, 10) +
         ", " +
-        timeConv(t.toString().substring(16, 21));
+        timeConv(predTime.toString().substring(16, 21));
 
-      for (var k = 1; k <= 5; k++) {
+      for (var k = 1; k < 6; k++) {
         //add points after current data point
         if (
-          //if the next time is greater than last recorded time plus 24hrs and added points plus skips exceeds 5
-          parseInt(predTimes.substr(0, 10) + "000") >
-            waveForecastCDIP[i2 - 1].x + 86400000 &&
-          k + skips > 5
+          //if the next time is greater than current time plus 24hrs
+          parseInt(predictionTimes.substr(0, 10) + "000") >
+          current.getTime() + 86400000
         ) {
           break; //leave the loop
         }
@@ -166,46 +228,54 @@ async function getWaveGraphs() {
         let drop =
           (round(parseFloat(currHeight) / 0.3048, 2) -
             round(
-              parseFloat(predHeights.substr(0, predHeights.indexOf(","))) /
-                0.3048,
+              parseFloat(
+                predictionHeights.substr(0, predictionHeights.indexOf(","))
+              ) / 0.3048,
               2
             )) /
           6;
-        let j = new Date(t.getTime() + 1800000 * k);
+        let newWaveTime = new Date(predTime.getTime() + 1800000 * k);
         waveForecastCDIP[i + k] = {
-          x: j.getTime(),
+          x: newWaveTime.getTime(),
           y: round(round(parseFloat(currHeight) / 0.3048, 2) - k * drop, 2),
         };
 
         let drop2 =
           (round(parseFloat(currPeriod), 2) -
             round(
-              parseFloat(predPeriods.substr(0, predPeriods.indexOf(","))),
+              parseFloat(
+                predictionPeriods.substr(0, predictionPeriods.indexOf(","))
+              ),
               2
             )) /
           6;
         periodForecast[i + k] = {
-          x: t.getTime() + 1800000 * k,
+          x: newWaveTime.getTime(),
           y: round(round(parseFloat(currPeriod), 2) - k * drop2, 2),
         };
 
         dates[i + k] =
-          j.toString().substring(4, 10) +
+          newWaveTime.toString().substring(4, 10) +
           ", " +
-          timeConv(j.toString().substring(16, 21));
+          timeConv(newWaveTime.toString().substring(16, 21));
       }
-      i = i + 6;
-      t++;
+      i += 6;
     }
   }
 
-  const response3 = await fetch(`/api/wave?dataType=forecastNOAA`, {
-    method: "GET",
-  });
-  const str = await response3.text();
-  const data3 = await new window.DOMParser().parseFromString(str, "text/xml"); //XML format
-  let waves = data3.getElementsByTagName("waves");
-  let times = data3.getElementsByTagName("start-valid-time");
+  const waveForecastResponseNOAA = await fetch(
+    `/api/wave?dataType=forecastNOAA`,
+    {
+      method: "GET",
+    }
+  );
+  const str = await waveForecastResponseNOAA.text();
+  const waveForecastDataNOAA = await new window.DOMParser().parseFromString(
+    str,
+    "text/xml"
+  ); //XML format
+  let waves = waveForecastDataNOAA.getElementsByTagName("waves");
+  let times = waveForecastDataNOAA.getElementsByTagName("start-valid-time");
 
   let waveForecastNOAA = [];
   waveForecastNOAA[i2 - 1] = waveRecord[i2 - 1];
@@ -216,7 +286,7 @@ async function getWaveGraphs() {
     let drop;
     if (
       predTime.getTime() > waveForecastNOAA[r - 1].x &&
-      predTime.getTime() < waveForecastNOAA[r - 1].x + 86400000
+      predTime.getTime() < current.getTime() + 86400000
     ) {
       if (a === 0) {
         let diff = predTime.getTime() - waveForecastNOAA[i2 - 1].x;
@@ -224,10 +294,10 @@ async function getWaveGraphs() {
         drop =
           (waveForecastNOAA[i2 - 1].y -
             parseInt(waves[t].firstChild.textContent)) /
-          skips;
-        for (var w = 0; w < skips - 1; w++) {
+          (skips + 1);
+        for (var w = 0; w < skips; w++) {
           waveForecastNOAA[i2 + w] = {
-            x: predTime.getTime() - 1800000 * (skips - 1 - w),
+            x: predTime.getTime() - 1800000 * (skips - w),
             y: round(waveForecastNOAA[i2 - 1].y - (w + 1) * drop, 2),
           };
         }
@@ -238,14 +308,17 @@ async function getWaveGraphs() {
         x: predTime.getTime(),
         y: parseInt(waves[t].firstChild.textContent),
       };
-      drop =
-        (parseInt(waves[t].firstChild.textContent) -
-          parseInt(waves[t + 1].firstChild.textContent)) /
-        2;
-      waveForecastNOAA[i2 + 1] = {
-        x: predTime.getTime(),
-        y: parseInt(waves[t].firstChild.textContent) - drop,
-      };
+      let newWaveTime = new Date(predTime.getTime() + 1800000);
+      if (newWaveTime.getTime() < current.getTime() + 86400000) {
+        drop =
+          (parseInt(waves[t].firstChild.textContent) -
+            parseInt(waves[t + 1].firstChild.textContent)) /
+          2;
+        waveForecastNOAA[i2 + 1] = {
+          x: predTime.getTime(),
+          y: parseInt(waves[t].firstChild.textContent) - drop,
+        };
+      }
       i2 += 2;
     }
   }

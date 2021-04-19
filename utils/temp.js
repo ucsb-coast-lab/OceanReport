@@ -33,7 +33,7 @@ async function getTempGraph() {
     tempTime = new Date(sample.timestamp); //set the waveTime to the time the wave was recorded
     if (
       tempTime.getTime() < current.getTime() &&
-      tempTime.getTime() > current.getTime() - 259200000
+      tempTime.getTime() > current.getTime() - 172800000
     ) {
       tempRecord[i] = {
         x: tempTime.getTime(), //the x is time in milliseconds since 01/01/1970

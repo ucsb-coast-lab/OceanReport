@@ -36,14 +36,12 @@ This application compiles ocean data from stations and bouys in the Southern Cal
 
 ## Report Resources and Request Links
 
-- Wave and Wind Buoy Data for report and graphs histories: https://coastlab.sofarocean.com/historical/SPOT-0186
+- Wave, Wind, and Temp Buoy Data for report and graphs histories: https://coastlab.sofarocean.com/historical/SPOT-0798
   - Sofar API Documentation: https://coastlab.sofarocean.com/api
 - Wave and Wind Data for graph predictions: http://cdip.ucsd.edu/m/forecast/?wave_model=socal&layer=waveHs
   - OPeNDAP Access Form: https://thredds.cdip.ucsd.edu/thredds/dodsC/cdip/model/MOP_alongshore/B0391_forecast.nc.html
 - Second Wave Data for graph predictions and Wave Period predictions: https://marine.weather.gov/MapClick.php?w3=sfcwind&w3u=0&w10=swlp&w11=swlm&w12=swlp2&w13=swlm2&w14=wwh&w15=wvh&AheadHour=0&Submit=Submit&FcstType=digital&textField1=34.4001&textField2=-119.8461&site=all&unit=0&dd=&bw=&marine=1
   - XML request URL: https://marine.weather.gov/MapClick.php?lat=34.4001&lon=-119.8461&FcstType=digitalDWML
-- Temp Data for reports and graph history: https://www.sccoos.org/data/autoss/timeline/?main=single&station=stearns_wharf
-  - tabledap Data Access Form: https://erddap.sccoos.org/erddap/tabledap/autoss.html
 - Temp Data for graph predictions: https://catalog.data.gov/dataset/california-roms-forecast-3km
   - OPeNDAP Access Form: http://west.rssoffice.com:8080/thredds/dodsC/roms/CA3km-forecast/CA/ca_subCA_fcst_2020083103.nc.html
 - Tide Data for reports and graph history and predictions: https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9411340

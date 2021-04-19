@@ -4,7 +4,6 @@ const current = new Date(); //Datetime object set to today
 const tomorrow = formatDate(1);
 const dayAfterTomorrow = formatDate(2);
 const dayBeforeYesterday = formatDate(-2);
-const twoDaysBefore = formatDate(-3);
 
 async function getTideReport() {
   let tomorrowURLFormat = tomorrow.year + tomorrow.month + tomorrow.day;
@@ -93,8 +92,6 @@ async function getTideGraph() {
     dayAfterTomorrow.year + dayAfterTomorrow.month + dayAfterTomorrow.day;
   let dayBeforeYesterdayURLFormat =
     dayBeforeYesterday.year + dayBeforeYesterday.month + dayBeforeYesterday.day;
-  let twoDaysBeforeURLFormat =
-    twoDaysBefore.year + twoDaysBefore.month + twoDaysBefore.day;
 
   //Setting hi and lo for report
   const hiloRecordResponse = await fetch(
@@ -119,7 +116,7 @@ async function getTideGraph() {
     );
     if (
       time.getTime() < current.getTime() + 86400000 &&
-      time.getTime() > current.getTime() - 259200000
+      time.getTime() > current.getTime() - 172800000
     ) {
       hiloTimes[k] = time; //recording hi and low time for 3-days ago through tomorrow for use in the graph
       k++;
@@ -128,7 +125,7 @@ async function getTideGraph() {
 
   const tideResponse = await fetch(
     `/api/tide?reqNum=3&begin_date=` +
-      twoDaysBeforeURLFormat +
+      dayBeforeYesterdayURLFormat +
       `&end_date=` +
       dayAfterTomorrowURLFormat,
     { method: "GET" }
@@ -151,7 +148,7 @@ async function getTideGraph() {
     );
     if (
       time.getTime() <= current.getTime() &&
-      time.getTime() > current.getTime() - 259200000
+      time.getTime() > current.getTime() - 172800000
     ) {
       tideRecord[i] = { x: time.getTime(), y: prediction.v };
       tideDate[i] = "";
