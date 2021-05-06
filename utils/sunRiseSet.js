@@ -1,39 +1,57 @@
 import { formatRiseSet } from "../utils/format.js";
 
 export async function getRiseSet() {
-  var sunTimes = [];
+  try {
+    var sunTimes = [];
+    const response2DaysAgo = await fetch(
+      process.env.BASE_URL + `/api/sunRiseSet?date=2 days agos`,
+      {
+        method: "GET",
+      }
+    );
+    const data2DaysAgo = await response2DaysAgo.json();
+    formatRiseSet(data2DaysAgo, sunTimes, -2);
 
-  const response2DaysAgo = await fetch(`/api/sunRiseSet?date=2 days ago`, {
-    method: "GET",
-  });
-  const data2DaysAgo = await response2DaysAgo.json();
-  formatRiseSet(data2DaysAgo, sunTimes, -2);
+    const responseYesterday = await fetch(
+      process.env.BASE_URL + `/api/sunRiseSet?date=yesterday`,
+      {
+        method: "GET",
+      }
+    );
+    const dataYesterday = await responseYesterday.json();
+    formatRiseSet(dataYesterday, sunTimes, -1);
 
-  const responseYesterday = await fetch(`/api/sunRiseSet?date=yesterday`, {
-    method: "GET",
-  });
-  const dataYesterday = await responseYesterday.json();
-  formatRiseSet(dataYesterday, sunTimes, -1);
+    const responseToday = await fetch(
+      process.env.BASE_URL + `/api/sunRiseSet?date=today`,
+      {
+        method: "GET",
+      }
+    );
+    const dataToday = await responseToday.json();
+    formatRiseSet(dataToday, sunTimes, 0);
 
-  const responseToday = await fetch(`/api/sunRiseSet?date=today`, {
-    method: "GET",
-  });
-  const dataToday = await responseToday.json();
-  formatRiseSet(dataToday, sunTimes, 0);
+    const responseTomorrow = await fetch(
+      process.env.BASE_URL + `/api/sunRiseSet?date=tomorrow`,
+      {
+        method: "GET",
+      }
+    );
+    const dataTomorrow = await responseTomorrow.json();
+    formatRiseSet(dataTomorrow, sunTimes, 1);
 
-  const responseTomorrow = await fetch(`/api/sunRiseSet?date=tomorrow`, {
-    method: "GET",
-  });
-  const dataTomorrow = await responseTomorrow.json();
-  formatRiseSet(dataTomorrow, sunTimes, 1);
+    const response2Day = await fetch(
+      process.env.BASE_URL + `/api/sunRiseSet?date=2day`,
+      {
+        method: "GET",
+      }
+    );
+    const data2Day = await response2Day.json();
+    formatRiseSet(data2Day, sunTimes, 2);
 
-  const response2Day = await fetch(`/api/sunRiseSet?date=2day`, {
-    method: "GET",
-  });
-  const data2Day = await response2Day.json();
-  formatRiseSet(data2Day, sunTimes, 2);
-
-  return sunTimes;
+    return sunTimes;
+  } catch (e) {
+    return [];
+  }
 }
 
 export function setShadingPoints(sunShading, dataHistory, dataPredictions) {

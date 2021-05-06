@@ -56,6 +56,8 @@ export default function HomePage() {
         setSunPointsWaveWind(
           setShadingPoints(sunTimes, waveRecord, waveForecastCDIP)
         );
+      } else {
+        setSunPointsWaveWind([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
       }
     },
     [
@@ -70,6 +72,8 @@ export default function HomePage() {
       //If all of the data sets are not empty then run
       if (sunTimes.length !== 0 && tempRecord.length !== 0) {
         setSunPointsTemp(setShadingPoints(sunTimes, tempRecord, tempForecast));
+      } else {
+        setSunPointsTemp([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
       }
     },
     [
@@ -84,6 +88,8 @@ export default function HomePage() {
       //If all of the data sets are not empty then run
       if (sunTimes.length !== 0 && tideRecord.length !== 0) {
         setSunPointsTide(setShadingPoints(sunTimes, tideRecord, tideForecast));
+      } else {
+        setSunPointsTide([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
       }
     },
     [
@@ -126,15 +132,15 @@ export default function HomePage() {
     setWindForecast(windGraphData.windForecast);
     setWindDates(windGraphData.dateLabels);
 
-    let tideGraphData = await getTideGraph();
-    setTideRecord(tideGraphData.tideRecord);
-    setTideForecast(tideGraphData.tideForecast);
-    setTideDates(tideGraphData.dateLabels);
-
     let tempGraphData = await getTempGraph();
     setTempRecord(tempGraphData.tempRecord);
     setTempForecast(tempGraphData.tempForecast);
     setTempDates(tempGraphData.dateLabels);
+
+    let tideGraphData = await getTideGraph();
+    setTideRecord(tideGraphData.tideRecord);
+    setTideForecast(tideGraphData.tideForecast);
+    setTideDates(tideGraphData.dateLabels);
   };
 
   //This is the main function to run and it calls update once if the report data has not been set yet

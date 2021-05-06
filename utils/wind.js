@@ -1,54 +1,74 @@
 import { round, timeConv } from "../utils/format.js";
+var DOMParser = require("xmldom").DOMParser;
 
 const current = new Date(); //Datetime object set to today
 const dayBeforeYesterday = new Date();
 dayBeforeYesterday.setDate(current.getDate() - 2);
 
 async function getWindReport() {
-  const windRecordResponse = await fetch(`/api/wind?dataType=record`, {
-    method: "GET",
-  });
-  const windRecordData = await windRecordResponse.json(); //data contains latest records from SPOT wave buoy
+  try {
+    const windRecordResponse = await fetch(
+      process.env.BASE_URL + `/api/wind?dataType=record`,
+      {
+        method: "GET",
+      }
+    );
+    const windRecordData = await windRecordResponse.json(); //data contains latest records from SPOT wave buoy
 
-  let wind;
-  if (windRecordData.data.wind[windRecordData.data.wind.length - 1].speed < 2) {
-    wind = "Calm";
-  } else {
-    let dir = "north";
-    let theta =
-      windRecordData.data.wind[windRecordData.data.wind.length - 1].direction;
-    if (theta >= 45 && theta < 135) {
-      dir = "east";
-    } else if (theta >= 135 && theta < 225) {
-      dir = "south";
-    } else if (theta >= 225 && theta < 315) {
-      dir = "west";
+    let wind;
+    if (
+      windRecordData.data.wind[windRecordData.data.wind.length - 1].speed < 2
+    ) {
+      wind = "Calm";
+    } else {
+      let dir = "north";
+      let theta =
+        windRecordData.data.wind[windRecordData.data.wind.length - 1].direction;
+      if (theta >= 45 && theta < 135) {
+        dir = "east";
+      } else if (theta >= 135 && theta < 225) {
+        dir = "south";
+      } else if (theta >= 225 && theta < 315) {
+        dir = "west";
+      }
+      wind =
+        "From the " +
+        dir +
+        " at " +
+        round(
+          windRecordData.data.wind[windRecordData.data.wind.length - 1].speed,
+          0
+        ) +
+        " kts";
     }
-    wind =
-      "From the " +
-      dir +
-      " at " +
-      round(
-        windRecordData.data.wind[windRecordData.data.wind.length - 1].speed,
-        0
-      ) +
-      " kts";
-  }
 
-  return wind;
+    return wind;
+  } catch (e) {
+    return "Error retrieving wind data. Please refresh the page or check back later.";
+  }
 }
 
 async function getWindGraph() {
-  const windRecordResponse = await fetch(`/api/wind?dataType=record`, {
-    method: "GET",
+  const windRecordResponse = await fetch(
+    process.env.BASE_URL + `/api/wind?dataType=record`,
+    {
+      method: "GET",
+    }
+  ).catch((err) => {
+    // console.log(err.message)
   });
   const windRecordData = await windRecordResponse.json(); //data contains last 96 data records recorded by the SPOT wave buoy
 
-  const windForecastResponse = await fetch(`/api/wind?dataType=forecastNOAA`, {
-    method: "GET",
+  const windForecastResponse = await fetch(
+    process.env.BASE_URL + `/api/wind?dataType=forecastNOAA`,
+    {
+      method: "GET",
+    }
+  ).catch((err) => {
+    // console.log(err.message)
   });
   const windForecastText = await windForecastResponse.text();
-  const windForecastData = await new window.DOMParser().parseFromString(
+  const windForecastData = new DOMParser().parseFromString(
     windForecastText,
     "text/xml"
   ); //XML format
@@ -107,7 +127,7 @@ async function getWindGraph() {
   });
 
   let winds = windForecastData.getElementsByTagName("wind-speed")[0];
-  let currWind = winds.firstElementChild;
+  let currWind = winds.firstChild;
   let windForecast = [];
   windForecast[i - 1] = windRecord[i - 1];
   let r = i;
@@ -153,7 +173,7 @@ async function getWindGraph() {
       if (newWindTime.getTime() < current.getTime() + 86400000) {
         drop =
           (parseInt(currWind.textContent) * 1.151 -
-            parseInt(currWind.nextElementSibling.textContent) * 1.151) /
+            parseInt(currWind.nextSibling.textContent) * 1.151) /
           2;
         windForecast[i + 1] = {
           x: newWindTime.getTime(),
@@ -165,7 +185,7 @@ async function getWindGraph() {
           timeConv(newWindTime.toString().substring(16, 21));
       }
       i += 2;
-      currWind = currWind.nextElementSibling;
+      currWind = currWind.nextSibling;
     }
   }
 

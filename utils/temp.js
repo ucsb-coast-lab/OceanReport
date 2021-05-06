@@ -3,23 +3,35 @@ import { round, formatDate, timeConv } from "../utils/format.js";
 const current = new Date(); //Datetime object set to today
 
 async function getTempReport() {
-  const tempRecordResponse = await fetch(`/api/temp?dataType=record`, {
-    method: "GET",
-  });
-  const tempRecordData = await tempRecordResponse.json();
+  try {
+    const tempRecordResponse = await fetch(
+      process.env.BASE_URL + `/api/temp?dataType=record`,
+      {
+        method: "GET",
+      }
+    );
+    const tempRecordData = await tempRecordResponse.json();
 
-  let recent = tempRecordData.data.smartMooringData.length - 1;
-  let far =
-    tempRecordData.data.smartMooringData[recent].sensorData[0].degrees *
-      (9.0 / 5.0) +
-    32;
-  let temp = "Water Temp: " + round(far, 1) + " ºF";
-  return temp;
+    let recent = tempRecordData.data.smartMooringData.length - 1;
+    let far =
+      tempRecordData.data.smartMooringData[recent].sensorData[0].degrees *
+        (9.0 / 5.0) +
+      32;
+    let temp = "Water Temp: " + round(far, 1) + " ºF";
+    return temp;
+  } catch (e) {
+    return "Error retrieving Temp data. Please refresh the page or check back later.";
+  }
 }
 
 async function getTempGraph() {
-  const tempRecordResponse = await fetch(`/api/temp?dataType=record`, {
-    method: "GET",
+  const tempRecordResponse = await fetch(
+    process.env.BASE_URL + `/api/temp?dataType=record`,
+    {
+      method: "GET",
+    }
+  ).catch((err) => {
+    // console.log(err.message)
   });
   const tempRecordData = await tempRecordResponse.json();
 

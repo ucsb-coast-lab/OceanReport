@@ -147,6 +147,8 @@ export default function Graphs(props) {
     ],
   };
 
+  console.log(props.sunPointsWaveWind);
+
   //Each Graph has its own Line component with options
   //the main options chnaged were the xAxes labels and annotations
   //xAxes are auto set with a limit expect for tide, tide uses a function to only display labels that are not undefined

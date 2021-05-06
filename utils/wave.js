@@ -1,41 +1,54 @@
 import { round, timeConv } from "../utils/format.js";
+var DOMParser = require("xmldom").DOMParser;
 
 const current = new Date(); //Datetime object set to today
 const dayBeforeYesterday = new Date();
 dayBeforeYesterday.setDate(current.getDate() - 2);
 
 async function getWaveReport() {
-  const waveRecordResponse = await fetch(`/api/wave?dataType=record`, {
-    method: "GET",
-  });
-  const waveRecordData = await waveRecordResponse.json(); //data contains last 96 data records recorded by the SPOT wave buoy
+  try {
+    const waveRecordResponse = await fetch(
+      process.env.BASE_URL + `/api/wave?dataType=record`,
+      {
+        method: "GET",
+      }
+    );
+    const waveRecordData = await waveRecordResponse.json(); //data contains last 96 data records recorded by the SPOT wave buoy
 
-  let wave =
-    round(
-      waveRecordData.data.waves[waveRecordData.data.waves.length - 1]
-        .significantWaveHeight / 0.3048,
-      1
-    ) +
-    " ft @ " +
-    round(
-      waveRecordData.data.waves[waveRecordData.data.waves.length - 1]
-        .peakPeriod,
-      0
-    ) +
-    " secs from " +
-    round(
-      waveRecordData.data.waves[waveRecordData.data.waves.length - 1]
-        .peakDirection,
-      0
-    ) +
-    "º";
+    let wave =
+      round(
+        waveRecordData.data.waves[waveRecordData.data.waves.length - 1]
+          .significantWaveHeight / 0.3048,
+        1
+      ) +
+      " ft @ " +
+      round(
+        waveRecordData.data.waves[waveRecordData.data.waves.length - 1]
+          .peakPeriod,
+        0
+      ) +
+      " secs from " +
+      round(
+        waveRecordData.data.waves[waveRecordData.data.waves.length - 1]
+          .peakDirection,
+        0
+      ) +
+      "º";
 
-  return wave;
+    return wave;
+  } catch (e) {
+    return "Error retrieving wave data. Please refresh the page or check back later.";
+  }
 }
 
 async function getWaveGraphs() {
-  const waveRecordResponse = await fetch(`/api/wave?dataType=record`, {
-    method: "GET",
+  const waveRecordResponse = await fetch(
+    process.env.BASE_URL + `/api/wave?dataType=record`,
+    {
+      method: "GET",
+    }
+  ).catch((err) => {
+    // console.log(err.message)
   });
   const waveRecordData = await waveRecordResponse.json(); //data contains last 96 data records recorded by the SPOT wave buoy
 
@@ -80,7 +93,7 @@ async function getWaveGraphs() {
           };
           periodRecord[i + s] = {
             x: newWaveTime.getTime(),
-            y: wave.peakPeriod + (skips - s) * periodDrop, //y is wave period in s
+            y: round(wave.peakPeriod + (skips - s) * periodDrop, 2), //y is wave period in s
           };
           dates[i + s] =
             newWaveTime.toString().substring(4, 10) +
@@ -109,11 +122,13 @@ async function getWaveGraphs() {
   });
 
   const waveForecastResponseCDIP = await fetch(
-    `/api/wave?dataType=forecastCDIP`,
+    process.env.BASE_URL + `/api/wave?dataType=forecastCDIP`,
     {
       method: "GET",
     }
-  );
+  ).catch((err) => {
+    // console.log(err.message)
+  });
   const waveForecastDataCDIP = await waveForecastResponseCDIP.text(); //text not a json so we have to substring it to loop through values
 
   let waveForecastCDIP = []; //Second Wave Graph Data
@@ -216,9 +231,10 @@ async function getWaveGraphs() {
 
       for (var k = 1; k < 6; k++) {
         //add points after current data point
+        let newWaveTime = new Date(predTime.getTime() + 1800000 * k);
         if (
           //if the next time is greater than current time plus 24hrs
-          parseInt(predictionTimes.substr(0, 10) + "000") >
+          newWaveTime.getTime() >
           current.getTime() + 86400000
         ) {
           break; //leave the loop
@@ -234,7 +250,6 @@ async function getWaveGraphs() {
               2
             )) /
           6;
-        let newWaveTime = new Date(predTime.getTime() + 1800000 * k);
         waveForecastCDIP[i + k] = {
           x: newWaveTime.getTime(),
           y: round(round(parseFloat(currHeight) / 0.3048, 2) - k * drop, 2),
@@ -264,16 +279,15 @@ async function getWaveGraphs() {
   }
 
   const waveForecastResponseNOAA = await fetch(
-    `/api/wave?dataType=forecastNOAA`,
+    process.env.BASE_URL + `/api/wave?dataType=forecastNOAA`,
     {
       method: "GET",
     }
-  );
+  ).catch((err) => {
+    // console.log(err.message)
+  });
   const str = await waveForecastResponseNOAA.text();
-  const waveForecastDataNOAA = await new window.DOMParser().parseFromString(
-    str,
-    "text/xml"
-  ); //XML format
+  const waveForecastDataNOAA = new DOMParser().parseFromString(str, "text/xml"); //XML format
   let waves = waveForecastDataNOAA.getElementsByTagName("waves");
   let times = waveForecastDataNOAA.getElementsByTagName("start-valid-time");
 

@@ -40,7 +40,8 @@
     "react-chartjs-2": "^2.9.0",
     "react-dom": "16.13.1",
     "request": "^2.88.2",
-    "swr": "^0.1.18"
+    "swr": "^0.1.18",
+    "xmldom": "^0.6.0"
   },
   "devDependencies": {
     "@rckeller/cypress-unfetch": "^1.0.1",

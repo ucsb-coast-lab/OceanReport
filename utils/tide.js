@@ -6,84 +6,101 @@ const dayAfterTomorrow = formatDate(2);
 const dayBeforeYesterday = formatDate(-2);
 
 async function getTideReport() {
-  let tomorrowURLFormat = tomorrow.year + tomorrow.month + tomorrow.day;
-  let dayBeforeYesterdayURLFormat =
-    dayBeforeYesterday.year + dayBeforeYesterday.month + dayBeforeYesterday.day;
+  try {
+    let tomorrowURLFormat = tomorrow.year + tomorrow.month + tomorrow.day;
+    let dayBeforeYesterdayURLFormat =
+      dayBeforeYesterday.year +
+      dayBeforeYesterday.month +
+      dayBeforeYesterday.day;
 
-  //Setting hi and lo for report
-  const hiloRecordResponse = await fetch(
-    `/api/tide?reqNum=2&begin_date=` +
-      dayBeforeYesterdayURLFormat +
-      `&end_date=` +
-      tomorrowURLFormat,
-    { method: "GET" }
-  );
-  const hiloRecordData = await hiloRecordResponse.json();
+    //Setting hi and lo for report
+    const hiloRecordResponse = await fetch(
+      process.env.BASE_URL +
+        `/api/tide?reqNum=2&begin_date=` +
+        dayBeforeYesterdayURLFormat +
+        `&end_date=` +
+        tomorrowURLFormat,
+      { method: "GET" }
+    );
+    const hiloRecordData = await hiloRecordResponse.json();
 
-  let nextHiLo = {};
-  let numPred = 0;
+    let nextHiLo = {};
+    let numPred = 0;
 
-  hiloRecordData.predictions.map((prediction) => {
-    //loops through predictions and puts each as prediction
-    let time = new Date(
-      prediction.t.substring(0, 10) +
+    hiloRecordData.predictions.map((prediction) => {
+      //loops through predictions and puts each as prediction
+      let time = new Date(
+        prediction.t.substring(0, 10) +
+          "T" +
+          prediction.t.substring(11, 16) +
+          ":00Z"
+      );
+      if (time.getTime() > current.getTime() && numPred < 2) {
+        //gathering 2 data points that will be the next hi and low on the report
+        nextHiLo[numPred] = prediction;
+        numPred++;
+      }
+    });
+
+    //This is where it is determined if the the tide is high or low and it sets the string to be displayed
+    let first, second;
+    if (nextHiLo[0].type === "H") {
+      first = "HI: ";
+      second = "LO: ";
+    } else {
+      first = "LO: ";
+      second = "HI: ";
+    }
+    let height = round(parseFloat(nextHiLo[0].v), 1);
+    let height2 = round(parseFloat(nextHiLo[1].v), 1);
+    let time1 = new Date(
+      nextHiLo[0].t.substring(0, 10) +
         "T" +
-        prediction.t.substring(11, 16) +
+        nextHiLo[0].t.substring(11, 16) +
         ":00Z"
     );
-    if (time.getTime() > current.getTime() && numPred < 2) {
-      //gathering 2 data points that will be the next hi and low on the report
-      nextHiLo[numPred] = prediction;
-      numPred++;
+    let time2 = new Date(
+      nextHiLo[1].t.substring(0, 10) +
+        "T" +
+        nextHiLo[1].t.substring(11, 16) +
+        ":00Z"
+    );
+    let t1 = timeConv(time1.toString().substring(16, 21));
+    let t2 = timeConv(time2.toString().substring(16, 21));
+    first += height + " ft @ " + t1;
+    second += height2 + " ft @ " + t2;
+
+    const tideRecordResponse = await fetch(
+      process.env.BASE_URL + `/api/tide?reqNum=1`,
+      {
+        method: "GET",
+      }
+    );
+    const tideRecordData = await tideRecordResponse.json();
+
+    let currTide =
+      "Tide: " + round(parseFloat(tideRecordData.data[0].v), 1) + " ft and ";
+    let rising;
+    if (tideRecordData.data[0].v < nextHiLo[0].v) {
+      currTide += "rising";
+      rising = true; //this variable is used during rendering to choose the right tide icon
+    } else {
+      currTide += "falling";
+      rising = false;
     }
-  });
 
-  //This is where it is determined if the the tide is high or low and it sets the string to be displayed
-  let first, second;
-  if (nextHiLo[0].type === "H") {
-    first = "HI: ";
-    second = "LO: ";
-  } else {
-    first = "LO: ";
-    second = "HI: ";
+    let tideData = { tide: currTide, rising: rising, hi: first, lo: second };
+    return tideData;
+  } catch (e) {
+    let tideData = {
+      tide:
+        "Error retrieving tide data. Please refresh the page or check back later.",
+      rising: true,
+      hi: "HI: ",
+      lo: "LO: ",
+    };
+    return tideData;
   }
-  let height = round(parseFloat(nextHiLo[0].v), 1);
-  let height2 = round(parseFloat(nextHiLo[1].v), 1);
-  let time1 = new Date(
-    nextHiLo[0].t.substring(0, 10) +
-      "T" +
-      nextHiLo[0].t.substring(11, 16) +
-      ":00Z"
-  );
-  let time2 = new Date(
-    nextHiLo[1].t.substring(0, 10) +
-      "T" +
-      nextHiLo[1].t.substring(11, 16) +
-      ":00Z"
-  );
-  let t1 = timeConv(time1.toString().substring(16, 21));
-  let t2 = timeConv(time2.toString().substring(16, 21));
-  first += height + " ft @ " + t1;
-  second += height2 + " ft @ " + t2;
-
-  const tideRecordResponse = await fetch(`/api/tide?reqNum=1`, {
-    method: "GET",
-  });
-  const tideRecordData = await tideRecordResponse.json();
-
-  let currTide =
-    "Tide: " + round(parseFloat(tideRecordData.data[0].v), 1) + " ft and ";
-  let rising;
-  if (tideRecordData.data[0].v < nextHiLo[0].v) {
-    currTide += "rising";
-    rising = true; //this variable is used during rendering to choose the right tide icon
-  } else {
-    currTide += "falling";
-    rising = false;
-  }
-
-  let tideData = { tide: currTide, rising: rising, hi: first, lo: second };
-  return tideData;
 }
 
 async function getTideGraph() {
@@ -95,12 +112,15 @@ async function getTideGraph() {
 
   //Setting hi and lo for report
   const hiloRecordResponse = await fetch(
-    `/api/tide?reqNum=2&begin_date=` +
+    process.env.BASE_URL +
+      `/api/tide?reqNum=2&begin_date=` +
       dayBeforeYesterdayURLFormat +
       `&end_date=` +
       tomorrowURLFormat,
     { method: "GET" }
-  );
+  ).catch((err) => {
+    // console.log(err.message)
+  });
   const hiloRecordData = await hiloRecordResponse.json();
 
   let hiloTimes = [];
@@ -124,12 +144,15 @@ async function getTideGraph() {
   });
 
   const tideResponse = await fetch(
-    `/api/tide?reqNum=3&begin_date=` +
+    process.env.BASE_URL +
+      `/api/tide?reqNum=3&begin_date=` +
       dayBeforeYesterdayURLFormat +
       `&end_date=` +
       dayAfterTomorrowURLFormat,
     { method: "GET" }
-  );
+  ).catch((err) => {
+    // console.log(err.message)
+  });
   const tideData = await tideResponse.json();
 
   let tideRecord = []; //Graph history data
