@@ -35,18 +35,13 @@ export function formatRiseSet(data, sunTimes, dateOffset) {
     data.results.sunrise.substring(0, data.results.sunrise.indexOf(":"))
   );
   if (
-    data.results.sunrise.substr(
-      data.results.sunrise.length - 2,
-      data.results.sunrise.length
-    ) === "PM"
+    data.results.sunrise.substr(data.results.sunrise.length - 2, 2) === "PM" &&
+    data.results.sunrise.substring(0, data.results.sunrise.indexOf(":")) != "12"
   ) {
     date.setUTCHours(date.getUTCHours() + 12); //if PM then adjust 12 hours forward
   }
   date.setUTCMinutes(
-    data.results.sunrise.substr(
-      data.results.sunrise.indexOf(":") + 1,
-      data.results.sunrise.split(":", 2).join(":").length - 2
-    )
+    data.results.sunrise.substr(data.results.sunrise.indexOf(":") + 1, 2)
   );
   date.setUTCSeconds(
     data.results.sunrise.substr(data.results.sunrise.length - 5, 2)
@@ -54,6 +49,8 @@ export function formatRiseSet(data, sunTimes, dateOffset) {
   sunTimes[(2 + dateOffset) * 2] = date.getTime(); //set first sunrise
 
   //reset hours, minutes, seconds and date for sunset
+  date = new Date();
+  date.setDate(date.getDate() + dateOffset - 1);
   date.setUTCHours(
     data.results.sunset.substring(0, data.results.sunset.indexOf(":"))
   );
@@ -66,10 +63,7 @@ export function formatRiseSet(data, sunTimes, dateOffset) {
     date.setUTCHours(date.getUTCHours() + 12);
   }
   date.setUTCMinutes(
-    data.results.sunset.substr(
-      data.results.sunset.indexOf(":") + 1,
-      data.results.sunset.split(":", 2).join(":").length - 3
-    )
+    data.results.sunset.substr(data.results.sunset.indexOf(":") + 1, 2)
   );
   date.setUTCSeconds(
     data.results.sunset.substr(data.results.sunset.length - 5, 2)

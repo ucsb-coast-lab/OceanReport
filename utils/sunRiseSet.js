@@ -4,7 +4,7 @@ export async function getRiseSet() {
   try {
     var sunTimes = [];
     const response2DaysAgo = await fetch(
-      process.env.BASE_URL + `/api/sunRiseSet?date=2 days agos`,
+      process.env.BASE_URL + `/api/sunRiseSet?date=2 days ago`,
       {
         method: "GET",
       }

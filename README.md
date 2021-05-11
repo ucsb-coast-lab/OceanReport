@@ -5,6 +5,7 @@ This application compiles ocean data from stations and bouys in the Southern Cal
 ## Local Deployment
 
 - run
+  - setup .env with `SPOT_TOKEN=YourSpotTokenHere` and `BASE_URL=http://localhost:3000`
   - npm install
   - npm run dev
 
