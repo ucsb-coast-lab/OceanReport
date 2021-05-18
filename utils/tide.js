@@ -92,8 +92,7 @@ async function getTideReport() {
     return tideData;
   } catch (e) {
     let tideData = {
-      tide:
-        "Error retrieving tide data. Please refresh the page or check back later.",
+      tide: "Error retrieving tide data. Please refresh the page or check back later.",
       rising: true,
       hi: "HI: ",
       lo: "LO: ",
