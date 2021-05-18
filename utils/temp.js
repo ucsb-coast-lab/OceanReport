@@ -104,6 +104,7 @@ async function getTempForecast(tempDate, i, lastTemp) {
     //   "03.nc.ascii?temp%5B0:1:69%5D%5B0:1:0%5D%5B103:1:103%5D%5B255:1:255%5D";
     // const response2 = await fetch(url, { method: "GET" });
     // const data2 = await response2.text(); //Data is a text and from the day before
+    // console.log(data2)
 
     let tempForecast = [];
     // tempForecast[i - 1] = tempRecord[i - 1];
