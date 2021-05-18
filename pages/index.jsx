@@ -157,6 +157,11 @@ export default function HomePage() {
   //Then it displays the report and graphs components with info disclaimers
   return (
     <div className={styles.page}>
+      <h1>
+        The Wave Buoy is currently under maintenance so the information being
+        dislpayed may be innaccurate. The tide data is working correctly and you
+        can still find some of the data under the links at the bottom.
+      </h1>
       {dateReport === "" ||
       waveReport === "" ||
       windReport === "" ||
