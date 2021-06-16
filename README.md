@@ -9,6 +9,10 @@ This application compiles ocean data from stations and bouys in the Southern Cal
   - npm install
   - npm run dev
 
+## Server Deployment
+
+- Coming Soon
+
 ## External Accounts
 
 ### Heroku
@@ -30,11 +34,6 @@ This application compiles ocean data from stations and bouys in the Southern Cal
 - As of now the two cron-jobs to ping the main and test websites are run from the account under vanbrocklin@ucsb.edu but this can be changed in the future by creating an account at the website and then setting up two cron-jobs for each heroku site with the settings below.
 - Picture of how to setup a new cron-job(all days and months are selected, hours 5-20 are selected and minutes 0 and 30 are selected):
   ![cron-job form](/images/cron.png)
-
-### Maybe: MongoDB Atlas
-
-- This was used in the test branch to upload the latest data. A python script called reportUpdate.py can be run by a crontab or manually to update the mongodb database every so often and then the test branch website will take the data from this database which will decrease loading time, testing shows by about 1 second.
-- Currently the python code and the test branch are connected to vanbrocklin@ucsb.edu's database. This can be changed in the future by setting up a mongodb account and creating a new collection with the document copied from the old account. After this you will have to edit the mongodb swr connection string in the .env and in the python code.
 
 ## COASTLAB WP Site
 
