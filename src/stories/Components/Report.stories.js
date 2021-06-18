@@ -1,6 +1,6 @@
 import React from "react";
 import Report from "../../components/report";
-import { reportFixtures } from "../../utils/dataFixtures";
+import { reportFixtures } from "../../fixtures/dataFixtures";
 
 export default {
   title: "Components/Report",

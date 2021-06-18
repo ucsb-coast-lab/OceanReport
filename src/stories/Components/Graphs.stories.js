@@ -1,6 +1,6 @@
 import React from "react";
 import Graphs from "../../components/graphs";
-import { graphFixtures } from "../../utils/dataFixtures";
+import { graphFixtures } from "../../fixtures/dataFixtures";
 
 export default {
   title: "Components/Graphs",
