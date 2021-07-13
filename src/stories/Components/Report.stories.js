@@ -11,5 +11,8 @@ const Template = (args) => {
   return <Report {...args} />;
 };
 
-export const fullData = Template.bind({});
-fullData.args = reportFixtures;
+export const risingData = Template.bind({});
+risingData.args = reportFixtures.rising;
+
+export const fallingData = Template.bind({});
+fallingData.args = reportFixtures.falling;

@@ -1,16 +1,15 @@
 import { round, timeConv, formatDate } from "../utils/format.js";
 
-const current = new Date(); //Datetime object set to today
-const tomorrow = formatDate(1);
-const dayAfterTomorrow = formatDate(2);
-const dayBeforeYesterday = formatDate(-2);
-let tomorrowURLFormat = tomorrow.year + tomorrow.month + tomorrow.day;
-let dayAfterTomorrowURLFormat =
-  dayAfterTomorrow.year + dayAfterTomorrow.month + dayAfterTomorrow.day;
-let dayBeforeYesterdayURLFormat =
-  dayBeforeYesterday.year + dayBeforeYesterday.month + dayBeforeYesterday.day;
-
 async function getTideReport() {
+  const current = new Date();
+  const tomorrow = formatDate(1);
+  const dayAfterTomorrow = formatDate(2);
+  const dayBeforeYesterday = formatDate(-2);
+  let tomorrowURLFormat = tomorrow.year + tomorrow.month + tomorrow.day;
+  let dayAfterTomorrowURLFormat =
+    dayAfterTomorrow.year + dayAfterTomorrow.month + dayAfterTomorrow.day;
+  let dayBeforeYesterdayURLFormat =
+    dayBeforeYesterday.year + dayBeforeYesterday.month + dayBeforeYesterday.day;
   try {
     //Setting hi and lo for report
     const hiloRecordResponse = await fetch(
@@ -102,6 +101,15 @@ async function getTideReport() {
 }
 
 async function getTideGraph() {
+  const current = new Date();
+  const tomorrow = formatDate(1);
+  const dayAfterTomorrow = formatDate(2);
+  const dayBeforeYesterday = formatDate(-2);
+  let tomorrowURLFormat = tomorrow.year + tomorrow.month + tomorrow.day;
+  let dayAfterTomorrowURLFormat =
+    dayAfterTomorrow.year + dayAfterTomorrow.month + dayAfterTomorrow.day;
+  let dayBeforeYesterdayURLFormat =
+    dayBeforeYesterday.year + dayBeforeYesterday.month + dayBeforeYesterday.day;
   try {
     const hiloRecordResponse = await fetch(
       process.env.BASE_URL +
