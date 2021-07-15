@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node server.js",
     "build": "next build",
-    "start": "next start -p $PORT",
+    "start": "NODE_ENV=production node server.js",
     "setup": "node ./setup_now.js",
     "fix:format": "prettier --write \"**/*.{js,json,md}\" --ignore-path .gitignore",
     "test": "npm-run-all test:*",
