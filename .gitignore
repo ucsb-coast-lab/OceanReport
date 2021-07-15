@@ -1,3 +1,6 @@
+#self-signed SSL certificates
+*.pem
+
 #twitter credentials
 twitter_credentials.json
 
