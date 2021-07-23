@@ -6473,6 +6473,16 @@ const windFixtures = {
   },
 };
 
+const waveFixtures = {
+  record: {
+    data: {
+      waves: [
+        { significantWaveHeight: 0.68, peakPeriod: 17, peakDirection: 198 },
+      ],
+    },
+  },
+};
+
 export {
   reportFixtures,
   graphFixtures,
@@ -6480,4 +6490,5 @@ export {
   tideFixtures,
   tempFixtures,
   windFixtures,
+  waveFixtures,
 };

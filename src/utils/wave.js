@@ -47,20 +47,18 @@ async function getWaveGraphs() {
   let waveForecastCDIP = [];
   let periodForecast = [];
   let waveForecastNOAA = [];
-  if (waveRecord) {
-    let result = await getWaveForecastCDIP(
-      dateLabels,
-      waveRecord.length,
-      waveRecord[waveRecord.length - 1],
-      periodRecord[waveRecord.length - 1]
-    );
-    waveForecastCDIP = result.waveForecastCDIP;
-    periodForecast = result.periodForecast;
-    waveForecastNOAA = await getWaveForecastNOAA(
-      waveRecord.length,
-      waveRecord[waveRecord.length - 1]
-    );
-  }
+  let result = await getWaveForecastCDIP(
+    dateLabels,
+    waveRecord.length,
+    waveRecord[waveRecord.length - 1],
+    periodRecord[waveRecord.length - 1]
+  );
+  waveForecastCDIP = result.waveForecastCDIP;
+  periodForecast = result.periodForecast;
+  waveForecastNOAA = await getWaveForecastNOAA(
+    waveRecord.length,
+    waveRecord[waveRecord.length - 1]
+  );
 
   let graphData = {
     waveRecord: waveRecord,
