@@ -9,9 +9,11 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 
 const httpsOptions = {
-  key: readFileSync("./key.pem"),
-  cert: readFileSync("./cert.pem"),
-  //   ca: readFileSync('root.crt')
+  key: readFileSync("/etc/ssl/certs/__eri_ucsb_edu.key"),
+  cert: readFileSync("/etc/ssl/certs/__eri_ucsb_edu_cert.cer"),
+  // Dev Options
+  //   key: readFileSync("./key.pem"),
+  //   cert: readFileSync("./cert.pem")
 };
 
 app.prepare().then(() => {
