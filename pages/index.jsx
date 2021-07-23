@@ -185,7 +185,7 @@ export default function HomePage() {
             lo={loReport}
           />
           <p className={styles.disclaimer}>
-            Each graph shows a 3-Day history of the data with some graphs also
+            Each graph shows a 2-Day history of the data with some graphs also
             showing the next 24 hours of predictions in a lighter shade.
           </p>
           <Graphs
