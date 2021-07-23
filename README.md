@@ -1,39 +1,26 @@
 # OceanReport
 
-This application compiles ocean data from stations and bouys in the Southern California area to create a report that displays the latest wave, wind, temp, and tide conditions at UCSB Campus Point. It also uses this tracked data in addition to some predictive models to create 3-day plots for wave height, wind speed, wave period, temperature, and tide. These graphs display 2-days of recorded data followed by 1 day of predicted behavior. This application is currently hosted on Heroku and can be viewed on its main url or at the Coast Lab website where it can be seen on the [UCSB Ocean Report](https://coastlab.eri.ucsb.edu/ucsb-ocean-report/) page being displayed with an iframe. The application is written using [next.js](https://nextjs.org/docs)/[react](https://reactjs.org/docs/getting-started.html) which utilize html and javascript to create a webpage. The application has one main page (index.jsx) which sets up all of the data for the reports and passes it into the two components (both of which are in the components folder) that make the page which are the Report (report.jsx) and the Graphs (graphs.jsx). In the styles folder there is a styles.module.css file that has the styling for everything on the main page. The secrets for this code, which at the moment is only the spot token and the BASE_URL, are kept in a separate .env file that is not included on the github. This is done to protect the secrets. Inorder to run this code on a local machine you will have to not only download the code but also add a .env folder with the following lines of code `SPOT_TOKEN=YourSpotTokenHere` and `BASE_URL=SITE_URL` replacing YourSpotTokenHere with the API key for a sofar spot buoy and SITE_URL with the url of the site that is hosting the appilcation, for our heroku site this is url would be https://ucsb-ocean-report.herokuapp.com/. If this is spelled incorrectly including case sensitivity, then the next.config.js file will not be able to configure the token for use before the app is run which will make some of the data requests fail.
+This application compiles ocean data from stations and bouys in the Southern California area to create a report that displays the latest wave, wind, temp, and tide conditions at UCSB Campus Point. It also uses this tracked data in addition to some predictive models to create 3-day plots for wave height, wind speed, wave period, temperature, and tide. These graphs display 2-days of recorded data followed by 1 day of predicted behavior. This application is currently hosted on Heroku and can be viewed on its main url or at the Coast Lab website where it can be seen on the [UCSB Ocean Report](https://coastlab.eri.ucsb.edu/ucsb-ocean-report/) page being displayed with an iframe. The application is written using [next.js](https://nextjs.org/docs)/[react](https://reactjs.org/docs/getting-started.html) which utilize html and javascript to create a webpage. The application has one main page (index.jsx) which sets up all of the data for the reports and passes it into the two components (both of which are in the components folder) that make the page which are the Report (report.jsx) and the Graphs (graphs.jsx). In the styles folder there is a styles.module.css file that has the styling for everything on the main page. The secrets for this code, which at the moment is only the spot token and the BASE_URL, are kept in a separate .env file that is not included on the github. This is done to protect the secrets. Inorder to run this code on a local machine you will have to not only download the code but also add a .env folder with the following lines of code `SPOT_TOKEN=YourSpotTokenHere` and `BASE_URL=SITE_URL` replacing YourSpotTokenHere with the API key for a sofar spot buoy and SITE_URL with the url of the site that is hosting the appilcation, for development this url would be https://localhost:3000. If this is spelled incorrectly including case sensitivity, then the next.config.js file will not be able to configure the token for use before the app is run which will make some of the data requests fail.
 
 ## Local Deployment
-
+- setup .env file with `SPOT_TOKEN=YourSpotTokenHere` and `BASE_URL=https://localhost:3000`
 - run
-  - setup .env with `SPOT_TOKEN=YourSpotTokenHere` and `BASE_URL=http://localhost:3000`
   - npm install
   - npm run dev
 
 ## Server Deployment
 
-- Coming Soon
-
-## External Accounts
-
-### Heroku
-
-- There are two seperate dynos(websites) for the test branch(svQuicker) and for the main report(master branch).
-  - Main application website url: https://ucsb-ocean-report.herokuapp.com/
-  - Test application website url: https://ucsb-ocean-report-qa.herokuapp.com/
-- Heroku's free dynos must sleep an average of 7 hours a day [(read more about it here)](https://medium.com/better-programming/keeping-my-heroku-app-alive-b19f3a8c3a82) so it is actively woken up every 30 minutes from 5am-9pm. Anytime between 9pm and 5am it will take longer to load the site as it has to have a 10-20s wake up delay, unless someone else has pinged the report in the last 30 minutes.
-- Currently both websites are being hosted on vanbrocklin@ucsb.edu's account. This can be changed in the future by creating another heroku account and then creating two new apps for each website.
-  - To setup a new heroku account go to [here](https://signup.heroku.com/t/platform?c=70130000001xDpdAAE&gclid=EAIaIQobChMI4uus34ff6wIVgT6tBh1XmwHXEAAYASAAEgIsnvD_BwE) and sign up for a free account. Then in your new accounts homepage, in the top right, you will want to click "new" and then "create new app". Name the application and then go to the deploy tab of this application. Under the deploy tab select gitHub as the deployment method and then sign into your gitHub. After that you will want to connect the ucsb-coast-lab/OceanReport repository and deploy the master branch. After this you just need to go to the settings tab and set up the spot token in your configure vars as shown below.
-    ![config vars](/images/convars.png)
-  - If you would like the test site to be running as well you can do the same setup as above but instead of deploying master you can deploy the test branch, svQuicker.
-- A third application is also run on heroku and it is used to bypass the cors fetch block on certain requests. If a request fails because of a cors block then adding the url of this website before the request will allow it to bypass the cors system. To learn more about this issue or for information on how to set up your own cors proxy refer to [this page](https://medium.com/@dtkatz/3-ways-to-fix-the-cors-error-and-how-access-control-allow-origin-works-d97d55946d9). Currently the url for the cors proxy is https://cors-anywhere.herokuapp.com/.
-
-### Cron-jobs
-
-- Used to ping the heroku app every 30 minutes to wake up the dyno
-- [cron-jobs website](https://cron-job.org/en/)
-- As of now the two cron-jobs to ping the main and test websites are run from the account under vanbrocklin@ucsb.edu but this can be changed in the future by creating an account at the website and then setting up two cron-jobs for each heroku site with the settings below.
-- Picture of how to setup a new cron-job(all days and months are selected, hours 5-20 are selected and minutes 0 and 30 are selected):
-  ![cron-job form](/images/cron.png)
+- Connect to UCSB VPN with Pulse Secure
+- run
+  - `ssh coastlab@sylk.eri.ucsb.edu`
+  - Use the password for the Coast Lab ERI functional account(This can be obtained from a Coast Lab admin)
+- Once logged in navigate to the OceanReport directory by running `cd ../coast/ocean-report/OceanReport`
+- Typically the repo there should be the most recent version of master 
+- You can use git commands to pull any branch that you would like deployed
+- To deploy the new branch you just pulled run 
+  - `npm build` to build this new dployment
+  - `sudo systemctl restart ocean-report` to restart the server and srtart up the new build
+  - `sudo systemctl status ocean-report` to check the status of the server and ensure it deployed correctly
 
 ## COASTLAB WP Site
 
