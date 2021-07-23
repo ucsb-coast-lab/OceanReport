@@ -8,6 +8,13 @@ This application compiles ocean data from stations and bouys in the Southern Cal
   - npm install
   - npm run dev
 
+## Developer Tools
+ 
+### Storybook
+- run storybook on localhost:6006 by running `npm run storybook`
+
+### Jest Testing and CodeCov
+
 ## Server Deployment
 
 - Connect to UCSB VPN with Pulse Secure
