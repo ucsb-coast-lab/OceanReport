@@ -6477,9 +6477,534 @@ const waveFixtures = {
   record: {
     data: {
       waves: [
-        { significantWaveHeight: 0.68, peakPeriod: 17, peakDirection: 198 },
+        {
+          significantWaveHeight: 0.6,
+          peakPeriod: 17,
+          peakDirection: 198,
+          timestamp: 1625599716834,
+        },
+        {
+          significantWaveHeight: 0.5,
+          peakPeriod: 17,
+          peakDirection: 198,
+          timestamp: 1625601576835,
+        },
+        {
+          significantWaveHeight: 0.68,
+          peakPeriod: 17,
+          peakDirection: 198,
+          timestamp: 1625772516833,
+        },
       ],
     },
+  },
+
+  recordFirstFalse: {
+    data: {
+      waves: [
+        {
+          significantWaveHeight: 0.6,
+          peakPeriod: 17,
+          peakDirection: 198,
+          timestamp: 1626910200000,
+        },
+        {
+          significantWaveHeight: 0.5,
+          peakPeriod: 17,
+          peakDirection: 198,
+          timestamp: 1626912000000,
+        },
+        {
+          significantWaveHeight: 0.68,
+          peakPeriod: 17,
+          peakDirection: 198,
+          timestamp: 1627082939998,
+        },
+      ],
+    },
+  },
+
+  forecastCDIP: `waveTime[80]
+1627084800, 1627095600, 1627106400, 1627117200, 1627167610,
+  waveHs[80]
+  0.31695503, 0.3472345, 0.35249525, 0.32328275, 0.2940263, 0.27428964, 0.25873914, 0.24859273, 0.24096201, 0.23493905, 0.2309936,
+  waveTp[80]
+  4.7619047, 4.7619047, 4.7619047, 4.7619047, 4.7619047, 4.7619047, 4.7619047, 18.181818, 18.181818, 18.181818, 18.181818, 18.181818,`,
+
+  forecastNOAA: `<?xml version="1.0" encoding="ISO-8859-1"?>
+  <dwml version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://graphical.weather.gov/xml/DWMLgen/schema/DWML.xsd">
+    <head>
+      <product concise-name="tabular-digital" operational-mode="developmental" srsName="WGS 1984">
+        <creation-date refresh-frequency='PT1H'>2021-07-28T05:15:50-07:00</creation-date>
+      </product>
+      <source>
+        <production-center>Los Angeles/Oxnard, CA</production-center>
+        <credit>https://www.weather.gov/lox</credit>
+        <more-information>https://www.nws.noaa.gov/forecasts/xml/</more-information>
+      </source>
+    </head>
+    <data>
+    <location>
+      <location-key>point1</location-key>
+      <point latitude="34.39" longitude="-119.84"/>
+      <area-description>7NM W Santa Barbara CA</area-description>
+      <height datum="mean sea level" height-units="feet">0</height>
+    </location>
+  <moreWeatherInformation applicable-location="point1">//forecast.weather.gov/MapClick.php?lat=34.39&amp;lon=-119.84&amp;FcstType=digital</moreWeatherInformation> 
+  <time-layout time-coordinate="local" summarization="none"><layout-key>k-p1h-n1-0</layout-key>
+  <start-valid-time>2021-07-08T14:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-08T15:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-08T15:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-08T16:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-08T16:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-08T17:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-08T17:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-08T18:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-08T18:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-08T19:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-08T19:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-08T20:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-08T20:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-08T21:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-08T21:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-08T22:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-08T22:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-08T23:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-08T23:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T00:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T00:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T01:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T01:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T02:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T02:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T03:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T03:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T04:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T04:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T05:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T05:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T06:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T06:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T07:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T07:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T08:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T08:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T09:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T09:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T10:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T10:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T11:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T11:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T12:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T12:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T13:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T13:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T14:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T14:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T15:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T15:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T16:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T16:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T17:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T17:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T18:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T18:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T19:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T19:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T20:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T20:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T21:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T21:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T22:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T22:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T23:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T23:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T00:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T00:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T01:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T01:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T02:00:00-07:00</end-valid-time>
+  <start-valid-time>2021-07-09T02:00:00-07:00</start-valid-time>
+  <end-valid-time>2021-07-09T03:00:00-07:00</end-valid-time></time-layout><parameters applicable-location='point1'>
+  <hourly-qpf type="floating" units="inches" time-layout="k-p1h-n1-0"></hourly-qpf><water-state time-layout="k-p1h-n1-0">
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>2</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='significant' units='feet'><value>1</value></waves>
+  <waves type='wind' units='feet'><value xsi:nil="true"/></waves></water-state></parameters>
+  </data>
+  </dwml>`,
+
+  formattedWaveData: {
+    waveRecord: [
+      { x: 1625599776835, y: 1.8 },
+      { x: 1625601576835, y: 1.64 },
+      { x: 1625768916833, y: 1.84 },
+      { x: 1625770716833, y: 2.03 },
+      { x: 1625772516833, y: 2.23 },
+    ],
+    periodRecord: [
+      { x: 1625599776835, y: 17 },
+      { x: 1625601576835, y: 17 },
+      { x: 1625768916833, y: 17 },
+      { x: 1625770716833, y: 17 },
+      { x: 1625772516833, y: 17 },
+    ],
+    waveForecastCDIP: [
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      { x: 1625772516833, y: 2.23 },
+    ],
+    periodForecast: [
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      { x: 1625772516833, y: 17 },
+    ],
+    dateLabels: [
+      "Jul 06, 12:29 PM",
+      "Jul 06, 12:59 PM",
+      "Jul 08, 11:28 AM",
+      "Jul 08, 11:58 AM",
+      "Jul 08, 12:28 PM",
+    ],
+    waveForecastNOAA: [
+      undefined,
+      undefined,
+      undefined,
+      undefined,
+      { x: 1625772516833, y: 2.23 },
+      { x: 1625772600000, y: 2.17 },
+      { x: 1625774400000, y: 2.12 },
+      { x: 1625776200000, y: 2.06 },
+      { x: 1625778000000, y: 2 },
+      { x: 1625779800000, y: 2 },
+      { x: 1625781600000, y: 2 },
+      { x: 1625783400000, y: 2 },
+      { x: 1625785200000, y: 2 },
+      { x: 1625787000000, y: 2 },
+      { x: 1625788800000, y: 2 },
+      { x: 1625790600000, y: 2 },
+      { x: 1625792400000, y: 2 },
+      { x: 1625794200000, y: 2 },
+      { x: 1625796000000, y: 2 },
+      { x: 1625797800000, y: 2 },
+      { x: 1625799600000, y: 2 },
+      { x: 1625801400000, y: 2 },
+      { x: 1625803200000, y: 2 },
+      { x: 1625805000000, y: 2 },
+      { x: 1625806800000, y: 2 },
+      { x: 1625808600000, y: 2 },
+      { x: 1625810400000, y: 2 },
+      { x: 1625812200000, y: 1.5 },
+      { x: 1625814000000, y: 1 },
+      { x: 1625815800000, y: 1 },
+      { x: 1625817600000, y: 1 },
+      { x: 1625819400000, y: 1 },
+      { x: 1625821200000, y: 1 },
+      { x: 1625823000000, y: 1 },
+      { x: 1625824800000, y: 1 },
+      { x: 1625826600000, y: 1 },
+      { x: 1625828400000, y: 1 },
+      { x: 1625830200000, y: 1 },
+      { x: 1625832000000, y: 1 },
+      { x: 1625833800000, y: 1 },
+      { x: 1625835600000, y: 1 },
+      { x: 1625837400000, y: 1 },
+      { x: 1625839200000, y: 1 },
+      { x: 1625841000000, y: 1 },
+      { x: 1625842800000, y: 1 },
+      { x: 1625844600000, y: 1 },
+      { x: 1625846400000, y: 1 },
+      { x: 1625848200000, y: 1 },
+      { x: 1625850000000, y: 1 },
+      { x: 1625851800000, y: 1 },
+      { x: 1625853600000, y: 1 },
+      { x: 1625855400000, y: 1.5 },
+      { x: 1625857200000, y: 2 },
+    ],
+  },
+
+  formattedWaveData2: {
+    waveRecord: [
+      { x: 1626912000000, y: 1.64 },
+      { x: 1627079339998, y: 1.84 },
+      { x: 1627081139998, y: 2.03 },
+      { x: 1627082939998, y: 2.23 },
+    ],
+    periodRecord: [
+      { x: 1626912000000, y: 17 },
+      { x: 1627079339998, y: 17 },
+      { x: 1627081139998, y: 17 },
+      { x: 1627082939998, y: 17 },
+    ],
+    waveForecastCDIP: [
+      undefined,
+      undefined,
+      undefined,
+      { x: 1627082939998, y: 2.23 },
+      { x: 1627083000000, y: 1.64 },
+      { x: 1627084800000, y: 1.04 },
+      { x: 1627086600000, y: 1.06 },
+      { x: 1627088400000, y: 1.07 },
+      { x: 1627090200000, y: 1.09 },
+      { x: 1627092000000, y: 1.11 },
+      { x: 1627093800000, y: 1.12 },
+      { x: 1627095600000, y: 1.14 },
+      { x: 1627097400000, y: 1.14 },
+      { x: 1627099200000, y: 1.15 },
+      { x: 1627101000000, y: 1.15 },
+      { x: 1627102800000, y: 1.15 },
+      { x: 1627104600000, y: 1.16 },
+      { x: 1627106400000, y: 1.16 },
+      { x: 1627108200000, y: 1.14 },
+      { x: 1627110000000, y: 1.13 },
+      { x: 1627111800000, y: 1.11 },
+      { x: 1627113600000, y: 1.09 },
+      { x: 1627115400000, y: 1.08 },
+      { x: 1627117200000, y: 1.06 },
+      { x: 1627119000000, y: 1.04 },
+      { x: 1627120800000, y: 1.03 },
+      { x: 1627122600000, y: 1.01 },
+      { x: 1627124400000, y: 0.99 },
+      { x: 1627126200000, y: 0.98 },
+      { x: 1627167610000, y: 0.96 },
+    ],
+    periodForecast: [
+      undefined,
+      undefined,
+      undefined,
+      { x: 1627082939998, y: 17 },
+      { x: 1627083000000, y: 10.88 },
+      { x: 1627084800000, y: 4.76 },
+      { x: 1627086600000, y: 4.76 },
+      { x: 1627088400000, y: 4.76 },
+      { x: 1627090200000, y: 4.76 },
+      { x: 1627092000000, y: 4.76 },
+      { x: 1627093800000, y: 4.76 },
+      { x: 1627095600000, y: 4.76 },
+      { x: 1627097400000, y: 4.76 },
+      { x: 1627099200000, y: 4.76 },
+      { x: 1627101000000, y: 4.76 },
+      { x: 1627102800000, y: 4.76 },
+      { x: 1627104600000, y: 4.76 },
+      { x: 1627106400000, y: 4.76 },
+      { x: 1627108200000, y: 4.76 },
+      { x: 1627110000000, y: 4.76 },
+      { x: 1627111800000, y: 4.76 },
+      { x: 1627113600000, y: 4.76 },
+      { x: 1627115400000, y: 4.76 },
+      { x: 1627117200000, y: 4.76 },
+      { x: 1627119000000, y: 4.76 },
+      { x: 1627120800000, y: 4.76 },
+      { x: 1627122600000, y: 4.76 },
+      { x: 1627124400000, y: 4.76 },
+      { x: 1627126200000, y: 4.76 },
+      { x: 1627167610000, y: 4.76 },
+    ],
+    dateLabels: [
+      "Jul 21, 5:00 PM",
+      "Jul 23, 3:28 PM",
+      "Jul 23, 3:58 PM",
+      "Jul 23, 4:28 PM",
+      "Jul 23, 4:30 PM",
+      "Jul 23, 5:00 PM",
+      "Jul 23, 5:30 PM",
+      "Jul 23, 6:00 PM",
+      "Jul 23, 6:30 PM",
+      "Jul 23, 7:00 PM",
+      "Jul 23, 7:30 PM",
+      "Jul 23, 8:00 PM",
+      "Jul 23, 8:30 PM",
+      "Jul 23, 9:00 PM",
+      "Jul 23, 9:30 PM",
+      "Jul 23, 10:00 PM",
+      "Jul 23, 10:30 PM",
+      "Jul 23, 11:00 PM",
+      "Jul 23, 11:30 PM",
+      "Jul 24, 12:00 AM",
+      "Jul 24, 12:30 AM",
+      "Jul 24, 1:00 AM",
+      "Jul 24, 1:30 AM",
+      "Jul 24, 2:00 AM",
+      "Jul 24, 2:30 AM",
+      "Jul 24, 3:00 AM",
+      "Jul 24, 3:30 AM",
+      "Jul 24, 4:00 AM",
+      "Jul 24, 4:30 AM",
+      "Jul 24, 4:00 PM",
+    ],
+    waveForecastNOAA: [
+      undefined,
+      undefined,
+      undefined,
+      { x: 1627082939998, y: 2.23 },
+    ],
   },
 };
 

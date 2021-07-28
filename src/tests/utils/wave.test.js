@@ -34,9 +34,10 @@ describe("Wave Util tests", () => {
 
   test("getWaveGraph success", async () => {
     jest.useFakeTimers("modern");
-    jest.setSystemTime(new Date(1625772816834));
+    jest.setSystemTime(new Date(1625772516834));
     fetch.mockResponseOnce(JSON.stringify(waveFixtures.record));
-    fetch.mockResponseOnce(waveFixtures.forecast);
+    fetch.mockResponseOnce(waveFixtures.forecastCDIP);
+    fetch.mockResponseOnce(waveFixtures.forecastNOAA);
     const waveGraph = await getWaveGraphs();
 
     expect(fetch).toHaveBeenCalledTimes(3);
@@ -61,15 +62,82 @@ describe("Wave Util tests", () => {
     expect(waveGraph.waveForecastCDIP).toEqual(
       waveFixtures.formattedWaveData.waveForecastCDIP
     );
-    expect(waveGraph.waveForecastNOAA).toEqual(
-      waveFixtures.formattedWaveData.waveForecastNOAA
-    );
     expect(waveGraph.periodForecast).toEqual(
       waveFixtures.formattedWaveData.periodForecast
+    );
+    expect(waveGraph.waveForecastNOAA).toEqual(
+      waveFixtures.formattedWaveData.waveForecastNOAA
     );
     expect(waveGraph.dateLabels).toEqual(
       waveFixtures.formattedWaveData.dateLabels
     );
     jest.useRealTimers();
+  });
+
+  test("getWaveGraph success, firstRecord false", async () => {
+    jest.useFakeTimers("modern");
+    jest.setSystemTime(new Date(1627083000000));
+    fetch.mockResponseOnce(JSON.stringify(waveFixtures.recordFirstFalse));
+    fetch.mockResponseOnce(waveFixtures.forecastCDIP);
+    fetch.mockResponseOnce(waveFixtures.forecastNOAA);
+    const waveGraph = await getWaveGraphs();
+
+    expect(fetch).toHaveBeenCalledTimes(3);
+    expect(fetch).toHaveBeenCalledWith(
+      process.env.BASE_URL + `/api/wave?dataType=record`,
+      { method: "GET" }
+    );
+    expect(fetch).toHaveBeenCalledWith(
+      process.env.BASE_URL + `/api/wave?dataType=forecastCDIP`,
+      { method: "GET" }
+    );
+    expect(fetch).toHaveBeenCalledWith(
+      process.env.BASE_URL + `/api/wave?dataType=forecastNOAA`,
+      { method: "GET" }
+    );
+    expect(waveGraph.waveRecord).toEqual(
+      waveFixtures.formattedWaveData2.waveRecord
+    );
+    expect(waveGraph.periodRecord).toEqual(
+      waveFixtures.formattedWaveData2.periodRecord
+    );
+    expect(waveGraph.waveForecastCDIP).toEqual(
+      waveFixtures.formattedWaveData2.waveForecastCDIP
+    );
+    expect(waveGraph.periodForecast).toEqual(
+      waveFixtures.formattedWaveData2.periodForecast
+    );
+    expect(waveGraph.waveForecastNOAA).toEqual(
+      waveFixtures.formattedWaveData2.waveForecastNOAA
+    );
+    expect(waveGraph.dateLabels).toEqual(
+      waveFixtures.formattedWaveData2.dateLabels
+    );
+    jest.useRealTimers();
+  });
+
+  test("getWaveGraph error", async () => {
+    fetch.mockReject(new Error("fake error message"));
+    const waveGraph = await getWaveGraphs();
+
+    expect(fetch).toHaveBeenCalledTimes(3);
+    expect(fetch).toHaveBeenCalledWith(
+      process.env.BASE_URL + `/api/wave?dataType=record`,
+      { method: "GET" }
+    );
+    expect(fetch).toHaveBeenCalledWith(
+      process.env.BASE_URL + `/api/wave?dataType=forecastCDIP`,
+      { method: "GET" }
+    );
+    expect(fetch).toHaveBeenCalledWith(
+      process.env.BASE_URL + `/api/wave?dataType=forecastNOAA`,
+      { method: "GET" }
+    );
+    expect(waveGraph.waveRecord).toEqual([]);
+    expect(waveGraph.periodRecord).toEqual([]);
+    expect(waveGraph.waveForecastCDIP).toEqual([]);
+    expect(waveGraph.periodForecast).toEqual([]);
+    expect(waveGraph.waveForecastNOAA).toEqual([]);
+    expect(waveGraph.dateLabels).toEqual([]);
   });
 });
