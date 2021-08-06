@@ -1,27 +1,21 @@
 import React from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { render, act, fireEvent, getByTestId } from "@testing-library/react";
 import HomePage from "../../pages/index";
 // import { reportFixtures } from "../../fixtures/dataFixtures";
+jest.mock("../../utils/sunRiseSet.js");
+// jest.mock('../utils/sunRiseSet.js', () => {
+//   return {
+//     getRiseSet: jest.fn(),
+//   };
+// });
 
 describe("Report tests", () => {
-  beforeEach(() => {
-    fetch.resetMocks();
-    jest.useFakeTimers("modern");
-  });
-
-  afterAll(() => {
-    jest.useRealTimers();
-  });
-
-  test("renders without crashing when given complete data", () => {
-    fetch.mockResponseOnce(
-      JSON.stringify({
-        data: {
-          waves: [{ timestamp: 1624401356 }],
-        },
-      })
-    );
-
+  test("renders without crashing when given complete data", async () => {
+    getRiseSet.mockImplementation(() => [0, 1, 2, 3, 4]);
+    // (getRiseSet as jest.MockedFunction<typeof getRiseSet>).mockResolvedValueOnce([0, 1, 2, 3, 4]);
     const { getByTestId } = render(<HomePage />);
+    // act(() => {
+    //   const { getByTestId } = render(<HomePage />);
+    // });
   });
 });
