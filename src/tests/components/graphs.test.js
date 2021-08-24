@@ -35,6 +35,6 @@ describe("Graph tests", () => {
 
   test("renders without crashing when given full data", async () => {
     const args = graphFixtures.full;
-    const { getByTestId } = render(<Graphs {...args} />);
+    render(<Graphs {...args} />);
   });
 });
