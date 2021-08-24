@@ -4,6 +4,11 @@ import { waveFixtures } from "../../fixtures/dataFixtures";
 describe("Wave Util tests", () => {
   beforeEach(() => {
     fetch.resetMocks();
+    jest.useFakeTimers("modern");
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
   });
 
   test("getWaveReport success", async () => {

@@ -4,6 +4,11 @@ import { tempFixtures } from "../../fixtures/dataFixtures";
 describe("Temp Util tests", () => {
   beforeEach(() => {
     fetch.resetMocks();
+    jest.useFakeTimers("modern");
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
   });
 
   test("getTempReport, success", async () => {

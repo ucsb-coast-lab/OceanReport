@@ -4,6 +4,11 @@ import { sunFixtures, graphFixtures } from "../../fixtures/dataFixtures";
 describe("Sun Rise Set Util tests", () => {
   beforeEach(() => {
     fetch.resetMocks();
+    jest.useFakeTimers("modern");
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
   });
 
   test("getRiseSet returns full array on success", async () => {

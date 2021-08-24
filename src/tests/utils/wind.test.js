@@ -4,6 +4,11 @@ import { windFixtures } from "../../fixtures/dataFixtures";
 describe("Wind Util tests", () => {
   beforeEach(() => {
     fetch.resetMocks();
+    jest.useFakeTimers("modern");
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
   });
 
   test("getWindReport success, North", async () => {

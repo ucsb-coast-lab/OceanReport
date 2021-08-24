@@ -3,6 +3,15 @@ import { expect } from "@jest/globals";
 import { sunFixtures } from "../../fixtures/dataFixtures";
 
 describe("Format Util tests", () => {
+  beforeEach(() => {
+    fetch.resetMocks();
+    jest.useFakeTimers("modern");
+  });
+
+  afterAll(() => {
+    jest.useRealTimers();
+  });
+
   test("round works correctly with string exponent", () => {
     const rounded = round("5.45e-3", 4);
     expect(rounded).toEqual(0.0055);
