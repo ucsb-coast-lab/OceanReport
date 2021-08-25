@@ -4,11 +4,6 @@ import { windFixtures } from "../../fixtures/dataFixtures";
 describe("Wind Util tests", () => {
   beforeEach(() => {
     fetch.resetMocks();
-    jest.useFakeTimers("modern");
-  });
-
-  afterAll(() => {
-    jest.useRealTimers();
   });
 
   test("getWindReport success, North", async () => {
@@ -101,15 +96,7 @@ describe("Wind Util tests", () => {
       process.env.BASE_URL + `/api/wind?dataType=forecastNOAA`,
       { method: "GET" }
     );
-    expect(windGraph.windRecord).toEqual(
-      windFixtures.formattedWindData.windRecord
-    );
-    expect(windGraph.windForecast).toEqual(
-      windFixtures.formattedWindData.windForecast
-    );
-    expect(windGraph.dateLabels).toEqual(
-      windFixtures.formattedWindData.dateLabels
-    );
+    expect(windGraph).toEqual(windFixtures.formattedWindData);
     jest.useRealTimers();
   });
 
@@ -129,15 +116,7 @@ describe("Wind Util tests", () => {
       process.env.BASE_URL + `/api/wind?dataType=forecastNOAA`,
       { method: "GET" }
     );
-    expect(windGraph.windRecord).toEqual(
-      windFixtures.formattedWindData.windRecordNoFirst
-    );
-    expect(windGraph.windForecast).toEqual(
-      windFixtures.formattedWindData.windForecastNoFirst
-    );
-    expect(windGraph.dateLabels).toEqual(
-      windFixtures.formattedWindData.dateLabelsNoFirst
-    );
+    expect(windGraph).toEqual(windFixtures.formattedWindDataNoFirst);
     jest.useRealTimers();
   });
 

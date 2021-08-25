@@ -4,11 +4,6 @@ import { tempFixtures } from "../../fixtures/dataFixtures";
 describe("Temp Util tests", () => {
   beforeEach(() => {
     fetch.resetMocks();
-    jest.useFakeTimers("modern");
-  });
-
-  afterAll(() => {
-    jest.useRealTimers();
   });
 
   test("getTempReport, success", async () => {
@@ -53,15 +48,7 @@ describe("Temp Util tests", () => {
       process.env.BASE_URL + `/api/temp?dataType=forecast`,
       { method: "GET" }
     );
-    expect(tempGraph.tempRecord).toEqual(
-      tempFixtures.formattedTempData.tempRecord
-    );
-    expect(tempGraph.tempForecast).toEqual(
-      tempFixtures.formattedTempData.tempForecast
-    );
-    expect(tempGraph.dateLabels).toEqual(
-      tempFixtures.formattedTempData.dateLabels
-    );
+    expect(tempGraph).toEqual(tempFixtures.formattedTempData);
     jest.useRealTimers();
   });
 

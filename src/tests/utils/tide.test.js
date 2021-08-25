@@ -33,8 +33,8 @@ describe("Tide Util tests", () => {
     );
     expect(tideReport.tide).toEqual("Tide: 3 ft and rising");
     expect(tideReport.rising).toEqual(true);
-    expect(tideReport.hi).toEqual("HI: 4.1 ft @ 2:29 PM");
-    expect(tideReport.lo).toEqual("LO: 2.7 ft @ 7:09 PM");
+    expect(tideReport.hi).toEqual("HI: 4.1 ft @ 9:29 PM");
+    expect(tideReport.lo).toEqual("LO: 2.7 ft @ 2:09 AM");
   });
 
   test("getTideReport, falling lo hi", async () => {
@@ -58,8 +58,8 @@ describe("Tide Util tests", () => {
     );
     expect(tideReport.tide).toEqual("Tide: 3 ft and falling");
     expect(tideReport.rising).toEqual(false);
-    expect(tideReport.hi).toEqual("LO: 2.7 ft @ 7:09 PM");
-    expect(tideReport.lo).toEqual("HI: 5.3 ft @ 1:04 AM");
+    expect(tideReport.hi).toEqual("LO: 2.7 ft @ 2:09 AM");
+    expect(tideReport.lo).toEqual("HI: 5.3 ft @ 8:04 AM");
   });
 
   test("getTideReport error", async () => {
@@ -107,15 +107,7 @@ describe("Tide Util tests", () => {
         "20210701",
       { method: "GET" }
     );
-    expect(tideGraph.tideRecord).toEqual(
-      tideFixtures.formattedTideData.tideRecord
-    );
-    expect(tideGraph.tideForecast).toEqual(
-      tideFixtures.formattedTideData.tideForecast
-    );
-    expect(tideGraph.dateLabels).toEqual(
-      tideFixtures.formattedTideData.dateLabels
-    );
+    expect(tideGraph).toEqual(tideFixtures.formattedTideData);
   });
 
   test("getTideGraph error", async () => {

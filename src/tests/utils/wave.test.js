@@ -4,11 +4,6 @@ import { waveFixtures } from "../../fixtures/dataFixtures";
 describe("Wave Util tests", () => {
   beforeEach(() => {
     fetch.resetMocks();
-    jest.useFakeTimers("modern");
-  });
-
-  afterAll(() => {
-    jest.useRealTimers();
   });
 
   test("getWaveReport success", async () => {
@@ -58,24 +53,7 @@ describe("Wave Util tests", () => {
       process.env.BASE_URL + `/api/wave?dataType=forecastNOAA`,
       { method: "GET" }
     );
-    expect(waveGraph.waveRecord).toEqual(
-      waveFixtures.formattedWaveData.waveRecord
-    );
-    expect(waveGraph.periodRecord).toEqual(
-      waveFixtures.formattedWaveData.periodRecord
-    );
-    expect(waveGraph.waveForecastCDIP).toEqual(
-      waveFixtures.formattedWaveData.waveForecastCDIP
-    );
-    expect(waveGraph.periodForecast).toEqual(
-      waveFixtures.formattedWaveData.periodForecast
-    );
-    expect(waveGraph.waveForecastNOAA).toEqual(
-      waveFixtures.formattedWaveData.waveForecastNOAA
-    );
-    expect(waveGraph.dateLabels).toEqual(
-      waveFixtures.formattedWaveData.dateLabels
-    );
+    expect(waveGraph).toEqual(waveFixtures.formattedWaveData);
     jest.useRealTimers();
   });
 
@@ -100,24 +78,7 @@ describe("Wave Util tests", () => {
       process.env.BASE_URL + `/api/wave?dataType=forecastNOAA`,
       { method: "GET" }
     );
-    expect(waveGraph.waveRecord).toEqual(
-      waveFixtures.formattedWaveData2.waveRecord
-    );
-    expect(waveGraph.periodRecord).toEqual(
-      waveFixtures.formattedWaveData2.periodRecord
-    );
-    expect(waveGraph.waveForecastCDIP).toEqual(
-      waveFixtures.formattedWaveData2.waveForecastCDIP
-    );
-    expect(waveGraph.periodForecast).toEqual(
-      waveFixtures.formattedWaveData2.periodForecast
-    );
-    expect(waveGraph.waveForecastNOAA).toEqual(
-      waveFixtures.formattedWaveData2.waveForecastNOAA
-    );
-    expect(waveGraph.dateLabels).toEqual(
-      waveFixtures.formattedWaveData2.dateLabels
-    );
+    expect(waveGraph).toEqual(waveFixtures.formattedWaveData2);
     jest.useRealTimers();
   });
 

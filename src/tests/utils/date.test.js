@@ -26,7 +26,7 @@ describe("Date Util tests", () => {
       process.env.BASE_URL + `/api/wave?dataType=record`,
       { method: "GET" }
     );
-    expect(date).toEqual("Monday, January 4 at 11:13 AM");
+    expect(date).toEqual("Monday, January 4 at 7:13 PM");
   });
 
   test("getDate returns successfully, February, Tuesday", async () => {
@@ -45,7 +45,7 @@ describe("Date Util tests", () => {
       process.env.BASE_URL + `/api/wave?dataType=record`,
       { method: "GET" }
     );
-    expect(date).toEqual("Tuesday, February 2 at 11:13 AM");
+    expect(date).toEqual("Tuesday, February 2 at 7:13 PM");
   });
 
   test("getDate returns successfully, March, Wednesday", async () => {
@@ -64,7 +64,7 @@ describe("Date Util tests", () => {
       process.env.BASE_URL + `/api/wave?dataType=record`,
       { method: "GET" }
     );
-    expect(date).toEqual("Wednesday, March 24 at 11:13 AM");
+    expect(date).toEqual("Wednesday, March 24 at 7:13 PM");
   });
 
   test("getDate returns successfully, April, Thursday", async () => {
@@ -83,7 +83,7 @@ describe("Date Util tests", () => {
       process.env.BASE_URL + `/api/wave?dataType=record`,
       { method: "GET" }
     );
-    expect(date).toEqual("Thursday, April 22 at 11:13 AM");
+    expect(date).toEqual("Thursday, April 22 at 7:13 PM");
   });
 
   test("getDate returns successfully, May, Friday", async () => {
@@ -102,7 +102,7 @@ describe("Date Util tests", () => {
       process.env.BASE_URL + `/api/wave?dataType=record`,
       { method: "GET" }
     );
-    expect(date).toEqual("Friday, May 21 at 11:13 AM");
+    expect(date).toEqual("Friday, May 21 at 7:13 PM");
   });
 
   test("getDate returns successfully, June, Saturday", async () => {
@@ -121,7 +121,7 @@ describe("Date Util tests", () => {
       process.env.BASE_URL + `/api/wave?dataType=record`,
       { method: "GET" }
     );
-    expect(date).toEqual("Saturday, June 26 at 11:13 AM");
+    expect(date).toEqual("Saturday, June 26 at 7:13 PM");
   });
 
   test("getDate returns successfully, July, Sunday", async () => {
@@ -140,7 +140,7 @@ describe("Date Util tests", () => {
       process.env.BASE_URL + `/api/wave?dataType=record`,
       { method: "GET" }
     );
-    expect(date).toEqual("Sunday, July 25 at 11:13 AM");
+    expect(date).toEqual("Sunday, July 25 at 7:13 PM");
   });
 
   test("getDate returns successfully, August, Sunday", async () => {
@@ -159,7 +159,7 @@ describe("Date Util tests", () => {
       process.env.BASE_URL + `/api/wave?dataType=record`,
       { method: "GET" }
     );
-    expect(date).toEqual("Sunday, August 22 at 11:13 AM");
+    expect(date).toEqual("Sunday, August 22 at 7:13 PM");
   });
 
   test("getDate returns successfully, September, Sunday", async () => {
@@ -178,7 +178,7 @@ describe("Date Util tests", () => {
       process.env.BASE_URL + `/api/wave?dataType=record`,
       { method: "GET" }
     );
-    expect(date).toEqual("Sunday, September 26 at 11:13 AM");
+    expect(date).toEqual("Sunday, September 26 at 7:13 PM");
   });
 
   test("getDate returns successfully, October, Sunday", async () => {
@@ -197,7 +197,7 @@ describe("Date Util tests", () => {
       process.env.BASE_URL + `/api/wave?dataType=record`,
       { method: "GET" }
     );
-    expect(date).toEqual("Sunday, October 24 at 11:13 AM");
+    expect(date).toEqual("Sunday, October 24 at 7:13 PM");
   });
 
   test("getDate returns successfully, November, Sunday", async () => {
@@ -216,7 +216,7 @@ describe("Date Util tests", () => {
       process.env.BASE_URL + `/api/wave?dataType=record`,
       { method: "GET" }
     );
-    expect(date).toEqual("Sunday, November 21 at 11:13 AM");
+    expect(date).toEqual("Sunday, November 21 at 7:13 PM");
   });
 
   test("getDate returns successfully, December, Sunday", async () => {
@@ -235,7 +235,7 @@ describe("Date Util tests", () => {
       process.env.BASE_URL + `/api/wave?dataType=record`,
       { method: "GET" }
     );
-    expect(date).toEqual("Sunday, December 26 at 11:13 AM");
+    expect(date).toEqual("Sunday, December 26 at 7:13 PM");
   });
 
   test("getDate returns error message on error", async () => {
