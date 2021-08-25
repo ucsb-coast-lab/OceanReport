@@ -8,13 +8,18 @@ const dev = process.env.NODE_ENV !== "production";
 const app = next({ dev });
 const handle = app.getRequestHandler();
 
-const httpsOptions = {
-  key: readFileSync("/etc/ssl/certs/__eri_ucsb_edu.key"),
-  cert: readFileSync("/etc/ssl/certs/__eri_ucsb_edu_cert.cer"),
-  // Dev Options
-  //   key: readFileSync("./key.pem"),
-  //   cert: readFileSync("./cert.pem")
-};
+var httpsOptions;
+if (dev) {
+  httpsOptions = {
+    key: readFileSync("./key.pem"),
+    cert: readFileSync("./cert.pem"),
+  };
+} else {
+  httpsOptions = {
+    key: readFileSync("/etc/ssl/certs/__eri_ucsb_edu.key"),
+    cert: readFileSync("/etc/ssl/certs/__eri_ucsb_edu_cert.cer"),
+  };
+}
 
 app.prepare().then(() => {
   createServer(httpsOptions, (req, res) => {
