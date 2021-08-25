@@ -25,7 +25,9 @@ export default function Report(props) {
             />
           </td>
           <td className={styles.tds}>
-            <p className={styles.links}>{props.date}</p>
+            <p data-testid="report-date-id" className={styles.links}>
+              {props.date}
+            </p>
           </td>
         </tr>
         <tr>
@@ -34,6 +36,7 @@ export default function Report(props) {
           </td>
           <td className={styles.tds}>
             <a
+              data-testid="report-wave-id"
               className={styles.links}
               target="_blank"
               href="https://coastlab.sofarocean.com/historical/SPOT-0798"
@@ -48,6 +51,7 @@ export default function Report(props) {
           </td>
           <td className={styles.tds}>
             <a
+              data-testid="report-wind-id"
               className={styles.links}
               target="_blank"
               href="https://coastlab.sofarocean.com/historical/SPOT-0798"
@@ -65,6 +69,7 @@ export default function Report(props) {
           </td>
           <td className={styles.tds}>
             <a
+              data-testid="report-temp-id"
               className={styles.links}
               target="_blank"
               href="https://coastlab.sofarocean.com/historical/SPOT-0798"
@@ -89,6 +94,7 @@ export default function Report(props) {
           </td>
           <td className={styles.tds}>
             <a
+              data-testid="report-tide-id"
               className={styles.links}
               target="_blank"
               href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9411340"
@@ -110,6 +116,7 @@ export default function Report(props) {
           </td>
           <td className={styles.tds}>
             <a
+              data-testid="report-hi-id"
               className={styles.links}
               target="_blank"
               href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9411340"
@@ -131,6 +138,7 @@ export default function Report(props) {
           </td>
           <td className={styles.tds}>
             <a
+              data-testid="report-lo-id"
               className={styles.links}
               target="_blank"
               href="https://tidesandcurrents.noaa.gov/noaatidepredictions.html?id=9411340"

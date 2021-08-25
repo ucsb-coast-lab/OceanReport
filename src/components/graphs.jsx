@@ -271,7 +271,7 @@ export default function Graphs(props) {
           />
         </div>
       ) : (
-        <h3>
+        <h3 data-testid="waveErrorMessage">
           Error retrieving wave graph data. Please refresh the page or check
           back later.
         </h3>
@@ -393,7 +393,7 @@ export default function Graphs(props) {
           />
         </div>
       ) : (
-        <h3>
+        <h3 data-testid="periodErrorMessage">
           Error retrieving period graph data. Please refresh the page or check
           back later.
         </h3>
@@ -515,7 +515,7 @@ export default function Graphs(props) {
           />
         </div>
       ) : (
-        <h3>
+        <h3 data-testid="windErrorMessage">
           Error retrieving wind graph data. Please refresh the page or check
           back later.
         </h3>
@@ -637,7 +637,7 @@ export default function Graphs(props) {
           />
         </div>
       ) : (
-        <h3>
+        <h3 data-testid="tempErrorMessage">
           Error retrieving tempature graph data. Please refresh the page or
           check back later.
         </h3>
@@ -771,7 +771,7 @@ export default function Graphs(props) {
           />
         </div>
       ) : (
-        <h3>
+        <h3 data-testid="tideErrorMessage">
           Error retrieving tide graph data. Please refresh the page or check
           back later.
         </h3>

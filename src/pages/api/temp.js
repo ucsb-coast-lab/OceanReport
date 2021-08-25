@@ -21,7 +21,7 @@ export default async function performAction(req, res) {
       switch (queryObject.dataType) {
         case "forecast": {
           var list = await getTempForecast();
-          res.statusCode = 200;
+          res.statusCode = 503;
           res.end(list);
           break;
         }
