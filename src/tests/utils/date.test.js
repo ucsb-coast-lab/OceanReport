@@ -1,20 +1,17 @@
 import getDate from "../../utils/date";
-var MockDate = require("mockdate");
 
 describe("Date Util tests", () => {
   beforeEach(() => {
     fetch.resetMocks();
-    // jest.useFakeTimers("modern");
+    jest.useFakeTimers("modern");
   });
 
   afterAll(async () => {
-    MockDate.reset();
-    // jest.useRealTimers();
+    jest.useRealTimers();
   });
 
   test("getDate returns successfully, January, Monday", async () => {
-    MockDate.set(new Date(2021, 0, 4).getTime());
-    // jest.setSystemTime(new Date(2021, 0, 4));
+    jest.setSystemTime(new Date(2021, 0, 4));
     fetch.mockResponseOnce(
       JSON.stringify({
         data: {
@@ -33,8 +30,7 @@ describe("Date Util tests", () => {
   });
 
   test("getDate returns successfully, February, Tuesday", async () => {
-    MockDate.set(new Date(2021, 1, 2).getTime());
-    // jest.setSystemTime(new Date(2021, 1, 2));
+    jest.setSystemTime(new Date(2021, 1, 2));
     fetch.mockResponseOnce(
       JSON.stringify({
         data: {
@@ -53,8 +49,7 @@ describe("Date Util tests", () => {
   });
 
   test("getDate returns successfully, March, Wednesday", async () => {
-    MockDate.set(new Date(2021, 2, 24).getTime());
-    // jest.setSystemTime(new Date(2021, 2, 24));
+    jest.setSystemTime(new Date(2021, 2, 24));
     fetch.mockResponseOnce(
       JSON.stringify({
         data: {
@@ -73,8 +68,7 @@ describe("Date Util tests", () => {
   });
 
   test("getDate returns successfully, April, Thursday", async () => {
-    MockDate.set(new Date(2021, 3, 22).getTime());
-    // jest.setSystemTime(new Date(2021, 3, 22));
+    jest.setSystemTime(new Date(2021, 3, 22));
     fetch.mockResponseOnce(
       JSON.stringify({
         data: {
@@ -93,8 +87,7 @@ describe("Date Util tests", () => {
   });
 
   test("getDate returns successfully, May, Friday", async () => {
-    MockDate.set(new Date(2021, 4, 21).getTime());
-    // jest.setSystemTime(new Date(2021, 4, 21));
+    jest.setSystemTime(new Date(2021, 4, 21));
     fetch.mockResponseOnce(
       JSON.stringify({
         data: {
@@ -113,8 +106,7 @@ describe("Date Util tests", () => {
   });
 
   test("getDate returns successfully, June, Saturday", async () => {
-    MockDate.set(new Date(2021, 5, 26).getTime());
-    // jest.setSystemTime(new Date(2021, 5, 26));
+    jest.setSystemTime(new Date(2021, 5, 26));
     fetch.mockResponseOnce(
       JSON.stringify({
         data: {
@@ -133,8 +125,7 @@ describe("Date Util tests", () => {
   });
 
   test("getDate returns successfully, July, Sunday", async () => {
-    MockDate.set(new Date(2021, 6, 25).getTime());
-    // jest.setSystemTime(new Date(2021, 6, 25));
+    jest.setSystemTime(new Date(2021, 6, 25));
     fetch.mockResponseOnce(
       JSON.stringify({
         data: {
@@ -153,8 +144,7 @@ describe("Date Util tests", () => {
   });
 
   test("getDate returns successfully, August, Sunday", async () => {
-    MockDate.set(new Date(2021, 7, 22).getTime());
-    // jest.setSystemTime(new Date(2021, 7, 22));
+    jest.setSystemTime(new Date(2021, 7, 22));
     fetch.mockResponseOnce(
       JSON.stringify({
         data: {
@@ -173,8 +163,7 @@ describe("Date Util tests", () => {
   });
 
   test("getDate returns successfully, September, Sunday", async () => {
-    MockDate.set(new Date(2021, 8, 26).getTime());
-    // jest.setSystemTime(new Date(2021, 8, 26));
+    jest.setSystemTime(new Date(2021, 8, 26));
     fetch.mockResponseOnce(
       JSON.stringify({
         data: {
@@ -193,8 +182,7 @@ describe("Date Util tests", () => {
   });
 
   test("getDate returns successfully, October, Sunday", async () => {
-    MockDate.set(new Date(2021, 9, 24).getTime());
-    // jest.setSystemTime(new Date(2021, 9, 24));
+    jest.setSystemTime(new Date(2021, 9, 24));
     fetch.mockResponseOnce(
       JSON.stringify({
         data: {
@@ -213,8 +201,7 @@ describe("Date Util tests", () => {
   });
 
   test("getDate returns successfully, November, Sunday", async () => {
-    MockDate.set(new Date(2021, 10, 21).getTime());
-    // jest.setSystemTime(new Date(2021, 10, 21));
+    jest.setSystemTime(new Date(2021, 10, 21));
     fetch.mockResponseOnce(
       JSON.stringify({
         data: {
@@ -233,8 +220,7 @@ describe("Date Util tests", () => {
   });
 
   test("getDate returns successfully, December, Sunday", async () => {
-    MockDate.set(new Date(2021, 11, 26).getTime());
-    // jest.setSystemTime(new Date(2021, 11, 26));
+    jest.setSystemTime(new Date(2021, 11, 26));
     fetch.mockResponseOnce(
       JSON.stringify({
         data: {
@@ -267,7 +253,6 @@ describe("Date Util tests", () => {
   });
 
   test("getDate returns error when date is undefined", async () => {
-    jest.useFakeTimers("modern");
     jest.setSystemTime(new Date(undefined));
     fetch.mockResponseOnce(
       JSON.stringify({
@@ -286,6 +271,5 @@ describe("Date Util tests", () => {
     expect(date).toEqual(
       "Error retrieving date data. Please refresh the page or check back later."
     );
-    jest.useRealTimers();
   });
 });
