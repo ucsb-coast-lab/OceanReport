@@ -28,6 +28,7 @@
     "bootstrap": "^4.4.1",
     "chartjs-plugin-annotation": "^0.5.7",
     "dotenv": "^8.2.0",
+    "mockdate": "^3.0.5",
     "next": "^10.0.5",
     "react": "16.13.1",
     "react-bootstrap": "^1.0.0",
