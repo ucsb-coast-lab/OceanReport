@@ -30,8 +30,9 @@ This application compiles ocean data from stations and bouys in the Southern Cal
 - Once logged in navigate to the OceanReport directory by running `cd ../coast/ocean-report/OceanReport`
 - Typically the repo there should be the most recent version of master
 - You can use git commands to pull any branch that you would like deployed
+- If the new branch needs to install dependancies then run `NODE_ENV=production npm install` (this will not install dependancies for testing)
 - To deploy the new branch you just pulled run
-  - `npm build` to build this new dployment
+  - `npm run build` to build this new deployment
   - `sudo systemctl restart ocean-report` to restart the server and srtart up the new build
   - `sudo systemctl status ocean-report` to check the status of the server and ensure it deployed correctly
 
