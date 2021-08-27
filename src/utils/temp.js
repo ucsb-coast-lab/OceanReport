@@ -1,7 +1,5 @@
 import { round, formatDate, timeConv } from "../utils/format.js";
 
-const current = new Date(); //Datetime object set to today
-
 async function getTempReport() {
   try {
     const tempRecordResponse = await fetch(
@@ -28,13 +26,11 @@ async function getTempGraph() {
   let dateLabels = [];
   let tempRecord = await getTempRecord(dateLabels);
   let tempForecast = [];
-  if (tempRecord) {
-    tempForecast = await getTempForecast(
-      dateLabels,
-      tempRecord.length,
-      tempRecord[tempRecord.length - 1]
-    );
-  }
+  tempForecast = await getTempForecast(
+    dateLabels,
+    tempRecord.length,
+    tempRecord[tempRecord.length - 1]
+  );
 
   let graphData = {
     tempRecord: tempRecord,
@@ -45,6 +41,7 @@ async function getTempGraph() {
 }
 
 async function getTempRecord(tempDate) {
+  const current = new Date(); //Datetime object set to today
   try {
     const tempRecordResponse = await fetch(
       process.env.BASE_URL + `/api/temp?dataType=record`,
@@ -83,7 +80,15 @@ async function getTempRecord(tempDate) {
 }
 
 async function getTempForecast(tempDate, i, lastTemp) {
+  const current = new Date(); //Datetime object set to today
   try {
+    const tempForecastResponse = await fetch(
+      process.env.BASE_URL + `/api/temp?dataType=forecast`,
+      {
+        method: "GET",
+      }
+    );
+    const tempForecastData = await tempForecastResponse.json();
     // //USE formatDate instead of below
     // const prev = new Date(current); //Datetime object set to yesterday
     // prev.setDate(prev.getDate() - 1); //yesterday's year  year5.toString() gives you 4 digit year

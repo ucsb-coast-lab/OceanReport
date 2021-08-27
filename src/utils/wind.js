@@ -1,10 +1,6 @@
 import { round, timeConv } from "../utils/format.js";
 var DOMParser = require("xmldom").DOMParser;
 
-const current = new Date(); //Datetime object set to today
-const dayBeforeYesterday = new Date();
-dayBeforeYesterday.setDate(current.getDate() - 2);
-
 async function getWindReport() {
   try {
     const windRecordResponse = await fetch(
@@ -52,13 +48,12 @@ async function getWindGraph() {
   var dateLabels = [];
   let windRecord = await getWindRecord(dateLabels);
   let windForecast = [];
-  if (windRecord) {
-    windForecast = await getWindForecast(
-      dateLabels,
-      windRecord.length,
-      windRecord[windRecord.length - 1]
-    );
-  }
+  windForecast = await getWindForecast(
+    dateLabels,
+    windRecord.length,
+    windRecord[windRecord.length - 1]
+  );
+
   let graphData = {
     windRecord: windRecord,
     windForecast: windForecast,
@@ -69,6 +64,9 @@ async function getWindGraph() {
 
 async function getWindRecord(dates) {
   try {
+    const current = new Date(); //Datetime object set to today
+    const dayBeforeYesterday = new Date();
+    dayBeforeYesterday.setDate(current.getDate() - 2);
     const windRecordResponse = await fetch(
       process.env.BASE_URL + `/api/wind?dataType=record`,
       {
@@ -135,6 +133,7 @@ async function getWindRecord(dates) {
 
 async function getWindForecast(dates, i, lastWind) {
   try {
+    const current = new Date();
     const windForecastResponse = await fetch(
       process.env.BASE_URL + `/api/wind?dataType=forecastNOAA`,
       {

@@ -46,6 +46,12 @@ export default function HomePage() {
   const [sunPointsTemp, setSunPointsTemp] = useState([]); //This set of varibles are used for setting the
   const [sunPointsTide, setSunPointsTide] = useState([]); //day/night shading on the Graphs
 
+  //This is the main function to run and it calls update once if the report data has not been set yet
+  useEffect(() => {
+    updateReport();
+    updateGraphs();
+  }, []);
+
   //This set of useEffect functions are called when used useState varibles listed in the array at the end are updated
   //Each of these functions uses the data about sun rise and sun set in addition to graph data to set up where the
   //day/night shading begins and ends
@@ -142,14 +148,6 @@ export default function HomePage() {
     setTideForecast(tideGraphData.tideForecast);
     setTideDates(tideGraphData.dateLabels);
   };
-
-  //This is the main function to run and it calls update once if the report data has not been set yet
-  //Main purpose is to prevent the update from being called infite amount of times while data is trying to be set
-  if (dateReport === "") {
-    setDateReport(" ");
-    updateReport();
-    updateGraphs();
-  }
 
   //This is what gets rendered on the page
   //It is a mix of html and javascript with {} used around js code

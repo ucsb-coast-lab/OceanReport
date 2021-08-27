@@ -24,7 +24,7 @@ export default async function getDate() {
           "Friday",
           "Saturday",
         ][dayOfWeek];
-    const m = new Date().getMonth();
+    const m = current.getMonth();
     let month = isNaN(m)
       ? null
       : [
@@ -45,6 +45,9 @@ export default async function getDate() {
     let time12 = new Date(
       dateData.data.waves[dateData.data.waves.length - 1].timestamp
     );
+    if (weekday === null || month === null) {
+      return "Error retrieving date data. Please refresh the page or check back later.";
+    }
     currDate +=
       weekday +
       ", " +

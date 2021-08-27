@@ -1,10 +1,6 @@
 import { round, timeConv } from "../utils/format.js";
 var DOMParser = require("xmldom").DOMParser;
 
-const current = new Date(); //Datetime object set to today
-const dayBeforeYesterday = new Date();
-dayBeforeYesterday.setDate(current.getDate() - 2);
-
 async function getWaveReport() {
   try {
     const waveRecordResponse = await fetch(
@@ -47,20 +43,18 @@ async function getWaveGraphs() {
   let waveForecastCDIP = [];
   let periodForecast = [];
   let waveForecastNOAA = [];
-  if (waveRecord) {
-    let result = await getWaveForecastCDIP(
-      dateLabels,
-      waveRecord.length,
-      waveRecord[waveRecord.length - 1],
-      periodRecord[waveRecord.length - 1]
-    );
-    waveForecastCDIP = result.waveForecastCDIP;
-    periodForecast = result.periodForecast;
-    waveForecastNOAA = await getWaveForecastNOAA(
-      waveRecord.length,
-      waveRecord[waveRecord.length - 1]
-    );
-  }
+  let result = await getWaveForecastCDIP(
+    dateLabels,
+    waveRecord.length,
+    waveRecord[waveRecord.length - 1],
+    periodRecord[waveRecord.length - 1]
+  );
+  waveForecastCDIP = result.waveForecastCDIP;
+  periodForecast = result.periodForecast;
+  waveForecastNOAA = await getWaveForecastNOAA(
+    waveRecord.length,
+    waveRecord[waveRecord.length - 1]
+  );
 
   let graphData = {
     waveRecord: waveRecord,
@@ -76,6 +70,9 @@ async function getWaveGraphs() {
 async function getWaveRecord(dates) {
   let waveRecord = []; //Graph Wave Height Data
   let periodRecord = []; //Graph Wave Period Data
+  const current = new Date(); //Datetime object set to today
+  const dayBeforeYesterday = new Date();
+  dayBeforeYesterday.setDate(current.getDate() - 2);
   try {
     const waveRecordResponse = await fetch(
       process.env.BASE_URL + `/api/wave?dataType=record`,
@@ -108,8 +105,11 @@ async function getWaveRecord(dates) {
           }
           let waveDrop =
             (previousWave.significantWaveHeight - wave.significantWaveHeight) /
-            3; //wave height change between added points, gaps are always 90 minutes so divide by 3 to get correct change
-          let periodDrop = (previousWave.peakPeriod - wave.peakPeriod) / 3; //wave height change between added points, gaps are always 90 minutes so divide by 3 to get correct change
+            (skips + 1);
+          //wave height change between added points, gaps are always 90 minutes so divide by 3 to get correct change
+          let periodDrop =
+            (previousWave.peakPeriod - wave.peakPeriod) / (skips + 1);
+          //wave period change between added points, gaps are always 90 minutes so divide by 3 to get correct change
           for (let s = 0; s < skips; s++) {
             //adds the new points to the graph data
             let newWaveTime = new Date(
@@ -160,6 +160,7 @@ async function getWaveRecord(dates) {
 async function getWaveForecastCDIP(dates, i, lastWave, lastPeriod) {
   let waveForecastCDIP = []; //Second Wave Graph Data
   let periodForecast = []; //Second Wave Period Graph Data
+  const current = new Date(); //Datetime object set to today
   try {
     const waveForecastResponseCDIP = await fetch(
       process.env.BASE_URL + `/api/wave?dataType=forecastCDIP`,
@@ -168,7 +169,6 @@ async function getWaveForecastCDIP(dates, i, lastWave, lastPeriod) {
       }
     );
     const waveForecastDataCDIP = await waveForecastResponseCDIP.text(); //text not a json so we have to substring it to loop through values
-
     waveForecastCDIP[i - 1] = lastWave; //Setting first point of second graph data to last point of original graph data
     periodForecast[i - 1] = lastPeriod; //Setting first point of second graph data to last point of original graph data
     let predictionTimes = waveForecastDataCDIP.substr(
@@ -326,6 +326,7 @@ async function getWaveForecastCDIP(dates, i, lastWave, lastPeriod) {
 }
 
 async function getWaveForecastNOAA(i2, lastWave) {
+  const current = new Date(); //Datetime object set to today
   try {
     const waveForecastResponseNOAA = await fetch(
       process.env.BASE_URL + `/api/wave?dataType=forecastNOAA`,
@@ -379,7 +380,7 @@ async function getWaveForecastNOAA(i2, lastWave) {
               parseInt(waves[t + 1].firstChild.textContent)) /
             2;
           waveForecastNOAA[i2 + 1] = {
-            x: predTime.getTime(),
+            x: newWaveTime.getTime(),
             y: parseInt(waves[t].firstChild.textContent) - drop,
           };
         }
