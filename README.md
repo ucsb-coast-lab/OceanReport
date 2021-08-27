@@ -15,7 +15,11 @@ This application compiles ocean data from stations and bouys in the Southern Cal
 
 - run storybook on localhost:6006 by running `npm run storybook`
 
-### Jest Testing and CodeCov
+### Jest Testing and Code Coverage
+
+- run jest tests with `npm run test`
+- run coverage report with `npm run coverage`
+- to get a more detailed coverage report run the command above and then open OceanReport/coverage/Icov-report/index.html in a web browser
 
 ## Server Deployment
 
@@ -30,6 +34,18 @@ This application compiles ocean data from stations and bouys in the Southern Cal
   - `npm build` to build this new dployment
   - `sudo systemctl restart ocean-report` to restart the server and srtart up the new build
   - `sudo systemctl status ocean-report` to check the status of the server and ensure it deployed correctly
+
+## Maintenance Branch
+
+- This branch informs the user that the buoy is under maintence which means it is out of the water or not working properly.
+- Whenever a major changes get added to master or right before this branch is being deployed it should be rebased on the mster branch
+- To do this:
+  - `git checkout maintenance`
+  - `git pull origin maintenance`
+  - `git merge master`
+  - `npm install` (fixes conflicts in package-lock.json)
+  - resolve other conflicts if needed, the only difference bewtween maintence and master should be the one `<h1>` tag at the top of the index page.
+  - then add/commit/push changes to maintenance
 
 ## COASTLAB WP Site
 
