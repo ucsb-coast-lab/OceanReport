@@ -11,8 +11,8 @@ const handle = app.getRequestHandler();
 var httpsOptions;
 if (dev) {
   httpsOptions = {
-    key: readFileSync("./key.pem"),
-    cert: readFileSync("./cert.pem"),
+    key: readFileSync("./localhost-key.pem"),
+    cert: readFileSync("./localhost.pem"),
   };
 } else {
   httpsOptions = {

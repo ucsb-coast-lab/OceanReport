@@ -2,14 +2,16 @@
 
 This application compiles ocean data from stations and bouys in the Southern California area to create a report that displays the latest wave, wind, temp, and tide conditions at UCSB Campus Point. It also uses this tracked data in addition to some predictive models to create 3-day plots for wave height, wind speed, wave period, temperature, and tide. These graphs display 2-days of recorded data followed by 1 day of predicted behavior. This application is currently hosted on Heroku and can be viewed on its main url or at the Coast Lab website where it can be seen on the [UCSB Ocean Report](https://coastlab.eri.ucsb.edu/ucsb-ocean-report/) page being displayed with an iframe. The application is written using [next.js](https://nextjs.org/docs)/[react](https://reactjs.org/docs/getting-started.html) which utilize html and javascript to create a webpage. The application has one main page (index.jsx) which sets up all of the data for the reports and passes it into the two components (both of which are in the components folder) that make the page which are the Report (report.jsx) and the Graphs (graphs.jsx). In the styles folder there is a styles.module.css file that has the styling for everything on the main page. The secrets for this code, which at the moment is only the spot token and the BASE_URL, are kept in a separate .env file that is not included on the github. This is done to protect the secrets. Inorder to run this code on a local machine you will have to not only download the code but also add a .env folder with the following lines of code `SPOT_TOKEN=YourSpotTokenHere` and `BASE_URL=SITE_URL` replacing YourSpotTokenHere with the API key for a sofar spot buoy and SITE_URL with the url of the site that is hosting the appilcation, for development this url would be https://localhost:3000. If this is spelled incorrectly including case sensitivity, then the next.config.js file will not be able to configure the token for use before the app is run which will make some of the data requests fail.
 
-## Local Deployment
+## Developer Tools
 
+### Local Deployment
+
+- setup ssl certificates using mkcert by following the instructions [here](https://web.dev/how-to-use-local-https/)
 - setup .env file with `SPOT_TOKEN=YourSpotTokenHere` and `BASE_URL=https://localhost:3000`
 - run
   - npm install
   - npm run dev
-
-## Developer Tools
+- application should be running on https://localhost:3000
 
 ### Storybook
 
