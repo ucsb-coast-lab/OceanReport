@@ -60,6 +60,6 @@ describe("HomePage tests", () => {
     tide.getTideReport.mockImplementation(() => {
       return reportFixtures.rising;
     });
-    render(<HomePage />);
+    await act(async () => render(<HomePage />));
   });
 });
