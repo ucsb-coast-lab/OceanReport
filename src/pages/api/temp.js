@@ -2,7 +2,8 @@ const url = require("url");
 
 export async function getTempRecord() {
   var link =
-    "https://api.sofarocean.com/api/wave-data?spotterId=SPOT-0798&includeSmartMooringData=true";
+    "https://api.sofarocean.com/api/wave-data?spotterId=SPOT-1097&includeSmartMooringData=true";
+  // "https://api.sofarocean.com/api/wave-data?spotterId=SPOT-0798&includeSmartMooringData=true";
   const response = await fetch(link, {
     method: "GET",
     headers: { token: process.env.SPOT_TOKEN },
