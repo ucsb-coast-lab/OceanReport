@@ -131,10 +131,10 @@ async function getTempForecast(tempDate, i, lastTempRecord) {
         if (first) {
           // add more pionts before the first time as needed
           first = false;
-          let skips = parseInt((t.getTime() - lastTime.getTime()) / 900000); // number of added points
+          let skips = parseInt((t.getTime() - lastTime.getTime()) / 600000); // number of added points
           let tempDiff = (lastTemp - temp) / (skips + 1);
           for (let k = skips; k > 0; k--) {
-            let t2 = new Date(t.getTime() - k * 900000);
+            let t2 = new Date(t.getTime() - k * 600000);
             tempForecast[i] = {
               x: t2.getTime(),
               y: round((parseFloat(temp) + k * tempDiff) * (9.0 / 5.0) + 32, 2),
@@ -155,20 +155,20 @@ async function getTempForecast(tempDate, i, lastTempRecord) {
           ", " +
           timeConv(t.toString().substring(16, 21));
         i++;
-        // add up to 3 points after the time as needed
+        // add up to 5 points after the time as needed
         let skips = parseInt(
-          (current.getTime() + 86400000 - t.getTime()) / 900000
+          (current.getTime() + 86400000 - t.getTime()) / 600000
         );
         let nextTemp = temps.substring(0, temps.indexOf("["));
         if (times.indexOf(",") === -1) {
           nextTemp = temps;
         }
-        let tempDiff = (nextTemp - temp) / 4;
-        if (skips > 3) {
-          skips = 3;
+        let tempDiff = (nextTemp - temp) / 6;
+        if (skips > 5) {
+          skips = 5;
         }
         for (let k = 1; k < skips + 1; k++) {
-          let t2 = new Date(t.getTime() + k * 900000);
+          let t2 = new Date(t.getTime() + k * 600000);
           tempForecast[i] = {
             x: t2.getTime(),
             y: round((parseFloat(temp) + k * tempDiff) * (9.0 / 5.0) + 32, 2),

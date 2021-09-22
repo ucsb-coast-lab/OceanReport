@@ -2,7 +2,8 @@ const url = require("url");
 
 export async function getWaveRecord() {
   var link =
-    "https://api.sofarocean.com/api/wave-data?spotterId=SPOT-0798&limit=96";
+    "https://api.sofarocean.com/api/wave-data?spotterId=SPOT-1097&limit=96";
+  // "https://api.sofarocean.com/api/wave-data?spotterId=SPOT-0798&limit=96";
   const response = await fetch(link, {
     method: "GET",
     headers: { token: process.env.SPOT_TOKEN },
