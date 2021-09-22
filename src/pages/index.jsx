@@ -207,12 +207,12 @@ export default function HomePage() {
             sunPointsTide={sunPointsTide}
           />
           <p className={styles.disclaimer}>
-            *The UCSB SPOT Wave Buoy is located off 3/4 of a mile off of Campus
-            Point and records real time wave, wind, and tempature data. To see
-            more of its records click{" "}
+            *The UCSB SPOT Wave Buoy is located off the coast of Santa Barbara
+            and records real time wave, wind, and tempature data. To see more of
+            its records click{" "}
             <a
               target="_blank"
-              href="https://coastlab.sofarocean.com/historical/SPOT-0798"
+              href="https://coastlab.sofarocean.com/historical/SPOT-1097"
             >
               here
             </a>

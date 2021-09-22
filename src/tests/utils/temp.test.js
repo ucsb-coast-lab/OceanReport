@@ -36,7 +36,7 @@ describe("Temp Util tests", () => {
     jest.useFakeTimers("modern");
     jest.setSystemTime(new Date(1625679775587));
     fetch.mockResponseOnce(JSON.stringify(tempFixtures.record));
-    fetch.mockResponseOnce(JSON.stringify(tempFixtures.forecast));
+    fetch.mockResponseOnce(tempFixtures.forecast);
     const tempGraph = await getTempGraph();
 
     expect(fetch).toHaveBeenCalledTimes(2);
@@ -45,7 +45,7 @@ describe("Temp Util tests", () => {
       { method: "GET" }
     );
     expect(fetch).toHaveBeenCalledWith(
-      process.env.BASE_URL + `/api/temp?dataType=forecast`,
+      process.env.BASE_URL + `/api/temp?dataType=forecast&date=20210707`,
       { method: "GET" }
     );
     expect(tempGraph).toEqual(tempFixtures.formattedTempData);
@@ -53,6 +53,8 @@ describe("Temp Util tests", () => {
   });
 
   test("getTempGraph, error", async () => {
+    jest.useFakeTimers("modern");
+    jest.setSystemTime(new Date(1625679775587));
     fetch.mockReject(new Error("fake error message"));
     const tempGraph = await getTempGraph();
 
@@ -62,11 +64,12 @@ describe("Temp Util tests", () => {
       { method: "GET" }
     );
     expect(fetch).toHaveBeenCalledWith(
-      process.env.BASE_URL + `/api/temp?dataType=forecast`,
+      process.env.BASE_URL + `/api/temp?dataType=forecast&date=20210707`,
       { method: "GET" }
     );
     expect(tempGraph.tempRecord).toEqual([]);
     expect(tempGraph.tempForecast).toEqual([]);
     expect(tempGraph.dateLabels).toEqual([]);
+    jest.useRealTimers();
   });
 });

@@ -79,127 +79,109 @@ async function getTempRecord(tempDate) {
   }
 }
 
-async function getTempForecast(tempDate, i, lastTemp) {
+async function getTempForecast(tempDate, i, lastTempRecord) {
   const current = new Date(); //Datetime object set to today
   try {
+    // formats the month and date to have leading zero if only a single digit
+    let month = "00" + (current.getMonth() + 1);
+    month = month.substr(month.length - 2);
+    let date = "00" + current.getDate();
+    date = date.substr(date.length - 2);
     const tempForecastResponse = await fetch(
-      process.env.BASE_URL + `/api/temp?dataType=forecast`,
-      {
-        method: "GET",
-      }
+      process.env.BASE_URL +
+        `/api/temp?dataType=forecast&date=` +
+        current.getFullYear() +
+        month +
+        date,
+      { method: "GET" }
     );
-    const tempForecastData = await tempForecastResponse.json();
-    // //USE formatDate instead of below
-    // const prev = new Date(current); //Datetime object set to yesterday
-    // prev.setDate(prev.getDate() - 1); //yesterday's year  year5.toString() gives you 4 digit year
-    // let year5 = prev.getFullYear();
-    // let month5 = prev.getMonth() + 1;
-    // let m5 = "00" + month5;
-    // m5 = m5.substr(m5.length - 2); //2 digit month for yesterday
-    // let day5 = prev.getDate();
-    // let d5 = "00" + day5;
-    // d5 = d5.substr(d5.length - 2); //2 digit date for yesterday
-
-    // var url =
-    //   // "https://cors-anywhere.herokuapp.com/" + //cors proxy
-    //   "http://west.rssoffice.com:8080/thredds/dodsC/roms/CA3km-forecast/CA/ca_subCA_fcst_" +
-    //   year5.toString() +
-    //   m5 +
-    //   d5 +
-    //   "03.nc.ascii?temp%5B0:1:69%5D%5B0:1:0%5D%5B103:1:103%5D%5B255:1:255%5D";
-    // const response2 = await fetch(url, { method: "GET" });
-    // const data2 = await response2.text(); //Data is a text and from the day before
-    // console.log(data2)
+    const tempForecastData = await tempForecastResponse.text();
 
     let tempForecast = [];
-    // tempForecast[i - 1] = tempRecord[i - 1];
-    // let lastTemp = (tempForecast[i - 1].y - 32) * (5.0 / 9.0);
-    // let lastTime = new Date(tempForecast[i - 1].x); //set to last recorded temp time
-    // let temps = data2.substring(data2.indexOf("[21][0][0],") + 10); //skipping all the previous days data, should start on today at 00:00
-    // let count = 0;
+    tempForecast[i - 1] = lastTempRecord;
+    let lastTime = new Date(tempForecast[i - 1].x); //set to last recorded temp time
+    let lastTemp = (tempForecast[i - 1].y - 32) * (5.0 / 9.0); // set last temp in celcius
 
-    // for (var k = 0; k < 49; k++) {
-    //   //k is synced to the hours so k = 10 would be 10am, k = 34 would be 10am the next day
-    //   let newTemp = temps.substring(2, temps.indexOf("\n")); //gets the next temp
-    //   temps = temps.substring(temps.indexOf("\n"));
-    //   temps = temps.substring(temps.indexOf(",")); //set up rest to be ready
-    //   if (count < 24 && lastTime.getHours() < k) {
-    //     //if there hasn't been 24 temps logged and k is greater than the last temp time
-    //     count++;
-    //     let t = new Date(current); //setup new date time to current time
-    //     t.setHours(k - 1); //set hours to k-1
-    //     t.setMinutes(0); //set rest to 0
-    //     t.setSeconds(0);
-    //     t.setMilliseconds(0);
-    //     if (count === 1) {
-    //       //if first then add only extra points needed
-    //       t.setMinutes(lastTime.getMinutes());
-    //       let divs = parseInt((60 - lastTime.getMinutes()) / 4) + 1;
-    //       let drop = (parseFloat(lastTemp) - parseFloat(newTemp)) / divs;
-    //       for (var g = 1; g < divs; g++) {
-    //         t.setMinutes(t.getMinutes() + 4);
-    //         tempForecast[i] = {
-    //           x: t.getTime(),
-    //           y: round((parseFloat(lastTemp) - g * drop) * (9.0 / 5.0) + 32, 2),
-    //         };
-    //         tempDate[i] =
-    //           t.toString().substring(4, 10) +
-    //           ", " +
-    //           timeConv(t.toString().substring(16, 21));
-    //         i++;
-    //       }
-    //     } else {
-    //       //else add 14 extra points at 4 minute increments
-    //       let drop = (parseFloat(lastTemp) - parseFloat(newTemp)) / 15;
-    //       for (var r = 1; r < 15; r++) {
-    //         t.setMinutes(t.getMinutes() + 4);
-    //         tempForecast[i] = {
-    //           x: t.getTime(),
-    //           y: round((parseFloat(lastTemp) - r * drop) * (9.0 / 5.0) + 32, 2),
-    //         };
-    //         tempDate[i] =
-    //           t.toString().substring(4, 10) +
-    //           ", " +
-    //           timeConv(t.toString().substring(16, 21));
-    //         i++;
-    //       }
-    //     }
-    //     //Add predicted temp data
-    //     t.setHours(k);
-    //     if (k > 24) {
-    //       t.setDate(t.getDate() - 1);
-    //     }
-    //     t.setMinutes(0);
-    //     tempForecast[i] = {
-    //       x: t.getTime(),
-    //       y: round(parseFloat(newTemp) * (9.0 / 5.0) + 32, 2),
-    //     };
-    //     tempDate[i] =
-    //       t.toString().substring(4, 10) +
-    //       ", " +
-    //       timeConv(t.toString().substring(16, 21));
-    //     i++;
-    //     lastTemp = newTemp;
-    //     if (count === 24) {
-    //       //add extra points after the last data point
-    //       let extras = parseInt(lastTime.getMinutes() / 4);
-    //       newTemp = temps.substring(2, temps.indexOf("\n"));
-    //       let drop = (parseFloat(lastTemp) - parseFloat(newTemp)) / 15;
-    //       for (var j = 1; j <= extras; j++) {
-    //         t.setMinutes(t.getMinutes() + 4);
-    //         tempForecast[i] = {
-    //           x: t.getTime(),
-    //           y: round((parseFloat(lastTemp) - j * drop) * (9.0 / 5.0) + 32, 2),
-    //         };
-    //         tempDate[i] =
-    //           t.toString().substring(4, 10) +
-    //           ", " +
-    //           timeConv(t.toString().substring(16, 21));
-    //         i++;
-    //       }
-    //     }
-    //   }
-    // }
+    let times = tempForecastData.substring(
+      tempForecastData.indexOf("temp.time") + 14
+    );
+    times = times.substring(0, times.indexOf("\n"));
+    let temps = tempForecastData.substring(
+      tempForecastData.indexOf("[0][0][0],") + 11
+    );
+    temps = temps.substring(0, temps.indexOf("temp.time") - 1);
+    let first = true;
+    while (times !== "") {
+      let time = times.substring(0, times.indexOf(","));
+      let temp = temps.substring(0, temps.indexOf("["));
+      if (times.indexOf(",") !== -1) {
+        times = times.substring(times.indexOf(",") + 2);
+        temps = temps.substring(temps.indexOf("]") + 9);
+      } else {
+        time = times;
+        times = "";
+        temp = temps;
+        temps = "";
+      }
+      let t = new Date(parseInt(time + "000"));
+      if (
+        t.getTime() >= lastTime.getTime() &&
+        t.getTime() < current.getTime() + 86400000
+      ) {
+        if (first) {
+          // add more pionts before the first time as needed
+          first = false;
+          let skips = parseInt((t.getTime() - lastTime.getTime()) / 600000); // number of added points
+          let tempDiff = (lastTemp - temp) / (skips + 1);
+          for (let k = skips; k > 0; k--) {
+            let t2 = new Date(t.getTime() - k * 600000);
+            tempForecast[i] = {
+              x: t2.getTime(),
+              y: round((parseFloat(temp) + k * tempDiff) * (9.0 / 5.0) + 32, 2),
+            };
+            tempDate[i] =
+              t2.toString().substring(4, 10) +
+              ", " +
+              timeConv(t2.toString().substring(16, 21));
+            i++;
+          }
+        }
+        tempForecast[i] = {
+          x: t.getTime(),
+          y: round(parseFloat(temp) * (9.0 / 5.0) + 32, 2),
+        };
+        tempDate[i] =
+          t.toString().substring(4, 10) +
+          ", " +
+          timeConv(t.toString().substring(16, 21));
+        i++;
+        // add up to 5 points after the time as needed
+        let skips = parseInt(
+          (current.getTime() + 86400000 - t.getTime()) / 600000
+        );
+        let nextTemp = temps.substring(0, temps.indexOf("["));
+        if (times.indexOf(",") === -1) {
+          nextTemp = temps;
+        }
+        let tempDiff = (nextTemp - temp) / 6;
+        if (skips > 5) {
+          skips = 5;
+        }
+        for (let k = 1; k < skips + 1; k++) {
+          let t2 = new Date(t.getTime() + k * 600000);
+          tempForecast[i] = {
+            x: t2.getTime(),
+            y: round((parseFloat(temp) + k * tempDiff) * (9.0 / 5.0) + 32, 2),
+          };
+          tempDate[i] =
+            t2.toString().substring(4, 10) +
+            ", " +
+            timeConv(t2.toString().substring(16, 21));
+          i++;
+        }
+      }
+    }
+
     return tempForecast;
   } catch (e) {
     return [];

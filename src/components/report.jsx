@@ -39,7 +39,7 @@ export default function Report(props) {
               data-testid="report-wave-id"
               className={styles.links}
               target="_blank"
-              href="https://coastlab.sofarocean.com/historical/SPOT-0798"
+              href="https://coastlab.sofarocean.com/historical/SPOT-1097"
             >
               {props.wave}
             </a>
@@ -54,7 +54,7 @@ export default function Report(props) {
               data-testid="report-wind-id"
               className={styles.links}
               target="_blank"
-              href="https://coastlab.sofarocean.com/historical/SPOT-0798"
+              href="https://coastlab.sofarocean.com/historical/SPOT-1097"
             >
               {props.wind}
             </a>
@@ -72,7 +72,7 @@ export default function Report(props) {
               data-testid="report-temp-id"
               className={styles.links}
               target="_blank"
-              href="https://coastlab.sofarocean.com/historical/SPOT-0798"
+              href="https://coastlab.sofarocean.com/historical/SPOT-1097"
             >
               {props.temp}
             </a>
