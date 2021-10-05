@@ -96,7 +96,7 @@ async function getTempForecast(tempDate, i, lastTempRecord) {
       { method: "GET" }
     );
     const tempForecastData = await tempForecastResponse.text();
-
+    
     let tempForecast = [];
     tempForecast[i - 1] = lastTempRecord;
     let lastTime = new Date(tempForecast[i - 1].x); //set to last recorded temp time
