@@ -45,7 +45,7 @@
     "@storybook/addon-links": "^6.2.9",
     "jest-fetch-mock": "^3.0.3",
     "@storybook/react": "^6.3.5",
-    "danger": "^10.0.0",
+    "danger": "^11.2.1",
     "husky": "^4.2.3",
     "now": "^18.0.0",
     "prettier": "^2.0.2",
